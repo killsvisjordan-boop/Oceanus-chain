@@ -276,22 +276,59 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 .btn-submit-modal:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;}
 .btn-submit-modal:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 5px 28px rgba(0,184,255,.44);}
 .progress-hint{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:8px;letter-spacing:1px;}
-.success-view{display:none;text-align:center;padding:12px 0;}
-.success-icon{font-size:52px;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
+.success-view{display:none;text-align:center;padding:10px 0 4px;}
+/* Congrats burst */
+.congrats-burst{position:relative;width:80px;height:80px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;}
+.congrats-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--blue);animation:burstRing 1.2s ease forwards;}
+@keyframes burstRing{0%{transform:scale(0);opacity:1;}100%{transform:scale(1.8);opacity:0;}}
+.congrats-icon{font-size:44px;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
 @keyframes popIn{0%{transform:scale(0);}100%{transform:scale(1);}}
-.success-title{font-family:'Orbitron',monospace;font-size:20px;letter-spacing:4px;font-weight:900;margin:16px 0 8px;background:linear-gradient(135deg,#00FF88,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.success-title{font-family:'Orbitron',monospace;font-size:clamp(18px,5vw,26px);letter-spacing:4px;font-weight:900;background:linear-gradient(135deg,#fff 30%,var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.success-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;padding:4px 14px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.35);color:var(--blue);margin-bottom:14px;border-radius:2px;}
 .success-sub{font-size:13px;color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:22px;}
+/* Referral box */
+.referral-box{background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.22);padding:16px;margin-bottom:18px;text-align:left;border-radius:4px;position:relative;overflow:hidden;}
+.referral-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.referral-label{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.36);margin-bottom:10px;}
+.referral-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 1.5s infinite;}
+.referral-link-row{display:flex;align-items:center;gap:8px;}
+.referral-link-text{flex:1;font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.18);padding:9px 12px;border-radius:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.5px;}
+.referral-copy-btn{flex-shrink:0;padding:9px 16px;background:linear-gradient(180deg,#2a8de8,#1a62b0);border:1px solid rgba(0,184,255,.4);color:#fff;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.15);}
+.referral-copy-btn:hover{background:linear-gradient(180deg,#3a9ef8,#2272c0);box-shadow:0 0 14px rgba(0,184,255,.3);}
+.referral-copy-btn.copied{background:linear-gradient(180deg,#00c853,#00952e);border-color:rgba(0,255,136,.4);}
+.referral-copied{font-family:'Space Mono',monospace;font-size:9px;color:var(--success);letter-spacing:2px;margin-top:7px;opacity:0;transition:opacity .3s;text-align:center;}
+.referral-copied.show{opacity:1;}
+/* Share message */
+.share-msg{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.1);padding:16px;margin-bottom:18px;border-radius:4px;text-align:left;}
+.share-msg-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:#fff;margin-bottom:8px;}
+.share-msg-text{font-size:12px;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:14px;}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.share-btn{padding:9px 18px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;text-decoration:none;border-radius:3px;transition:all .25s;font-weight:700;cursor:pointer;}
+.share-x{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;}
+.share-x:hover{background:#000;border-color:rgba(255,255,255,.5);box-shadow:0 0 12px rgba(255,255,255,.1);}
+.share-tg{background:rgba(0,136,204,.15);border:1px solid rgba(0,136,204,.35);color:#29b6f6;}
+.share-tg:hover{background:rgba(0,136,204,.25);box-shadow:0 0 12px rgba(0,136,204,.2);}
 .btn-close-success{padding:10px 34px;background:transparent;border:1px solid var(--blue);color:var(--blue);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;cursor:pointer;transition:all .28s;border-radius:2px;}
 .btn-close-success:hover{background:var(--blue);color:#000;}
 
-/* ══ REVEAL ══ */
+/* ══ PARTNERS ══ */
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.partner-card{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.12);padding:18px 12px 14px;text-align:center;transition:all .3s;cursor:default;border-radius:4px;position:relative;overflow:hidden;}
+.partner-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,255,.4),transparent);opacity:0;transition:opacity .3s;}
+.partner-card:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.3);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 16px rgba(0,184,255,.08);}
+.partner-card:hover::before{opacity:1;}
+.partner-logo-wrap{width:54px;height:54px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border-radius:50%;border:1px solid rgba(0,184,255,.14);padding:8px;}
+.partner-logo{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+.partner-name{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1.5px;color:#fff;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.partner-tag{font-size:7px;letter-spacing:2px;padding:2px 7px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.22);color:var(--blue);display:inline-block;text-transform:uppercase;}
+@media(max-width:768px){.partners-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:440px){.partners-grid{grid-template-columns:repeat(2,1fr);}}
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 .rd1{transition-delay:.08s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.24s;}.rd4{transition-delay:.32s;}
 
 /* ══ TOAST ══ */
-#toast{position:fixed;bottom:58px;left:50%;transform:translateX(-50%) translateY(70px);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.28);color:#00FF88;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;padding:11px 22px;z-index:9999;transition:transform .5s ease;white-space:nowrap;box-shadow:0 0 22px rgba(0,255,136,.18);border-radius:3px;}
-#toast.show{transform:translateX(-50%) translateY(0);}
+/* toast removed */
 
 /* ══ MOBILE RESPONSIVE ══ */
 @media(max-width:768px){
@@ -418,6 +455,10 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
     <div class="d-ico" ondblclick="openModal()" title="Apply Now">
       <span class="d-ico-em">✉️</span>
       <span class="d-ico-lbl">Apply Now</span>
+    </div>
+    <div class="d-ico" ondblclick="openWindow('win-partners')" title="Partners">
+      <span class="d-ico-em">🤝</span>
+      <span class="d-ico-lbl">Partners</span>
     </div>
   </div>
 
@@ -698,6 +739,122 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
   </div>
 
   <!-- ════════════════════════════
+       WINDOW: PARTNERSHIPS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-partners" style="display:none;width:620px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-partners">
+      <span class="win-tb-icon">🤝</span>
+      <span class="win-tb-title">PARTNERSHIPS · Oceanus Chain Network</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-partners')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-partners')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-partners')">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="reveal"><div class="sec-label">VERIFIED PARTNERS</div></div>
+      <div class="reveal rd1"><div class="sec-title">OCEANUS CHAIN PARTNERS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="reveal rd2"><p style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:24px;">Oceanus Chain is backed by leading protocols and networks across the Web3 ecosystem. These strategic partnerships power our infrastructure, liquidity, and cross-chain capabilities.</p></div>
+      <div class="partners-grid reveal rd3">
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="#e8821a" opacity=".15" stroke="#e8821a" stroke-width="1.5"/><polygon points="50,18 72,30 72,55 50,67 28,55 28,30" fill="none" stroke="#f6851b" stroke-width="2"/><polygon points="50,32 62,39 62,54 50,61 38,54 38,39" fill="#f6851b" opacity=".7"/><circle cx="50" cy="47" r="7" fill="#f6851b"/></svg>
+          </div>
+          <div class="partner-name">MetaMask</div>
+          <div class="partner-tag">WALLET</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><polygon points="50,5 95,50 50,95 5,50" fill="#627eea" opacity=".15" stroke="#627eea" stroke-width="1.5"/><polygon points="50,14 50,57" stroke="#627eea" stroke-width="2.5" stroke-linecap="round"/><polygon points="50,14 78,52 50,65 22,52" fill="none" stroke="#627eea" stroke-width="1.8"/><polygon points="50,65 78,52 50,86 22,52" fill="#627eea" opacity=".5"/><circle cx="50" cy="50" r="6" fill="#627eea"/></svg>
+          </div>
+          <div class="partner-name">Ethereum</div>
+          <div class="partner-tag">LAYER 1</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#00bfa5" stroke-width="1.5" opacity=".4"/><circle cx="50" cy="50" r="28" fill="none" stroke="#00bfa5" stroke-width="2"/><path d="M30 50 Q50 25 70 50 Q50 75 30 50Z" fill="#00bfa5" opacity=".5"/><circle cx="50" cy="50" r="8" fill="#00bfa5"/></svg>
+          </div>
+          <div class="partner-name">AION</div>
+          <div class="partner-tag">NETWORK</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><rect x="10" y="10" width="80" height="80" rx="14" fill="#e3365e" opacity=".12" stroke="#e3365e" stroke-width="1.5"/><path d="M30 50 L50 22 L70 50 L50 78Z" fill="none" stroke="#e3365e" stroke-width="2.2"/><path d="M35 50 L50 30 L65 50 L50 70Z" fill="#e3365e" opacity=".5"/><circle cx="50" cy="50" r="7" fill="#e3365e"/></svg>
+          </div>
+          <div class="partner-name">Akash Network</div>
+          <div class="partner-tag">COMPUTE</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f7c948" stroke-width="1.5" opacity=".3"/><path d="M50 12 L62 42 L94 42 L68 60 L78 90 L50 72 L22 90 L32 60 L6 42 L38 42Z" fill="none" stroke="#f7c948" stroke-width="1.8"/><path d="M50 28 L58 48 L78 48 L63 59 L68 78 L50 67 L32 78 L37 59 L22 48 L42 48Z" fill="#f7c948" opacity=".45"/></svg>
+          </div>
+          <div class="partner-name">Alpaca Finance</div>
+          <div class="partner-tag">DeFi</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#2762ff" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="26" fill="none" stroke="#2762ff" stroke-width="2"/><line x1="50" y1="10" x2="50" y2="90" stroke="#2762ff" stroke-width="1.5" opacity=".4"/><line x1="10" y1="50" x2="90" y2="50" stroke="#2762ff" stroke-width="1.5" opacity=".4"/><circle cx="50" cy="50" r="9" fill="#2762ff" opacity=".8"/></svg>
+          </div>
+          <div class="partner-name">Centrifuge</div>
+          <div class="partner-tag">RWA</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f04a4a" stroke-width="1.5" opacity=".3"/><path d="M20 35 Q50 10 80 35 L80 65 Q50 90 20 65Z" fill="none" stroke="#f04a4a" stroke-width="2"/><path d="M30 42 Q50 22 70 42 L70 58 Q50 78 30 58Z" fill="#f04a4a" opacity=".35"/><circle cx="50" cy="50" r="8" fill="#f04a4a" opacity=".9"/></svg>
+          </div>
+          <div class="partner-name">Convex Finance</div>
+          <div class="partner-tag">YIELD</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#1e4dd8" stroke-width="1.5" opacity=".4"/><path d="M20 50 Q35 20 50 35 Q65 50 50 65 Q35 80 20 50Z" fill="none" stroke="#1e4dd8" stroke-width="2"/><path d="M80 50 Q65 20 50 35 Q35 50 50 65 Q65 80 80 50Z" fill="#1e4dd8" opacity=".45"/><circle cx="50" cy="50" r="7" fill="#4d88ff"/></svg>
+          </div>
+          <div class="partner-name">CoW Protocol</div>
+          <div class="partner-tag">DEX</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#1c75bc" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="28" fill="none" stroke="#1c75bc" stroke-width="2"/><path d="M38 35 L62 35 L74 50 L62 65 L38 65 L26 50Z" fill="none" stroke="#1c75bc" stroke-width="1.8"/><circle cx="50" cy="50" r="9" fill="#1c75bc" opacity=".85"/></svg>
+          </div>
+          <div class="partner-name">Dash</div>
+          <div class="partner-tag">PAYMENTS</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f9c231" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="26" fill="none" stroke="#f9c231" stroke-width="2"/><circle cx="50" cy="42" r="8" fill="none" stroke="#f9c231" stroke-width="2"/><path d="M36 60 Q50 52 64 60" stroke="#f9c231" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#f9c231" opacity=".7"/></svg>
+          </div>
+          <div class="partner-name">Grin</div>
+          <div class="partner-tag">PRIVACY</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff007a" stroke-width="1.5" opacity=".35"/><polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="#ff007a" stroke-width="2"/><polygon points="50,24 76,38 76,62 50,76 24,62 24,38" fill="#ff007a" opacity=".2"/><circle cx="50" cy="50" r="9" fill="#ff007a" opacity=".9" style="filter:drop-shadow(0 0 6px #ff007a)"/></svg>
+          </div>
+          <div class="partner-name">HEX</div>
+          <div class="partner-tag">STAKING</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>11 VERIFIED PARTNERS</span>
+      <span class="wsb-item" style="margin-left:auto;">OCEANUS ECOSYSTEM</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
        TASKBAR
   ═════════════════════════════ -->
   <div id="taskbar">
@@ -741,6 +898,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
         <div class="sm-item" onclick="openWindow('win-leaderboard');toggleStartMenu()"><span class="sm-item-ico">🏆</span>Hall of Pioneers</div>
         <div class="sm-item" onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
         <div class="sm-item" onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
+        <div class="sm-item" onclick="openWindow('win-partners');toggleStartMenu()"><span class="sm-item-ico">🤝</span>Partners</div>
       </div>
       <div class="sm-col">
         <div class="sm-col-head">QUICK ACCESS</div>
@@ -811,20 +969,41 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
           </div>
         </div>
         <div class="progress-hint" id="prog-hint">Complete all 4 tasks to unlock the apply button</div>
-        <form action="https://formsubmit.co/killsvisjordan@gmail.com" method="POST" onsubmit="handleSubmit(event)" id="apply-form">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_subject" value="New Oceanus Waitlist Registration!">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="email" id="hidden-email">
-          <input type="hidden" name="wallet_address" id="hidden-wallet">
-          <input type="hidden" name="source" value="Oceanus Chain Waitlist">
-          <button class="btn-submit-modal" id="apply-btn" type="submit" disabled>APPLY FOR ACCESS</button>
-        </form>
+        <button class="btn-submit-modal" id="apply-btn" type="button" disabled onclick="handleSubmit()">APPLY FOR ACCESS</button>
       </div>
       <div class="success-view" id="success-view">
-        <div class="success-icon">🌊</div>
-        <div class="success-title">CONGRATULATIONS PIONEER</div>
-        <p class="success-sub">You have successfully secured your place in the Oceanus Chain waitlist. Check your email for future updates and exclusive opportunities.</p>
+        <!-- Congrats header -->
+        <div class="congrats-burst">
+          <div class="congrats-ring"></div>
+          <div class="congrats-icon">🌊</div>
+        </div>
+        <div class="success-title">CONGRATULATIONS!</div>
+        <div class="success-badge">PIONEER STATUS UNLOCKED</div>
+        <p class="success-sub">You have secured your place in the Oceanus Chain ecosystem.<br>Your application is confirmed — welcome to the deep.</p>
+
+        <!-- Referral section -->
+        <div class="referral-box">
+          <div class="referral-label">
+            <span class="referral-dot"></span>
+            YOUR PERSONAL REFERRAL LINK
+          </div>
+          <div class="referral-link-row">
+            <div class="referral-link-text" id="referral-link-display">oceanus.io/ref/loading...</div>
+            <button class="referral-copy-btn" id="copy-btn" onclick="copyReferral()">COPY</button>
+          </div>
+          <div class="referral-copied" id="referral-copied">✓ Copied to clipboard!</div>
+        </div>
+
+        <!-- Share message -->
+        <div class="share-msg">
+          <div class="share-msg-title">🏆 SHARE &amp; BE THE TOP 1 BEFORE LAUNCH</div>
+          <p class="share-msg-text">The more you share, the more points you collect.<br>Top referrers unlock exclusive $OCS allocations and lifetime pioneer benefits.</p>
+          <div class="share-btns">
+            <a class="share-btn share-x" id="share-x" href="#" target="_blank">𝕏 SHARE ON X</a>
+            <a class="share-btn share-tg" href="https://t.me/Oceanuschain" target="_blank">✈ TELEGRAM</a>
+          </div>
+        </div>
+
         <button class="btn-close-success" onclick="closeModal()">CLOSE ✓</button>
       </div>
     </div>
@@ -976,16 +1155,59 @@ function checkBtn(){
 }
 
 // ══ FORM SUBMIT ══
-function handleSubmit(e){
+function generateRefCode(email){
+  // Simple deterministic short code from email
+  let hash=0;for(let i=0;i<email.length;i++){hash=((hash<<5)-hash)+email.charCodeAt(i);hash|=0;}
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code='';let h=Math.abs(hash);
+  for(let i=0;i<7;i++){code+=chars[h%chars.length];h=Math.floor(h/chars.length);}
+  return 'OCS-'+code;
+}
+function handleSubmit(){
   const email=document.getElementById('inp-email').value.trim();
   const wallet=document.getElementById('inp-wallet').value.trim();
-  document.getElementById('hidden-email').value=email;
-  document.getElementById('hidden-wallet').value=wallet;
   const btn=document.getElementById('apply-btn');
   btn.disabled=true;btn.textContent='SUBMITTING...';
-  setTimeout(()=>{document.getElementById('form-view').style.display='none';document.getElementById('success-view').style.display='block';},1400);
+
+  // Generate referral link immediately
+  const code=generateRefCode(email||wallet||Math.random().toString());
+  const refUrl='https://oceanus.io/ref/'+code;
+
+  // Send data to formsubmit.co silently in background
+  const formData=new FormData();
+  formData.append('email',email);
+  formData.append('wallet_address',wallet);
+  formData.append('source','Oceanus Chain Waitlist');
+  formData.append('_subject','New Oceanus Waitlist Registration!');
+  formData.append('_captcha','false');
+  formData.append('_template','table');
+  fetch('https://formsubmit.co/ajax/killsvisjordan@gmail.com',{
+    method:'POST',headers:{'Accept':'application/json'},body:formData
+  }).catch(()=>{});// silent fail — success screen shows regardless
+
+  // Show success screen after short delay
+  setTimeout(()=>{
+    document.getElementById('form-view').style.display='none';
+    const sv=document.getElementById('success-view');
+    sv.style.display='block';
+    document.getElementById('referral-link-display').textContent=refUrl;
+    const xText=encodeURIComponent('🌊 Just secured my spot on @OCEANUSCHAIN waitlist!\n\nJoin me before the tide reaches the world 👇\n'+refUrl+'\n\n#OceanusChain #OCS #Web3');
+    document.getElementById('share-x').href='https://x.com/intent/tweet?text='+xText;
+  },900);
 }
-function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),5000);}
+function copyReferral(){
+  const link=document.getElementById('referral-link-display').textContent;
+  const btn=document.getElementById('copy-btn');
+  const copied=document.getElementById('referral-copied');
+  navigator.clipboard.writeText(link).catch(()=>{
+    // Fallback for mobile browsers
+    const ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+  });
+  btn.textContent='✓ COPIED';btn.classList.add('copied');
+  copied.classList.add('show');
+  setTimeout(()=>{btn.textContent='COPY';btn.classList.remove('copied');copied.classList.remove('show');},2500);
+}
+// toast removed
 
 // ══ LEADERBOARD ══
 const pioneers=[['OceanMaster',15840],['DeepWhale',14320],['BlueNode',13100],['EtherSailor',12500],['OceanGuardian',11980],['NeptuneX',11200],['OceanPilot',10800],['TideRunner',9900],['AbyssWalker',9200],['DeepCurrent',8700],['SeaLegend',8100],['AquaNode',7500],['OCSHolder',6900],['OceanMiner',6400],['BlueTitan',5800],['WaveHunter',5200],['DarkOcean',4700],['EtherOcean',4100],['DeepExplorer',3600],['OceanKing',3100]];
@@ -1023,6 +1245,7 @@ const winMeta={
   'win-leaderboard':{icon:'🏆',label:'Pioneers'},
   'win-how':{icon:'⚙️',label:'How It Works'},
   'win-whitepaper':{icon:'📄',label:'Whitepaper'},
+  'win-partners':{icon:'🤝',label:'Partners'},
 };
 let dragState=null;
 document.addEventListener('mousemove',e=>{
