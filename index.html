@@ -296,9 +296,10 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 /* ══ MOBILE RESPONSIVE ══ */
 @media(max-width:768px){
   body{overflow-y:auto;overflow-x:hidden;}
-  #taskbar,#start-menu,.dsk-icons{display:none!important;}
+  #start-menu,.dsk-icons{display:none;}
+  #start-menu.open{display:block!important;}
   #site{position:static!important;overflow:visible!important;height:auto!important;}
-  #desktop{position:static;overflow:visible;padding:12px;padding-bottom:16px;display:flex;flex-direction:column;}
+  #desktop{position:static;overflow:visible;padding:12px;padding-bottom:60px;display:flex;flex-direction:column;}
   .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;display:flex!important;animation:none!important;}
   .win-body{overflow:visible!important;padding:16px 18px;height:auto!important;}
   .reveal{opacity:1!important;transform:none!important;}
@@ -308,6 +309,12 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
   .hero-headline{font-size:22px;}
   .cd-block{min-width:58px;padding:10px 9px;}
   #ocean-canvas{display:none;}
+  /* Taskbar mobile tweaks */
+  #taskbar{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:0 6px;}
+  #tb-wins{display:none;}
+  .tb-sep{display:none;}
+  #sys-tray{margin-left:0;border-left:none;padding-left:0;gap:8px;}
+  #start-btn{font-size:8px;letter-spacing:1px;padding:4px 10px;}
 }
 @media(max-width:440px){
   .stats-grid{grid-template-columns:1fr;}
@@ -824,8 +831,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
   </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast">🌊 &nbsp;WELCOME PIONEER — CHECK YOUR EMAIL!</div>
+<!-- TOAST removed -->
 
 <script>
 // ══ CURSOR ══
@@ -921,6 +927,7 @@ function enterSite(){
       // Mobile: show all windows stacked, mark all reveals visible
       document.querySelectorAll('.os-win').forEach(w=>w.style.display='flex');
       document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+      updateClock();
     } else {
       initOS();
       openWindow('win-hero');
@@ -976,7 +983,7 @@ function handleSubmit(e){
   document.getElementById('hidden-wallet').value=wallet;
   const btn=document.getElementById('apply-btn');
   btn.disabled=true;btn.textContent='SUBMITTING...';
-  setTimeout(()=>{document.getElementById('form-view').style.display='none';document.getElementById('success-view').style.display='block';showToast();},1400);
+  setTimeout(()=>{document.getElementById('form-view').style.display='none';document.getElementById('success-view').style.display='block';},1400);
 }
 function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),5000);}
 
