@@ -297,8 +297,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 @media(max-width:768px){
   body{overflow-y:auto;overflow-x:hidden;}
   #taskbar,#start-menu,.dsk-icons{display:none!important;}
-  #screen-loading,#screen-gate{display:none!important;}
-  #site{position:static!important;overflow:visible!important;height:auto!important;opacity:1!important;pointer-events:all!important;}
+  #site{position:static!important;overflow:visible!important;height:auto!important;}
   #desktop{position:static;overflow:visible;padding:12px;padding-bottom:16px;display:flex;flex-direction:column;}
   .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;display:flex!important;animation:none!important;}
   .win-body{overflow:visible!important;padding:16px 18px;height:auto!important;}
@@ -918,9 +917,15 @@ function enterSite(){
     gate.style.display='none';
     const s=document.getElementById('site');
     s.classList.add('visible');
-    initOS();
-    openWindow('win-hero');
-    setTimeout(()=>{revealWindow('win-hero');},320);
+    if(window.innerWidth<=768){
+      // Mobile: show all windows stacked, mark all reveals visible
+      document.querySelectorAll('.os-win').forEach(w=>w.style.display='flex');
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+    } else {
+      initOS();
+      openWindow('win-hero');
+      setTimeout(()=>{revealWindow('win-hero');},320);
+    }
   },650);
 }
 function observeReveals(){}
@@ -1145,14 +1150,7 @@ function updateClock(){
 setInterval(updateClock,1000);
 
 // ══ MOBILE FALLBACK ══
-function openMob(){}function closeMob(){}
-
-// On mobile: skip gate, show everything immediately
-if(window.innerWidth<=768){
-  document.querySelectorAll('.os-win').forEach(w=>w.style.display='flex');
-  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
-  // counters already hardcoded in HTML, no animation needed
-}{}
+function openMob(){}function closeMob(){}{}
 </script>
 </body>
 </html>
