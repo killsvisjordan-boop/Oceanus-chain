@@ -3,1330 +3,1156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oceanus Chain — $OCS | Powered by Ethereum</title>
+<title>Oceanus Chain — $OCS | Oceanus OS v2035</title>
+<meta name="description" content="Oceanus Chain — Join the next-generation Web3 ecosystem. Secure your pioneer spot before the tide reaches the world.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
-:root {
-  --blue: #00B8FF;
-  --ocean: #009DFF;
-  --glow: #33CCFF;
-  --navy: #0A1225;
-  --black: #000000;
-  --white: #FFFFFF;
-  --glass: rgba(0,184,255,0.07);
-  --glass-border: rgba(0,184,255,0.18);
+/* ══ ROOT ══ */
+:root{
+  --blue:#00B8FF;--ocean:#009DFF;--glow:#33CCFF;
+  --navy:#07111F;--dark:#050D1A;--black:#000;--white:#fff;
+  --glass:rgba(0,184,255,.07);--gb:rgba(0,184,255,.18);--success:#00FF88;
+  --tb-h:30px;--bar-h:46px;
 }
-
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{
-  font-family:'Rajdhani',sans-serif;
-  background:#000;
-  color:#fff;
-  overflow-x:hidden;
-  cursor:none;
-}
+body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidden;cursor:none;height:100vh;width:100vw;user-select:none;}
+@media(max-width:768px){body{overflow-y:auto;overflow-x:hidden;}}
 
-/* CUSTOM CURSOR */
-#cursor{
-  width:12px;height:12px;
-  background:var(--blue);
-  border-radius:50%;
-  position:fixed;top:0;left:0;
-  pointer-events:none;z-index:99999;
-  transform:translate(-50%,-50%);
-  transition:transform 0.1s,width 0.3s,height 0.3s,background 0.3s;
-  box-shadow:0 0 15px var(--blue),0 0 30px var(--blue);
-}
-#cursor-ring{
-  width:36px;height:36px;
-  border:1px solid rgba(0,184,255,0.5);
-  border-radius:50%;
-  position:fixed;top:0;left:0;
-  pointer-events:none;z-index:99998;
-  transform:translate(-50%,-50%);
-  transition:transform 0.15s ease-out,width 0.3s,height 0.3s;
-}
+/* ══ CURSOR ══ */
+#cursor{width:10px;height:10px;background:var(--blue);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .25s,height .25s;box-shadow:0 0 10px var(--blue),0 0 24px var(--blue);}
+#cursor-ring{width:30px;height:30px;border:1px solid rgba(0,184,255,.38);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
+.cursor-ripple{position:fixed;pointer-events:none;z-index:99997;border-radius:50%;border:1px solid rgba(0,184,255,.5);animation:rippleOut .6s ease forwards;top:0;left:0;}
+@keyframes rippleOut{from{width:0;height:0;opacity:.8;transform:translate(-50%,-50%) scale(0);}to{width:56px;height:56px;opacity:0;transform:translate(-50%,-50%) scale(1);}}
+@media(hover:none){#cursor,#cursor-ring{display:none;}body{cursor:auto;}}
 
-/* CANVAS BACKGROUNDS */
-canvas.bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+/* ══ CANVAS ══ */
+#ocean-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 
-/* SCREENS */
-.screen{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  z-index:10;display:flex;align-items:center;justify-content:center;
-  opacity:1;transition:opacity 0.8s ease;
-}
-.screen.hidden{opacity:0;pointer-events:none;}
-.screen.gone{display:none;}
+/* ══ LOADING / OS BOOT ══ */
+#screen-loading{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at center,#020c1e 0%,#000 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s ease;}
+#screen-loading.fade{opacity:0;pointer-events:none;}
+.ld-logo{width:90px;height:90px;animation:logoPulse 2s ease-in-out infinite;filter:drop-shadow(0 0 18px var(--blue));}
+@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 18px var(--blue));}50%{filter:drop-shadow(0 0 40px var(--glow)) drop-shadow(0 0 64px var(--ocean));}}
+.ld-os-brand{text-align:center;margin-top:2px;}
+.ld-os-title{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;letter-spacing:8px;color:#fff;text-shadow:0 0 20px var(--blue);line-height:1.2;}
+.ld-os-ver{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;color:rgba(255,255,255,.3);margin-top:4px;}
+.ld-eth{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(100,160,255,.5);margin-top:2px;}
+.ld-text{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--blue);text-shadow:0 0 14px var(--blue);min-height:16px;text-align:center;padding:0 24px;}
+.ld-bar-wrap{width:260px;max-width:80vw;height:3px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.ld-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--ocean),var(--glow));border-radius:3px;transition:width .35s ease;position:relative;}
+.ld-bar::after{content:'';position:absolute;right:0;top:-4px;width:4px;height:11px;background:var(--glow);border-radius:2px;box-shadow:0 0 10px var(--glow);}
+.ld-pct{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);letter-spacing:2px;}
 
-/* ===== LOADING SCREEN ===== */
-#screen-loading{
-  background:#000;
-  flex-direction:column;
-  gap:24px;
-}
-.loading-logo{
-  width:140px;height:140px;
-  animation:pulse-logo 2s ease-in-out infinite;
-  filter:drop-shadow(0 0 20px var(--blue));
-}
-@keyframes pulse-logo{
-  0%,100%{filter:drop-shadow(0 0 20px var(--blue));}
-  50%{filter:drop-shadow(0 0 45px var(--glow)) drop-shadow(0 0 80px var(--ocean));}
-}
-.eth-badge{
-  display:flex;align-items:center;gap:8px;
-  font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;
-  color:rgba(255,255,255,0.5);margin-top:-8px;
-}
-.eth-diamond{font-size:18px;}
-.loading-text{
-  font-family:'Orbitron',monospace;font-size:13px;letter-spacing:4px;
-  color:var(--blue);text-align:center;
-  min-height:20px;
-  text-shadow:0 0 20px var(--blue);
-  animation:text-flicker 0.1s ease;
-}
-@keyframes text-flicker{0%{opacity:0;}100%{opacity:1;}}
-.progress-wrap{
-  width:320px;max-width:90vw;
-  height:2px;background:rgba(255,255,255,0.06);
-  border-radius:2px;position:relative;overflow:hidden;
-}
-.progress-bar{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,var(--ocean),var(--glow));
-  border-radius:2px;transition:width 0.4s ease;
-  position:relative;
-}
-.progress-bar::after{
-  content:'';position:absolute;right:0;top:-4px;
-  width:4px;height:10px;
-  background:var(--glow);border-radius:2px;
-  box-shadow:0 0 12px var(--glow),0 0 25px var(--glow);
-}
-.progress-pct{
-  font-family:'Space Mono',monospace;font-size:11px;
-  color:rgba(255,255,255,0.4);letter-spacing:2px;
-  text-align:center;margin-top:6px;
-}
+/* ══ GATE / OS LOGIN ══ */
+#screen-gate{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .6s ease;}
+#screen-gate.show{opacity:1;pointer-events:all;}
+#screen-gate.hide{opacity:0;pointer-events:none;}
+.gate-win{background:rgba(4,11,24,.97);border:1px solid rgba(0,184,255,.28);border-radius:8px 8px 4px 4px;width:420px;max-width:92vw;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 40px rgba(0,184,255,.08),inset 0 1px 0 rgba(255,255,255,.05);animation:winOpen .45s cubic-bezier(.22,.61,.36,1);}
+@keyframes winOpen{from{opacity:0;transform:scale(.93) translateY(14px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.gate-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.22);user-select:none;position:relative;}
+.gate-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);}
+.gate-tb-icon{font-size:13px;}
+.gate-tb-label{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);}
+.gate-tb-btns{display:flex;gap:3px;}
+.gtbtn{width:17px;height:17px;border-radius:3px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;transition:filter .15s;}
+.gtbtn:hover{filter:brightness(1.3);}
+.gtbtn-min{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
+.gtbtn-cls{background:linear-gradient(180deg,#e84848,#be2020);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
+.gate-body{padding:30px 32px 28px;text-align:center;}
+.gate-lock{font-size:50px;filter:drop-shadow(0 0 22px var(--blue));animation:lockFloat 3s ease-in-out infinite;display:block;margin-bottom:16px;}
+@keyframes lockFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.gate-title{font-family:'Orbitron',monospace;font-size:clamp(16px,5vw,22px);letter-spacing:6px;font-weight:900;background:linear-gradient(135deg,#fff 40%,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.gate-sub{font-size:13px;color:rgba(255,255,255,.42);max-width:320px;margin:0 auto 22px;line-height:1.75;}
+.btn-gate{padding:11px 38px;background:linear-gradient(180deg,#2a8de8 0%,#1a62b0 45%,#144ea0 100%);border:1px solid rgba(0,184,255,.4);color:#fff;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;cursor:pointer;transition:all .3s;border-radius:3px;box-shadow:0 4px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.16);}
+.btn-gate:hover{background:linear-gradient(180deg,#3a9ef8,#2a72c0,#1a5ea8);box-shadow:0 0 24px rgba(0,184,255,.38),0 4px 18px rgba(0,0,0,.45);}
+.gate-eth{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.18);margin-top:18px;}
 
-/* ===== ACCESS GATE ===== */
-#screen-gate{
-  background:radial-gradient(ellipse at center, #041830 0%, #000 70%);
-  flex-direction:column;gap:32px;
-  text-align:center;
-}
-.gate-lock{
-  font-size:72px;
-  filter:drop-shadow(0 0 30px var(--blue));
-  animation:lock-float 3s ease-in-out infinite;
-  cursor:pointer;
-  transition:transform 0.3s;
-}
-@keyframes lock-float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-12px);}
-}
-.gate-title{
-  font-family:'Orbitron',monospace;font-size:clamp(22px,5vw,42px);
-  letter-spacing:8px;font-weight:900;
-  background:linear-gradient(135deg,#fff 40%,var(--blue));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.gate-sub{
-  font-size:clamp(14px,2vw,17px);
-  color:rgba(255,255,255,0.5);max-width:480px;line-height:1.7;
-  letter-spacing:1px;
-}
-.btn-enter{
-  padding:16px 56px;
-  background:transparent;
-  border:1px solid var(--blue);
-  color:var(--blue);
-  font-family:'Orbitron',monospace;
-  font-size:13px;letter-spacing:5px;
-  cursor:pointer;
-  position:relative;overflow:hidden;
-  transition:all 0.4s;
-  text-transform:uppercase;
-}
-.btn-enter::before{
-  content:'';position:absolute;inset:0;
-  background:var(--blue);opacity:0;
-  transition:opacity 0.4s;z-index:-1;
-}
-.btn-enter:hover{color:#000;box-shadow:0 0 40px var(--blue),0 0 80px rgba(0,184,255,0.3);}
-.btn-enter:hover::before{opacity:1;}
-
-/* ===== MAIN SITE ===== */
-#site{position:fixed;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;z-index:5;opacity:0;pointer-events:none;transition:opacity 1s ease;}
+/* ══ SITE / DESKTOP ══ */
+#site{position:fixed;inset:0;z-index:10;opacity:0;pointer-events:none;transition:opacity 1s ease;}
 #site.visible{opacity:1;pointer-events:all;}
+#desktop{position:absolute;inset:0;bottom:var(--bar-h);overflow:hidden;}
 
-/* NAV */
-nav{
-  position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 40px;
-  background:rgba(0,0,0,0.7);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(0,184,255,0.08);
-}
-.nav-logo{display:flex;align-items:center;gap:12px;}
-.nav-logo img{width:38px;height:38px;filter:drop-shadow(0 0 8px var(--blue));}
-.nav-brand{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;letter-spacing:3px;color:#fff;}
-.nav-links{display:flex;gap:28px;list-style:none;}
-.nav-links a{font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.3s;text-transform:uppercase;}
-.nav-links a:hover{color:var(--blue);}
-.nav-cta{
-  padding:10px 24px;
-  border:1px solid var(--blue);
-  color:var(--blue);
-  font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;
-  background:transparent;cursor:pointer;
-  transition:all 0.3s;text-transform:uppercase;
-}
-.nav-cta:hover{background:var(--blue);color:#000;}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
-.hamburger span{width:24px;height:1px;background:var(--blue);display:block;transition:all 0.3s;}
+/* ══ DESKTOP ICONS ══ */
+.dsk-icons{position:absolute;top:18px;left:14px;display:flex;flex-direction:column;gap:4px;z-index:5;}
+.d-ico{display:flex;flex-direction:column;align-items:center;gap:5px;width:72px;padding:8px 4px 6px;border-radius:4px;cursor:pointer;transition:background .15s;user-select:none;}
+.d-ico:hover{background:rgba(0,184,255,.16);backdrop-filter:blur(10px);}
+.d-ico:active{background:rgba(0,184,255,.28);}
+.d-ico-em{font-size:30px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(0,184,255,.28));}
+.d-ico-lbl{font-size:10px;color:#fff;text-align:center;line-height:1.3;letter-spacing:.3px;text-shadow:1px 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.7);word-break:break-word;max-width:70px;}
 
-/* HERO */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:80px 24px 60px;
-  position:relative;
-}
-.hero-eyebrow{
-  font-family:'Space Mono',monospace;font-size:11px;letter-spacing:5px;
-  color:var(--blue);margin-bottom:28px;
-  display:flex;align-items:center;gap:12px;
-}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:40px;height:1px;background:var(--blue);opacity:0.5;}
-.hero-headline{
-  font-family:'Orbitron',monospace;
-  font-size:clamp(28px,6vw,82px);
-  font-weight:900;line-height:1.05;
-  letter-spacing:2px;
-  background:linear-gradient(135deg,#fff 0%,var(--glow) 50%,var(--blue) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  margin-bottom:28px;max-width:900px;
-}
-.hero-sub{
-  font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,0.55);
-  max-width:580px;line-height:1.8;margin-bottom:48px;letter-spacing:0.5px;
-}
-.hero-btns{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
-.btn-primary{
-  padding:18px 52px;
-  background:linear-gradient(135deg,var(--ocean),var(--glow));
-  color:#000;font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;
-  border:none;cursor:pointer;font-weight:700;
-  position:relative;overflow:hidden;
-  transition:all 0.4s;
-  box-shadow:0 0 30px rgba(0,184,255,0.4);
-}
-.btn-primary::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);
-  opacity:0;transition:opacity 0.3s;
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 50px rgba(0,184,255,0.6);}
-.btn-primary:hover::after{opacity:1;}
-.btn-secondary{
-  padding:18px 52px;
-  background:transparent;
-  border:1px solid rgba(0,184,255,0.5);
-  color:rgba(255,255,255,0.8);
-  font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;
-  cursor:pointer;transition:all 0.4s;
-}
-.btn-secondary:hover{border-color:var(--blue);color:#fff;box-shadow:0 0 30px rgba(0,184,255,0.2);}
-.scroll-hint{
-  margin-top:60px;display:flex;flex-direction:column;align-items:center;gap:8px;
-  color:rgba(255,255,255,0.25);font-size:11px;letter-spacing:3px;
-  animation:bounce 2s ease-in-out infinite;
-}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}};
+/* ══ OS WINDOWS ══ */
+.os-win{position:absolute;display:flex;flex-direction:column;background:rgba(4,11,24,.93);backdrop-filter:blur(28px);border-radius:8px 8px 4px 4px;border:1px solid rgba(0,184,255,.2);box-shadow:0 8px 48px rgba(0,0,0,.78),0 0 0 1px rgba(0,184,255,.06),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden;z-index:50;transition:box-shadow .25s;}
+.os-win.focused{box-shadow:0 14px 70px rgba(0,0,0,.88),0 0 32px rgba(0,184,255,.1),0 0 0 1px rgba(0,184,255,.24);}
+.os-win.win-opening{animation:winOpen .28s cubic-bezier(.22,.61,.36,1);}
 
-/* SECTION COMMON */
-section{position:relative;padding:100px 40px;}
-.section-label{
-  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:6px;
-  color:var(--blue);margin-bottom:16px;text-transform:uppercase;
-}
-.section-title{
-  font-family:'Orbitron',monospace;font-size:clamp(22px,4vw,42px);
-  font-weight:900;letter-spacing:2px;
-  background:linear-gradient(135deg,#fff,var(--blue));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  margin-bottom:16px;
-}
-.section-divider{
-  width:60px;height:2px;
-  background:linear-gradient(90deg,var(--blue),transparent);
-  margin-bottom:60px;
-}
+/* Title bar */
+.win-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.2);cursor:grab;user-select:none;flex-shrink:0;position:relative;}
+.win-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.win-tb:active{cursor:grabbing;}
+.win-tb-icon{font-size:13px;flex-shrink:0;filter:drop-shadow(0 0 5px rgba(0,184,255,.5));}
+.win-tb-title{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 9px rgba(0,184,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.win-ctrls{display:flex;gap:3px;flex-shrink:0;}
+.wbtn{width:18px;height:18px;border-radius:3px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;transition:filter .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.wbtn:hover{filter:brightness(1.3);}
+.wbtn-min{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;}
+.wbtn-max{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;}
+.wbtn-cls{background:linear-gradient(180deg,#e84848,#be2020);color:#fff;}
 
-/* STATS */
-.stats-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:2px;max-width:1100px;margin:0 auto;
-}
-.stat-card{
-  background:var(--glass);
-  border:1px solid var(--glass-border);
-  padding:40px 32px;text-align:center;
-  backdrop-filter:blur(10px);
-  position:relative;overflow:hidden;
-  transition:all 0.4s;
-}
-.stat-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--blue),transparent);
-  opacity:0;transition:opacity 0.4s;
-}
-.stat-card:hover{background:rgba(0,184,255,0.1);transform:translateY(-4px);}
+/* Window body */
+.win-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:22px 26px;scrollbar-width:thin;scrollbar-color:rgba(0,184,255,.3) rgba(0,0,0,.2);}
+.win-body::-webkit-scrollbar{width:5px;}
+.win-body::-webkit-scrollbar-track{background:rgba(0,0,0,.2);}
+.win-body::-webkit-scrollbar-thumb{background:rgba(0,184,255,.3);border-radius:3px;}
+
+/* Status bar */
+.win-sb{height:20px;display:flex;align-items:center;padding:0 12px;gap:14px;background:rgba(0,0,0,.3);border-top:1px solid rgba(0,184,255,.07);flex-shrink:0;}
+.wsb-item{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:5px;}
+.wsb-dot{width:4px;height:4px;border-radius:50%;background:var(--success);box-shadow:0 0 4px var(--success);}
+.wsb-dot.blue{background:var(--blue);box-shadow:0 0 4px var(--blue);}
+
+/* ══ TASKBAR ══ */
+#taskbar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);background:linear-gradient(180deg,rgba(6,16,38,.97) 0%,rgba(3,9,22,.99) 100%);backdrop-filter:blur(22px);border-top:1px solid rgba(0,184,255,.18);display:flex;align-items:center;gap:3px;padding:0 5px;z-index:200;box-shadow:0 -2px 28px rgba(0,0,0,.65),inset 0 1px 0 rgba(0,184,255,.07);}
+
+/* Start button */
+#start-btn{display:flex;align-items:center;gap:7px;padding:4px 14px;height:35px;background:linear-gradient(180deg,#2a8de8 0%,#1a62b0 45%,#144ea0 100%);border:1px solid rgba(0,184,255,.42);border-radius:4px;cursor:pointer;color:#fff;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;font-weight:700;transition:all .2s;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18);}
+#start-btn:hover{background:linear-gradient(180deg,#3a9ef8,#2a72c0,#1a62aa);box-shadow:0 0 20px rgba(0,184,255,.4),0 2px 10px rgba(0,0,0,.5);}
+#start-btn svg{filter:drop-shadow(0 0 5px rgba(0,184,255,.7));}
+.tb-sep{width:1px;height:28px;background:rgba(0,184,255,.1);flex-shrink:0;margin:0 3px;}
+
+/* Window task buttons */
+#tb-wins{display:flex;gap:2px;flex:1;overflow-x:auto;padding:0 3px;}
+#tb-wins::-webkit-scrollbar{height:2px;}
+#tb-wins::-webkit-scrollbar-thumb{background:rgba(0,184,255,.2);}
+.tb-wbtn{display:flex;align-items:center;gap:6px;padding:3px 10px;height:33px;min-width:115px;max-width:155px;background:rgba(0,32,72,.45);border:1px solid rgba(0,184,255,.12);border-radius:3px;cursor:pointer;color:rgba(255,255,255,.62);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:.7px;transition:all .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.tb-wbtn:hover{background:rgba(0,55,120,.52);border-color:rgba(0,184,255,.26);color:#fff;}
+.tb-wbtn.active-win{background:rgba(0,68,148,.45);border-color:rgba(0,184,255,.38);color:#fff;box-shadow:inset 0 2px 5px rgba(0,0,0,.4);}
+.tb-wbtn-ico{font-size:13px;flex-shrink:0;}
+
+/* System tray */
+#sys-tray{display:flex;align-items:center;gap:10px;padding:0 10px;margin-left:auto;border-left:1px solid rgba(0,184,255,.1);height:35px;flex-shrink:0;}
+.tray-item{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.44);letter-spacing:1px;}
+.tray-net-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 2s infinite;}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tray-eth-dot{color:rgba(100,170,255,.55);font-size:12px;}
+#sys-clock{font-family:'Orbitron',monospace;font-size:11px;color:rgba(255,255,255,.65);letter-spacing:2px;text-align:right;line-height:1.2;}
+#sys-date{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.28);letter-spacing:1px;text-align:right;margin-top:1px;}
+
+/* ══ START MENU ══ */
+#start-menu{position:fixed;bottom:var(--bar-h);left:5px;width:340px;background:linear-gradient(180deg,rgba(6,17,40,.98) 0%,rgba(3,10,26,.99) 100%);backdrop-filter:blur(26px);border:1px solid rgba(0,184,255,.22);border-radius:8px 8px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,.8),0 0 24px rgba(0,184,255,.07);z-index:210;display:none;overflow:hidden;}
+#start-menu.open{display:block;animation:menuUp .22s cubic-bezier(.22,.61,.36,1);}
+@keyframes menuUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.sm-head{background:linear-gradient(135deg,#1a4a8a,#0d2d5c);padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(0,184,255,.15);}
+.sm-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#001428,#002448);border:2px solid rgba(0,184,255,.4);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 16px rgba(0,184,255,.3);flex-shrink:0;}
+.sm-info-name{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:#fff;}
+.sm-info-role{font-size:10px;color:rgba(255,255,255,.36);letter-spacing:.8px;margin-top:3px;}
+.sm-cols{display:grid;grid-template-columns:1fr 1fr;}
+.sm-col{padding:6px 0;}
+.sm-col:first-child{border-right:1px solid rgba(0,184,255,.07);}
+.sm-col-head{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.28);padding:6px 14px 2px;text-transform:uppercase;}
+.sm-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;transition:background .15s;color:rgba(255,255,255,.75);font-size:13px;letter-spacing:.3px;}
+.sm-item:hover{background:rgba(0,184,255,.1);color:var(--blue);}
+.sm-item-ico{font-size:15px;}
+.sm-sep{height:1px;background:rgba(0,184,255,.07);margin:3px 0;}
+.sm-foot{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid rgba(0,184,255,.1);background:rgba(0,0,0,.28);flex-wrap:wrap;gap:8px;}
+.sm-links{display:flex;gap:10px;flex-wrap:wrap;}
+.sm-link{font-size:9px;letter-spacing:.8px;color:rgba(255,255,255,.28);text-decoration:none;transition:color .2s;}
+.sm-link:hover{color:var(--blue);}
+.sm-copy{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);letter-spacing:1px;}
+
+/* ══ SECTION LABELS ══ */
+.sec-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--blue);margin-bottom:10px;text-transform:uppercase;}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(16px,3vw,26px);font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.sec-line{width:40px;height:2px;background:linear-gradient(90deg,var(--blue),transparent);margin-bottom:22px;}
+
+/* ══ HERO (inside window) ══ */
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:26px;height:1px;background:var(--blue);opacity:.5;}
+.hero-headline{font-family:'Orbitron',monospace;font-size:clamp(18px,3.2vw,32px);font-weight:900;line-height:1.1;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--glow) 50%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;}
+.hero-sub{font-size:clamp(12px,1.6vw,14px);color:rgba(255,255,255,.48);max-width:480px;line-height:1.75;margin-bottom:24px;letter-spacing:.2px;}
+.cd-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:11px;text-align:center;}
+.countdown-wrap{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;}
+.cd-block{background:rgba(0,184,255,.06);border:1px solid rgba(0,184,255,.2);padding:11px 13px;min-width:62px;text-align:center;position:relative;overflow:hidden;border-radius:2px;}
+.cd-block::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.cd-num{font-family:'Orbitron',monospace;font-size:clamp(18px,3vw,30px);font-weight:900;color:var(--blue);text-shadow:0 0 18px var(--blue);display:block;line-height:1;}
+.cd-unit{font-size:7px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-top:4px;text-transform:uppercase;}
+.cd-sep{font-family:'Orbitron',monospace;font-size:20px;color:var(--blue);opacity:.35;padding-bottom:5px;}
+.btn-enter-hero{padding:12px 42px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.36);margin-bottom:14px;border-radius:2px;}
+.btn-enter-hero:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.52);}
+.scroll-hint{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.18);}
+.cta-mini{margin-top:22px;padding-top:18px;border-top:1px solid rgba(0,184,255,.08);}
+.cta-mini-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--blue);margin-bottom:8px;}
+.cta-title-inner{font-family:'Orbitron',monospace;font-size:clamp(13px,2.2vw,20px);font-weight:900;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.cta-sub-inner{font-size:13px;color:rgba(255,255,255,.4);max-width:360px;line-height:1.75;margin-bottom:14px;}
+.btn-cta{padding:12px 38px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.32);border-radius:2px;}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.5);}
+
+/* ══ STATS ══ */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;max-width:560px;}
+.stat-card{background:var(--glass);border:1px solid var(--gb);padding:22px 16px;text-align:center;backdrop-filter:blur(8px);transition:all .35s;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:opacity .35s;}
+.stat-card:hover{background:rgba(0,184,255,.09);transform:translateY(-3px);}
 .stat-card:hover::before{opacity:1;}
-.stat-num{
-  font-family:'Orbitron',monospace;font-size:clamp(28px,4vw,46px);
-  font-weight:900;color:var(--blue);
-  text-shadow:0 0 30px var(--blue);
-  display:block;
-}
-.stat-label{font-size:13px;letter-spacing:3px;color:rgba(255,255,255,0.45);margin-top:8px;text-transform:uppercase;}
+.stat-num{font-family:'Orbitron',monospace;font-size:clamp(20px,3.2vw,34px);font-weight:900;color:var(--blue);text-shadow:0 0 20px var(--blue);display:block;}
+.stat-lbl{font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.34);margin-top:5px;text-transform:uppercase;}
 
-/* LEADERBOARD */
-.leaderboard-wrap{max-width:700px;margin:0 auto;}
-.lb-row{
-  display:flex;align-items:center;gap:16px;
-  padding:14px 24px;border-bottom:1px solid rgba(255,255,255,0.04);
-  transition:all 0.3s;position:relative;cursor:default;
-}
-.lb-row:hover{background:rgba(0,184,255,0.06);padding-left:32px;}
+/* ══ LEADERBOARD ══ */
+.lb-wrap{max-width:540px;}
+.live-ind{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.32);letter-spacing:2px;margin-bottom:12px;}
+.live-dot{width:5px;height:5px;background:var(--success);border-radius:50%;animation:livePulse 1.5s ease-in-out infinite;box-shadow:0 0 6px var(--success);}
+.lb-row{display:flex;align-items:center;gap:11px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);transition:all .25s;cursor:default;}
+.lb-row:hover{background:rgba(0,184,255,.05);padding-left:20px;}
 .lb-row:hover .lb-name{color:var(--blue);}
-.lb-rank{
-  font-family:'Orbitron',monospace;font-size:12px;
-  color:rgba(255,255,255,0.3);width:32px;text-align:right;
-  letter-spacing:1px;
-}
-.lb-rank.top3{color:var(--blue);text-shadow:0 0 12px var(--blue);}
-.lb-avatar{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,var(--navy),var(--ocean));
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;color:var(--blue);
-  border:1px solid rgba(0,184,255,0.3);flex-shrink:0;
-}
-.lb-name{font-size:15px;font-weight:600;letter-spacing:1px;flex:1;transition:color 0.3s;}
-.lb-pts{
-  font-family:'Space Mono',monospace;font-size:11px;
-  color:rgba(255,255,255,0.3);letter-spacing:1px;
-}
-.lb-badge{
-  font-size:9px;letter-spacing:2px;padding:3px 8px;
-  background:rgba(0,184,255,0.1);border:1px solid rgba(0,184,255,0.3);
-  color:var(--blue);text-transform:uppercase;
-}
-.live-dot{
-  display:inline-block;width:6px;height:6px;
-  background:#00ff88;border-radius:50%;
-  animation:live-pulse 1.5s ease-in-out infinite;
-  box-shadow:0 0 8px #00ff88;
-}
-@keyframes live-pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-.live-indicator{
-  display:flex;align-items:center;gap:8px;
-  font-family:'Space Mono',monospace;font-size:10px;
-  color:rgba(255,255,255,0.4);letter-spacing:2px;
-  margin-bottom:24px;
-}
+.lb-rank{font-family:'Orbitron',monospace;font-size:10px;color:rgba(255,255,255,.26);width:26px;text-align:right;letter-spacing:1px;}
+.lb-rank.t3{color:var(--blue);text-shadow:0 0 8px var(--blue);}
+.lb-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--ocean));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue);border:1px solid rgba(0,184,255,.24);flex-shrink:0;}
+.lb-name{flex:1;font-size:13px;font-weight:600;letter-spacing:.4px;transition:color .25s;}
+.lb-pts{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.26);letter-spacing:1px;}
+.lb-badge{font-size:7px;letter-spacing:2px;padding:2px 6px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.24);color:var(--blue);text-transform:uppercase;}
 
-/* MODAL */
-.modal-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  opacity:0;pointer-events:none;transition:opacity 0.4s;
-}
-.modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{
-  background:linear-gradient(135deg,#050e1f,#0a1225);
-  border:1px solid var(--glass-border);
-  width:100%;max-width:520px;
-  padding:48px 40px;
-  position:relative;
-  transform:translateY(30px) scale(0.97);
-  transition:transform 0.4s;
-  max-height:90vh;overflow-y:auto;
-}
-.modal-overlay.open .modal{transform:translateY(0) scale(1);}
-.modal::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--blue),transparent);
-}
-.modal-close{
-  position:absolute;top:20px;right:20px;
-  background:none;border:none;color:rgba(255,255,255,0.4);
-  font-size:20px;cursor:pointer;transition:color 0.3s;
-}
-.modal-close:hover{color:#fff;}
-.modal-title{
-  font-family:'Orbitron',monospace;font-size:22px;letter-spacing:3px;
-  font-weight:900;margin-bottom:8px;
-  background:linear-gradient(135deg,#fff,var(--blue));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.modal-sub{font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-bottom:36px;}
-
-.field-group{margin-bottom:24px;}
-.field-label{font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.4);margin-bottom:8px;display:block;text-transform:uppercase;}
-.field-input{
-  width:100%;padding:14px 18px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.1);
-  color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;
-  outline:none;transition:all 0.3s;
-}
-.field-input:focus{border-color:var(--blue);background:rgba(0,184,255,0.05);box-shadow:0 0 20px rgba(0,184,255,0.1);}
-.field-input::placeholder{color:rgba(255,255,255,0.2);}
-
-.tasks-section{margin:28px 0;}
-.tasks-title{font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.4);margin-bottom:16px;text-transform:uppercase;}
-.task-item{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 18px;
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.06);
-  margin-bottom:8px;transition:all 0.3s;cursor:pointer;
-}
-.task-item:hover{background:rgba(0,184,255,0.06);border-color:rgba(0,184,255,0.2);}
-.task-item.completed{border-color:rgba(0,255,136,0.2);}
-.task-status{font-size:16px;width:24px;text-align:center;}
-.task-text{flex:1;font-size:14px;letter-spacing:0.5px;}
-.task-item.completed .task-text{color:rgba(255,255,255,0.5);text-decoration:line-through;}
-.task-action{
-  font-size:10px;letter-spacing:2px;
-  color:var(--blue);text-decoration:none;
-  padding:4px 10px;border:1px solid rgba(0,184,255,0.3);
-  transition:all 0.3s;white-space:nowrap;
-}
-.task-action:hover{background:var(--blue);color:#000;}
-
-.btn-apply{
-  width:100%;padding:18px;
-  background:linear-gradient(135deg,var(--ocean),var(--glow));
-  color:#000;font-family:'Orbitron',monospace;font-size:13px;letter-spacing:5px;
-  border:none;cursor:pointer;font-weight:700;
-  transition:all 0.4s;
-  box-shadow:0 0 30px rgba(0,184,255,0.3);
-  margin-top:8px;
-}
-.btn-apply:disabled{opacity:0.35;cursor:not-allowed;box-shadow:none;}
-.btn-apply:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,184,255,0.5);}
-
-/* SUCCESS SCREEN (inside modal) */
-.success-screen{
-  text-align:center;padding:20px 0;display:none;
-}
-.success-icon{font-size:64px;animation:success-pop 0.6s cubic-bezier(0.175,0.885,0.32,1.275);}
-@keyframes success-pop{0%{transform:scale(0);}100%{transform:scale(1);}}
-.success-title{
-  font-family:'Orbitron',monospace;font-size:24px;letter-spacing:4px;
-  font-weight:900;margin:24px 0 12px;
-  background:linear-gradient(135deg,#00ff88,var(--blue));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.success-sub{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:32px;letter-spacing:0.5px;}
-.btn-dashboard{
-  padding:16px 48px;
-  background:transparent;
-  border:1px solid var(--blue);
-  color:var(--blue);
-  font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;
-  cursor:pointer;transition:all 0.3s;
-}
-.btn-dashboard:hover{background:var(--blue);color:#000;}
-
-/* DASHBOARD MODAL */
-.dashboard{
-  background:linear-gradient(135deg,#050e1f,#0a1225);
-  border:1px solid var(--glass-border);
-  width:100%;max-width:680px;
-  padding:40px;position:relative;
-  transform:translateY(30px) scale(0.97);
-  transition:transform 0.4s;
-  max-height:90vh;overflow-y:auto;
-}
-.modal-overlay.open .dashboard{transform:translateY(0) scale(1);}
-.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
-.dash-title{font-family:'Orbitron',monospace;font-size:18px;letter-spacing:3px;font-weight:900;}
-.dash-id{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.3);}
-
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
-.dash-card{
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  padding:20px;
-}
-.dash-card-label{font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.35);margin-bottom:8px;text-transform:uppercase;}
-.dash-card-val{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--blue);}
-
-.ref-box{
-  background:rgba(0,184,255,0.05);
-  border:1px solid rgba(0,184,255,0.2);
-  padding:24px;margin-bottom:24px;
-}
-.ref-code{
-  font-family:'Space Mono',monospace;font-size:22px;font-weight:700;
-  color:var(--blue);letter-spacing:4px;margin:8px 0;
-  text-shadow:0 0 20px var(--blue);
-}
-.ref-link{font-size:12px;color:rgba(255,255,255,0.35);word-break:break-all;letter-spacing:0.5px;}
-
-.copy-btn{
-  font-size:10px;letter-spacing:2px;padding:6px 14px;
-  background:rgba(0,184,255,0.1);border:1px solid rgba(0,184,255,0.3);
-  color:var(--blue);cursor:pointer;margin-top:12px;transition:all 0.3s;
-  font-family:'Rajdhani',sans-serif;text-transform:uppercase;
-}
-.copy-btn:hover{background:var(--blue);color:#000;}
-
-/* TASK PROGRESS */
-.prog-item{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
-.prog-icon{font-size:16px;width:24px;text-align:center;}
-.prog-text{font-size:14px;letter-spacing:0.5px;flex:1;}
-.prog-check{font-size:14px;}
-
-/* ABOUT / HOW IT WORKS */
-.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;max-width:1100px;margin:0 auto;}
-.step-card{
-  padding:36px 28px;
-  background:var(--glass);
-  border:1px solid var(--glass-border);
-  position:relative;overflow:hidden;
-  transition:all 0.4s;
-}
-.step-card::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--blue),transparent);
-  transform:scaleX(0);transition:transform 0.4s;transform-origin:left;
-}
-.step-card:hover{transform:translateY(-6px);background:rgba(0,184,255,0.08);}
+/* ══ HOW IT WORKS ══ */
+.steps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:620px;}
+.step-card{padding:20px 16px;background:var(--glass);border:1px solid var(--gb);position:relative;overflow:hidden;transition:all .35s;}
+.step-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),transparent);transform:scaleX(0);transition:transform .35s;transform-origin:left;}
+.step-card:hover{transform:translateY(-4px);background:rgba(0,184,255,.07);}
 .step-card:hover::after{transform:scaleX(1);}
-.step-num{
-  font-family:'Orbitron',monospace;font-size:48px;font-weight:900;
-  color:rgba(0,184,255,0.12);line-height:1;margin-bottom:16px;
-}
-.step-title{font-family:'Orbitron',monospace;font-size:15px;letter-spacing:2px;margin-bottom:12px;}
-.step-desc{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.7;letter-spacing:0.3px;}
+.step-num{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:rgba(0,184,255,.11);line-height:1;margin-bottom:9px;}
+.step-ttl{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;margin-bottom:6px;}
+.step-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;}
 
-/* COUNTDOWN */
-.countdown-section{
-  padding:80px 40px;background:linear-gradient(135deg,rgba(0,184,255,0.04),rgba(0,0,0,0));
-  border-top:1px solid rgba(0,184,255,0.08);
-  border-bottom:1px solid rgba(0,184,255,0.08);
-  text-align:center;
-}
-.countdown-grid{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:40px;}
-.countdown-block{
-  background:rgba(255,255,255,0.03);border:1px solid rgba(0,184,255,0.15);
-  padding:28px 32px;min-width:110px;text-align:center;
-}
-.countdown-num{
-  font-family:'Orbitron',monospace;font-size:clamp(32px,5vw,52px);
-  font-weight:900;color:var(--blue);text-shadow:0 0 30px var(--blue);
-  display:block;
-}
-.countdown-unit{font-size:10px;letter-spacing:4px;color:rgba(255,255,255,0.3);margin-top:6px;text-transform:uppercase;}
-.countdown-sep{font-family:'Orbitron',monospace;font-size:40px;color:var(--blue);opacity:0.3;align-self:center;padding-bottom:10px;}
+/* ══ WHITEPAPER ══ */
+.wp-inner{max-width:680px;}
+.wp-section{margin-bottom:34px;}
+.wp-h2{font-family:'Orbitron',monospace;font-size:clamp(11px,1.8vw,15px);letter-spacing:2px;font-weight:700;color:var(--blue);margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid rgba(0,184,255,.12);}
+.wp-h3{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;font-weight:600;color:#fff;margin-bottom:7px;margin-top:13px;}
+.wp-p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.78;letter-spacing:.15px;margin-bottom:10px;}
+.wp-ul{list-style:none;padding:0;}
+.wp-ul li{font-size:13px;color:rgba(255,255,255,.47);line-height:1.7;padding:5px 0 5px 15px;position:relative;border-bottom:1px solid rgba(255,255,255,.03);}
+.wp-ul li::before{content:'◆';position:absolute;left:0;color:var(--blue);font-size:7px;top:9px;}
+.wp-pillar{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.1);padding:16px 18px;margin-bottom:12px;transition:all .3s;}
+.wp-pillar:hover{background:rgba(0,184,255,.07);border-color:rgba(0,184,255,.18);}
+.wp-pillar-icon{font-size:18px;margin-bottom:6px;}
+.wp-arch{background:rgba(0,0,0,.55);border:1px solid rgba(0,184,255,.14);padding:14px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(0,184,255,.62);line-height:1.7;overflow-x:auto;margin:12px 0;}
+.wp-phase{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.wp-phase-num{font-family:'Orbitron',monospace;font-size:10px;color:var(--blue);white-space:nowrap;padding-top:2px;min-width:66px;}
+.wp-phase-content .wp-h3{margin-top:0;margin-bottom:5px;}
+.wp-tag{display:inline-block;font-size:8px;letter-spacing:2px;padding:2px 7px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.22);color:var(--blue);margin-right:5px;margin-top:3px;text-transform:uppercase;}
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{content:'';position:absolute;left:4px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--blue),transparent);}
+.tl-item{position:relative;padding-bottom:22px;}
+.tl-item::before{content:'';position:absolute;left:-19px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);}
 
-/* FOOTER */
-footer{
-  padding:60px 40px 40px;
-  border-top:1px solid rgba(255,255,255,0.04);
-  text-align:center;
-}
-.footer-logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px;}
-.footer-logo img{width:32px;height:32px;opacity:0.6;}
-.footer-brand{font-family:'Orbitron',monospace;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.4);}
-.footer-copy{font-size:12px;color:rgba(255,255,255,0.2);letter-spacing:2px;}
-.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:24px;}
-.footer-links a{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.3s;text-transform:uppercase;}
-.footer-links a:hover{color:var(--blue);}
+/* ══ MODAL (Apply Window) ══ */
+.modal-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:rgba(4,11,24,.98);border:1px solid rgba(0,184,255,.24);width:100%;max-width:500px;border-radius:8px 8px 4px 4px;position:relative;transform:translateY(20px) scale(.97);transition:transform .35s;max-height:90vh;overflow-y:auto;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 0 1px rgba(0,184,255,.07);}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.2);border-radius:7px 7px 0 0;position:sticky;top:0;z-index:10;flex-shrink:0;}
+.modal-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.modal-tb-icon{font-size:13px;}
+.modal-tb-title{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);}
+.modal-close{background:linear-gradient(180deg,#e84848,#be2020);width:17px;height:17px;border-radius:3px;border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;transition:filter .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.modal-close:hover{filter:brightness(1.25);}
+.modal-inner{padding:24px 28px;}
+.modal-title{font-family:'Orbitron',monospace;font-size:18px;letter-spacing:3px;font-weight:900;margin-bottom:5px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.4px;margin-bottom:20px;}
+.field-wrap{margin-bottom:15px;}
+.field-label{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:6px;display:block;text-transform:uppercase;}
+.field-input{width:100%;padding:11px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:all .3s;border-radius:2px;}
+.field-input:focus{border-color:var(--blue);background:rgba(0,184,255,.04);box-shadow:0 0 14px rgba(0,184,255,.1);}
+.field-input::placeholder{color:rgba(255,255,255,.2);}
+.tasks-wrap{margin:18px 0;}
+.tasks-heading{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:10px;text-transform:uppercase;}
+.task-item{display:flex;align-items:center;gap:11px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);margin-bottom:6px;transition:all .28s;cursor:default;border-radius:2px;}
+.task-item:hover{background:rgba(0,184,255,.06);border-color:rgba(0,184,255,.18);}
+.task-item.done{border-color:rgba(0,255,136,.18);}
+.task-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.task-text{flex:1;font-size:13px;letter-spacing:.2px;}
+.task-item.done .task-text{color:rgba(255,255,255,.36);text-decoration:line-through;}
+.task-link{font-size:8px;letter-spacing:2px;color:var(--blue);text-decoration:none;padding:4px 8px;border:1px solid rgba(0,184,255,.28);transition:all .25s;white-space:nowrap;flex-shrink:0;border-radius:2px;}
+.task-link:hover{background:var(--blue);color:#000;}
+.btn-submit-modal{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 18px rgba(0,184,255,.26);margin-top:5px;border-radius:2px;}
+.btn-submit-modal:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;}
+.btn-submit-modal:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 5px 28px rgba(0,184,255,.44);}
+.progress-hint{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:8px;letter-spacing:1px;}
+.success-view{display:none;text-align:center;padding:12px 0;}
+.success-icon{font-size:52px;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{0%{transform:scale(0);}100%{transform:scale(1);}}
+.success-title{font-family:'Orbitron',monospace;font-size:20px;letter-spacing:4px;font-weight:900;margin:16px 0 8px;background:linear-gradient(135deg,#00FF88,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.success-sub{font-size:13px;color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:22px;}
+.btn-close-success{padding:10px 34px;background:transparent;border:1px solid var(--blue);color:var(--blue);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;cursor:pointer;transition:all .28s;border-radius:2px;}
+.btn-close-success:hover{background:var(--blue);color:#000;}
 
-/* GLOW LINE DECORATORS */
-.glow-line{height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0.3;margin:0 auto;width:80%;max-width:600px;}
-
-/* ETH SYMBOL FLOAT */
-.eth-float{
-  position:fixed;right:-60px;top:50%;transform:translateY(-50%);
-  font-size:120px;color:rgba(0,184,255,0.04);
-  pointer-events:none;z-index:1;
-  animation:eth-spin 20s linear infinite;
-  font-family:'Orbitron',monospace;
-}
-@keyframes eth-spin{0%,100%{transform:translateY(-50%) rotate(0deg);}50%{transform:translateY(-50%) rotate(180deg);}}
-
-/* MOBILE NAV MENU */
-.mobile-menu{
-  position:fixed;top:0;right:-100%;width:280px;height:100%;
-  background:rgba(5,14,31,0.98);backdrop-filter:blur(20px);
-  border-left:1px solid rgba(0,184,255,0.15);
-  z-index:300;transition:right 0.4s cubic-bezier(0.4,0,0.2,1);
-  padding:80px 32px 32px;
-  display:flex;flex-direction:column;gap:0;
-}
-.mobile-menu.open{right:0;}
-.mobile-menu a{
-  display:block;padding:16px 0;
-  font-family:'Orbitron',monospace;font-size:12px;letter-spacing:4px;
-  color:rgba(255,255,255,0.6);text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  transition:color 0.3s;text-transform:uppercase;
-}
-.mobile-menu a:hover{color:var(--blue);}
-.mobile-close{
-  position:absolute;top:20px;right:20px;
-  background:none;border:none;color:rgba(255,255,255,0.5);
-  font-size:22px;cursor:pointer;
-}
-.menu-overlay{
-  position:fixed;inset:0;z-index:299;
-  background:rgba(0,0,0,0.5);
-  opacity:0;pointer-events:none;transition:opacity 0.4s;
-}
-.menu-overlay.open{opacity:1;pointer-events:all;}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  nav{padding:16px 20px;}
-  .nav-links,.nav-cta{display:none;}
-  .hamburger{display:flex;}
-  section{padding:70px 20px;}
-  .steps-grid{grid-template-columns:1fr;}
-  .hero{padding:100px 20px 60px;}
-  .modal{padding:32px 24px;}
-  .dashboard{padding:28px 20px;}
-  .dash-grid{grid-template-columns:1fr;}
-  .countdown-grid{gap:6px;}
-  .countdown-block{padding:20px 20px;min-width:80px;}
-  .hero-btns{flex-direction:column;align-items:center;}
-  .btn-primary,.btn-secondary{width:100%;max-width:320px;}
-  .stats-grid{grid-template-columns:1fr 1fr;}
-  .eth-float{display:none;}
-}
-@media(max-width:480px){
-  .stats-grid{grid-template-columns:1fr;}
-  .hero-headline{font-size:26px;}
-  .gate-title{font-size:22px;letter-spacing:4px;}
-}
-
-/* SCROLL ANIMATIONS */
-.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.8s ease,transform 0.8s ease;}
+/* ══ REVEAL ══ */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-.reveal-delay-1{transition-delay:0.1s;}
-.reveal-delay-2{transition-delay:0.2s;}
-.reveal-delay-3{transition-delay:0.3s;}
-.reveal-delay-4{transition-delay:0.4s;}
+.rd1{transition-delay:.08s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.24s;}.rd4{transition-delay:.32s;}
+
+/* ══ TOAST ══ */
+#toast{position:fixed;bottom:58px;left:50%;transform:translateX(-50%) translateY(70px);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.28);color:#00FF88;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;padding:11px 22px;z-index:9999;transition:transform .5s ease;white-space:nowrap;box-shadow:0 0 22px rgba(0,255,136,.18);border-radius:3px;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ══ MOBILE RESPONSIVE ══ */
+@media(max-width:768px){
+  body{overflow-y:auto;overflow-x:hidden;}
+  #taskbar,#start-menu,.dsk-icons{display:none!important;}
+  #screen-loading,#screen-gate{display:none!important;}
+  #site{position:static!important;overflow:visible!important;height:auto!important;opacity:1!important;pointer-events:all!important;}
+  #desktop{position:static;overflow:visible;padding:12px;padding-bottom:16px;display:flex;flex-direction:column;}
+  .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;display:flex!important;animation:none!important;}
+  .win-body{overflow:visible!important;padding:16px 18px;height:auto!important;}
+  .reveal{opacity:1!important;transform:none!important;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .steps-grid{grid-template-columns:1fr;}
+  .wp-phase{flex-direction:column;gap:5px;}
+  .hero-headline{font-size:22px;}
+  .cd-block{min-width:58px;padding:10px 9px;}
+  #ocean-canvas{display:none;}
+}
+@media(max-width:440px){
+  .stats-grid{grid-template-columns:1fr;}
+  .hero-headline{font-size:19px;}
+  .gate-title{font-size:17px;}
+}
 </style>
 </head>
 <body>
 
-<!-- CUSTOM CURSOR -->
+<!-- ══ CURSOR ══ -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- CANVAS BACKGROUND -->
-<canvas class="bg" id="ocean-canvas"></canvas>
+<!-- ══ CANVAS BACKGROUND ══ -->
+<canvas id="ocean-canvas"></canvas>
 
-<!-- ETH FLOAT DECORATION -->
-<div class="eth-float">◆</div>
+<!-- ══════════════════════════════════
+     LOADING — OS BOOT SEQUENCE
+═══════════════════════════════════ -->
+<div id="screen-loading">
+  <svg class="ld-logo" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="70" cy="70" r="58" stroke="#009DFF" stroke-width="1" opacity="0.15"/>
+    <circle cx="70" cy="70" r="47" stroke="#00B8FF" stroke-width="0.5" opacity="0.1"/>
+    <path d="M70 18C93 18 118 40 118 70C118 100 93 122 70 122C47 122 22 100 22 70C22 40 47 18 70 18Z" stroke="#00B8FF" stroke-width="1.5" fill="none" opacity="0.4"/>
+    <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="url(#wg1)" opacity="0.25"/>
+    <path d="M70 22Q100 48 84 70Q100 92 70 118Q40 92 56 70Q40 48 70 22Z" fill="url(#wg2)" opacity="0.28"/>
+    <circle cx="70" cy="70" r="18" fill="#00B8FF" opacity="0.08" stroke="#33CCFF" stroke-width="1.5"/>
+    <circle cx="70" cy="70" r="10" fill="#00B8FF" opacity="0.15"/>
+    <path d="M57 64Q64 57 70 61Q76 57 83 64Q76 71 70 67Q64 71 57 64Z" fill="#33CCFF" opacity="0.55"/>
+    <circle cx="96" cy="42" r="3" fill="#00B8FF" opacity="0.5"/>
+    <circle cx="102" cy="55" r="2" fill="#33CCFF" opacity="0.4"/>
+    <circle cx="44" cy="96" r="2.5" fill="#009DFF" opacity="0.4"/>
+    <defs>
+      <linearGradient id="wg1" x1="22" y1="70" x2="118" y2="70"><stop offset="0" stop-color="#009DFF"/><stop offset="0.5" stop-color="#33CCFF"/><stop offset="1" stop-color="#009DFF"/></linearGradient>
+      <linearGradient id="wg2" x1="70" y1="22" x2="70" y2="118"><stop offset="0" stop-color="#00B8FF"/><stop offset="0.5" stop-color="#33CCFF"/><stop offset="1" stop-color="#009DFF"/></linearGradient>
+    </defs>
+  </svg>
+  <div class="ld-os-brand">
+    <div class="ld-os-title">OCEANUS OS</div>
+    <div class="ld-os-ver">VERSION 2035.1 · ETHEREUM NETWORK EDITION</div>
+  </div>
+  <div class="ld-eth"><span style="color:rgba(100,150,255,.6);font-size:14px;">◆</span>POWERED BY ETHEREUM</div>
+  <div class="ld-text" id="ld-text">Initializing Oceanus Protocol...</div>
+  <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
+  <div class="ld-pct" id="ld-pct">0%</div>
+</div>
 
-<!-- ===================== LOADING SCREEN ===================== -->
-<div class="screen" id="screen-loading">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:20px;z-index:2;">
-    <svg class="loading-logo" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="1.5" opacity="0.3"/>
-      <circle cx="70" cy="70" r="58" stroke="#009DFF" stroke-width="1" opacity="0.2"/>
-      <path d="M70 20 C90 20 115 40 115 70 C115 100 90 120 70 120 C50 120 25 100 25 70 C25 40 50 20 70 20Z" stroke="#00B8FF" stroke-width="1.5" fill="none" opacity="0.5"/>
-      <path d="M30 70 Q50 50 70 55 Q90 60 110 70 Q90 80 70 85 Q50 90 30 70Z" fill="#00B8FF" opacity="0.15"/>
-      <path d="M70 30 Q95 55 80 70 Q95 85 70 110 Q45 85 60 70 Q45 55 70 30Z" fill="#009DFF" opacity="0.2"/>
-      <circle cx="70" cy="70" r="18" fill="#00B8FF" opacity="0.1" stroke="#33CCFF" stroke-width="1.5"/>
-      <path d="M55 65 Q62 58 70 62 Q78 58 85 65 Q78 72 70 68 Q62 72 55 65Z" fill="#33CCFF" opacity="0.4"/>
-    </svg>
-    <div class="eth-badge">
-      <span class="eth-diamond">◆</span>
-      POWERED BY ETHEREUM
+<!-- ══════════════════════════════════
+     ACCESS GATE — OS LOGIN DIALOG
+═══════════════════════════════════ -->
+<div id="screen-gate">
+  <div class="gate-win">
+    <div class="gate-tb">
+      <span class="gate-tb-icon">🌊</span>
+      <span class="gate-tb-label">OCEANUS OS — PIONEER ACCESS CONTROL</span>
+      <div class="gate-tb-btns">
+        <button class="gtbtn gtbtn-min">—</button>
+        <button class="gtbtn gtbtn-cls">✕</button>
+      </div>
     </div>
-    <div class="loading-text" id="loading-text">Initializing Oceanus Protocol...</div>
-    <div class="progress-wrap">
-      <div class="progress-bar" id="progress-bar"></div>
+    <div class="gate-body">
+      <span class="gate-lock">🔒</span>
+      <div class="gate-title">ACCESS RESTRICTED</div>
+      <p class="gate-sub">Only selected pioneers will gain access to the Oceanus ecosystem. Prove your worth and enter the deep.</p>
+      <button class="btn-gate" onclick="enterSite()">ENTER THE DEEP</button>
+      <div class="gate-eth">$OCS — ETHEREUM NETWORK</div>
     </div>
-    <div class="progress-pct" id="progress-pct">0%</div>
   </div>
 </div>
 
-<!-- ===================== ACCESS GATE ===================== -->
-<div class="screen hidden" id="screen-gate">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:28px;z-index:2;padding:24px;">
-    <div class="gate-lock" id="gate-lock">🔒</div>
-    <div class="gate-title">ACCESS RESTRICTED</div>
-    <div class="gate-sub">Only selected pioneers will gain access to the Oceanus ecosystem. Prove your worth and enter the deep.</div>
-    <button class="btn-enter" onclick="enterSite()">ENTER</button>
-    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.2);">$OCS — ETHEREUM NETWORK</div>
-  </div>
-</div>
-
-<!-- ===================== MAIN SITE ===================== -->
+<!-- ══════════════════════════════════
+     SITE — OCEANUS OS DESKTOP
+═══════════════════════════════════ -->
 <div id="site">
+<div id="desktop">
 
-  <!-- MOBILE MENU OVERLAY -->
-  <div class="menu-overlay" id="menu-overlay" onclick="closeMobileMenu()"></div>
-  <nav class="mobile-menu" id="mobile-menu">
-    <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
-    <a href="#stats" onclick="closeMobileMenu()">Stats</a>
-    <a href="#leaderboard" onclick="closeMobileMenu()">Leaderboard</a>
-    <a href="#how" onclick="closeMobileMenu()">How It Works</a>
-    <a href="#launch" onclick="closeMobileMenu()">Launch</a>
-    <a href="#" onclick="closeMobileMenu();openModal()" style="color:var(--blue);margin-top:16px;">Apply Now →</a>
-  </nav>
-
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">
-      <svg width="38" height="38" viewBox="0 0 140 140" fill="none">
-        <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="1.5" opacity="0.4"/>
-        <path d="M70 20 C90 20 115 40 115 70 C115 100 90 120 70 120 C50 120 25 100 25 70 C25 40 50 20 70 20Z" stroke="#00B8FF" stroke-width="2" fill="rgba(0,184,255,0.08)"/>
-        <path d="M30 70 Q50 50 70 55 Q90 60 110 70 Q90 80 70 85 Q50 90 30 70Z" fill="#00B8FF" opacity="0.25"/>
-        <path d="M70 30 Q95 55 80 70 Q95 85 70 110 Q45 85 60 70 Q45 55 70 30Z" fill="#009DFF" opacity="0.35"/>
-        <circle cx="70" cy="70" r="14" fill="#00B8FF" opacity="0.15" stroke="#33CCFF" stroke-width="1.5"/>
-      </svg>
-      <span class="nav-brand">OCEANUS</span>
+  <!-- ── DESKTOP ICONS ── -->
+  <div class="dsk-icons">
+    <div class="d-ico" ondblclick="openWindow('win-hero')" title="Oceanus Chain">
+      <span class="d-ico-em">🌊</span>
+      <span class="d-ico-lbl">Oceanus Chain</span>
     </div>
-    <ul class="nav-links">
-      <li><a href="#stats">Stats</a></li>
-      <li><a href="#leaderboard">Pioneers</a></li>
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="#launch">Launch</a></li>
-    </ul>
-    <button class="nav-cta" onclick="openModal()">APPLY NOW</button>
-    <button class="hamburger" onclick="openMobileMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="hero-eyebrow">OCEANUS CHAIN — $OCS</div>
-    <h1 class="hero-headline">THE FUTURE FLOWS<br>BENEATH THE SURFACE</h1>
-    <p class="hero-sub">Oceanus Chain is building a next-generation ecosystem where early pioneers gain exclusive access before the tide reaches the world.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="openModal()">APPLY NOW</button>
-      <button class="btn-secondary" onclick="openModal()">I'M IN →</button>
+    <div class="d-ico" ondblclick="openWindow('win-stats')" title="Ecosystem Stats">
+      <span class="d-ico-em">📊</span>
+      <span class="d-ico-lbl">Ecosystem Stats</span>
     </div>
-    <div class="scroll-hint">
-      <span>SCROLL TO EXPLORE</span>
-      <svg width="16" height="20" viewBox="0 0 16 20" fill="none"><rect x="6.5" y="0.5" width="3" height="5" rx="1.5" fill="rgba(0,184,255,0.5)"/><path d="M8 8 L4 13 L8 11 L12 13 Z" fill="rgba(0,184,255,0.5)"/></svg>
+    <div class="d-ico" ondblclick="openWindow('win-leaderboard')" title="Hall of Pioneers">
+      <span class="d-ico-em">🏆</span>
+      <span class="d-ico-lbl">Hall of Pioneers</span>
     </div>
-  </section>
-
-  <!-- STATS -->
-  <section id="stats" style="padding:80px 40px;">
-    <div style="max-width:1100px;margin:0 auto;">
-      <div class="reveal"><div class="section-label">LIVE NETWORK DATA</div></div>
-      <div class="reveal reveal-delay-1"><div class="section-title">ECOSYSTEM METRICS</div></div>
-      <div class="reveal reveal-delay-2"><div class="section-divider"></div></div>
-      <div class="stats-grid">
-        <div class="stat-card reveal reveal-delay-1">
-          <span class="stat-num" data-target="15284" id="cnt-1">0</span>
-          <div class="stat-label">Total Applicants</div>
-        </div>
-        <div class="stat-card reveal reveal-delay-2">
-          <span class="stat-num" data-target="716" id="cnt-2">0</span>
-          <div class="stat-label">Spots Remaining</div>
-        </div>
-        <div class="stat-card reveal reveal-delay-3">
-          <span class="stat-num" data-target="34582" id="cnt-3">0</span>
-          <div class="stat-label">Community Members</div>
-        </div>
-        <div class="stat-card reveal reveal-delay-4">
-          <span class="stat-num" data-target="8947" id="cnt-4">0</span>
-          <div class="stat-label">Referral Rewards</div>
-        </div>
-      </div>
+    <div class="d-ico" ondblclick="openWindow('win-how')" title="How It Works">
+      <span class="d-ico-em">⚙️</span>
+      <span class="d-ico-lbl">How It Works</span>
     </div>
-  </section>
-
-  <!-- LEADERBOARD -->
-  <section id="leaderboard" style="padding:80px 40px;background:linear-gradient(180deg,rgba(0,184,255,0.02),transparent);">
-    <div style="max-width:800px;margin:0 auto;">
-      <div class="reveal"><div class="section-label">HALL OF PIONEERS</div></div>
-      <div class="reveal reveal-delay-1"><div class="section-title">TOP PIONEERS</div></div>
-      <div class="reveal reveal-delay-2"><div class="section-divider"></div></div>
-      <div class="reveal reveal-delay-2">
-        <div class="live-indicator"><span class="live-dot"></span> LIVE RANKINGS — UPDATING IN REAL TIME</div>
-      </div>
-      <div class="leaderboard-wrap" id="leaderboard-list"></div>
+    <div class="d-ico" ondblclick="openWindow('win-whitepaper')" title="Whitepaper">
+      <span class="d-ico-em">📄</span>
+      <span class="d-ico-lbl">Whitepaper</span>
     </div>
-  </section>
-
-  <!-- COUNTDOWN -->
-  <div class="countdown-section" id="launch">
-    <div class="reveal"><div class="section-label" style="text-align:center;">MAINNET LAUNCH</div></div>
-    <div class="reveal reveal-delay-1"><div class="section-title" style="text-align:center;">LAUNCH COUNTDOWN</div></div>
-    <div class="countdown-grid">
-      <div class="countdown-block"><span class="countdown-num" id="cd-days">00</span><div class="countdown-unit">Days</div></div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-block"><span class="countdown-num" id="cd-hours">00</span><div class="countdown-unit">Hours</div></div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-block"><span class="countdown-num" id="cd-mins">00</span><div class="countdown-unit">Minutes</div></div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-block"><span class="countdown-num" id="cd-secs">00</span><div class="countdown-unit">Seconds</div></div>
+    <div class="d-ico" ondblclick="openModal()" title="Apply Now">
+      <span class="d-ico-em">✉️</span>
+      <span class="d-ico-lbl">Apply Now</span>
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
-  <section id="how" style="padding:100px 40px;">
-    <div style="max-width:1100px;margin:0 auto;">
-      <div class="reveal"><div class="section-label">PIONEER PROTOCOL</div></div>
-      <div class="reveal reveal-delay-1"><div class="section-title">HOW IT WORKS</div></div>
-      <div class="reveal reveal-delay-2"><div class="section-divider"></div></div>
+  <!-- ════════════════════════════
+       WINDOW: HERO / WELCOME
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-hero" style="width:600px;left:150px;top:36px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-hero">
+      <span class="win-tb-icon">🌊</span>
+      <span class="win-tb-title">OCEANUS CHAIN — $OCS · Powered by Ethereum</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-hero')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-hero')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-hero')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="hero-body">
+      <div class="reveal"><div class="hero-eyebrow">OCEANUS CHAIN — $OCS</div></div>
+      <div class="reveal rd1"><h1 class="hero-headline">THE FUTURE FLOWS<br>BENEATH THE SURFACE</h1></div>
+      <div class="reveal rd2"><p class="hero-sub">Oceanus Chain is building a next-generation ecosystem where early pioneers gain exclusive access before the tide reaches the world.</p></div>
+      <div class="reveal rd2">
+        <div class="cd-label">⏳ WAITLIST CLOSES IN</div>
+        <div class="countdown-wrap">
+          <div class="cd-block"><span class="cd-num" id="cd-d">15</span><div class="cd-unit">Days</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-h">00</span><div class="cd-unit">Hours</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-m">00</span><div class="cd-unit">Mins</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-s">00</span><div class="cd-unit">Secs</div></div>
+        </div>
+      </div>
+      <div class="reveal rd3"><button class="btn-enter-hero" onclick="openModal()">SECURE YOUR SPOT</button></div>
+      <!-- CTA -->
+      <div class="cta-mini reveal rd4">
+        <p class="cta-mini-eyebrow">THE TIDE IS TURNING</p>
+        <h2 class="cta-title-inner">CLAIM YOUR POSITION<br>IN THE DEEP</h2>
+        <p class="cta-sub-inner">Only <strong style="color:var(--blue);">2,790 spots remain.</strong> Once the waitlist closes, access is exclusive to verified pioneers only.</p>
+        <button class="btn-cta" onclick="openModal()">SECURE YOUR SPOT</button>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>ETHEREUM MAINNET</span>
+      <span class="wsb-item"><span class="wsb-dot blue"></span>$OCS LIVE</span>
+      <span class="wsb-item" style="margin-left:auto;">OCEANUS OS v2035.1</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: ECOSYSTEM STATS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-stats" style="display:none;width:520px;">
+    <div class="win-tb" id="tb-win-stats">
+      <span class="win-tb-icon">📊</span>
+      <span class="win-tb-title">ECOSYSTEM STATS · Live Network Data</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-stats')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-stats')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-stats')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="stats">
+      <div class="reveal"><div class="sec-label">LIVE NETWORK DATA</div></div>
+      <div class="reveal rd1"><div class="sec-title">ECOSYSTEM METRICS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-num" id="cnt1">7,210</span><div class="stat-lbl">Total Applicants</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt2">2,790</span><div class="stat-lbl">Spots Remaining</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt3">12,480</span><div class="stat-lbl">Community Members</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt4">3,640</span><div class="stat-lbl">Referral Rewards</div></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>LIVE DATA</span>
+      <span class="wsb-item" style="margin-left:auto;">4 METRICS ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: LEADERBOARD
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-leaderboard" style="display:none;width:480px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-leaderboard">
+      <span class="win-tb-icon">🏆</span>
+      <span class="win-tb-title">HALL OF PIONEERS · Top Leaderboard</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-leaderboard')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-leaderboard')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-leaderboard')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="leaderboard">
+      <div class="reveal"><div class="sec-label">HALL OF PIONEERS</div></div>
+      <div class="reveal rd1"><div class="sec-title">TOP PIONEERS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="reveal rd2 lb-wrap">
+        <div class="live-ind"><span class="live-dot"></span>LIVE — UPDATING IN REAL TIME</div>
+        <div id="lb-list"></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>LIVE</span>
+      <span class="wsb-item" style="margin-left:auto;">20 PIONEERS RANKED</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: HOW IT WORKS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-how" style="display:none;width:600px;">
+    <div class="win-tb" id="tb-win-how">
+      <span class="win-tb-icon">⚙️</span>
+      <span class="win-tb-title">HOW IT WORKS · Pioneer Protocol</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-how')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-how')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-how')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="how">
+      <div class="reveal"><div class="sec-label">PIONEER PROTOCOL</div></div>
+      <div class="reveal rd1"><div class="sec-title">HOW IT WORKS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
       <div class="steps-grid">
-        <div class="step-card reveal reveal-delay-1">
-          <div class="step-num">01</div>
-          <div class="step-title">APPLY</div>
-          <div class="step-desc">Submit your Ethereum wallet address and email to secure your spot in the Oceanus Chain waitlist before access closes.</div>
+        <div class="step-card reveal rd1"><div class="step-num">01</div><div class="step-ttl">APPLY</div><div class="step-desc">Submit your email and Ethereum wallet address to secure your place in the Oceanus Chain waitlist before access closes forever.</div></div>
+        <div class="step-card reveal rd2"><div class="step-num">02</div><div class="step-ttl">COMPLETE TASKS</div><div class="step-desc">Follow on X, retweet, join the community and Telegram. Every action earns priority ranking and boosts your ecosystem position.</div></div>
+        <div class="step-card reveal rd3"><div class="step-num">03</div><div class="step-ttl">REFER & RISE</div><div class="step-desc">Share your referral link. Every verified pioneer you bring earns rewards and elevates your rank on the leaderboard.</div></div>
+        <div class="step-card reveal rd4"><div class="step-num">04</div><div class="step-ttl">GAIN ACCESS</div><div class="step-desc">Top pioneers unlock early access, exclusive $OCS allocations, and lifetime pioneer benefits on the Ethereum network.</div></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot blue"></span>4 STEPS TO PIONEER STATUS</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: WHITEPAPER
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-whitepaper" style="display:none;width:680px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-whitepaper">
+      <span class="win-tb-icon">📄</span>
+      <span class="win-tb-title">WHITEPAPER · Official Documentation v2035</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-whitepaper')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-whitepaper')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-whitepaper')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="whitepaper">
+      <div class="wp-inner">
+        <div class="reveal"><div class="sec-label">OFFICIAL DOCUMENTATION</div></div>
+        <div class="reveal rd1"><div class="sec-title">WHITEPAPER</div></div>
+        <div class="reveal rd1" style="margin-bottom:6px;"><p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.32);">The Convergence of Layer-1 Blockchain, Next-Gen AI &amp; Web3 Gaming Infrastructure</p></div>
+        <div class="reveal rd2"><div class="sec-line"></div></div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">1. Executive Summary</div>
+          <p class="wp-p">The Oceanus Ecosystem is a pioneering, next-generation decentralized infrastructure engineered to bridge the gap between high-performance blockchain technology, advanced Artificial Intelligence (AI), and immersive Web3 Gaming. Built upon the ultra-secure and highly scalable Layer-1/Layer-2 <strong style="color:var(--blue);">Oceanus Chain</strong>, the platform introduces a seamless environment where decentralized applications (dApps), autonomous AI agents, and play-and-own gaming metaverses coexist natively.</p>
+          <p class="wp-p">By eliminating high gas fees, ensuring sub-second transaction finality, and providing built-in AI model compilation, Oceanus is architected to sustain the next billion users in the digital global economy.</p>
         </div>
-        <div class="step-card reveal reveal-delay-2">
-          <div class="step-num">02</div>
-          <div class="step-title">COMPLETE TASKS</div>
-          <div class="step-desc">Follow, retweet, and join the community. Every action earns you priority ranking and boosts your position in the ecosystem.</div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">2. Core Vision &amp; Problem Statement</div>
+          <p class="wp-p">Current Web3 environments suffer from fragmented user experiences, high transaction costs, and isolated systems. Traditional blockchains lack the native computational capability to host complex Artificial Intelligence models or sustain fast-paced gaming logic directly on-chain.</p>
+          <p class="wp-p">Oceanus solves these structural bottlenecks by fusing heavy cryptographic ledger security with high-speed AI processing layers and dynamic gaming asset registries into one unified ecosystem.</p>
         </div>
-        <div class="step-card reveal reveal-delay-3">
-          <div class="step-num">03</div>
-          <div class="step-title">REFER & RISE</div>
-          <div class="step-desc">Share your unique referral code. Every verified pioneer you bring earns rewards and elevates your rank on the leaderboard.</div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">3. The Three Structural Pillars</div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🌊</div>
+            <div class="wp-h3">A. Oceanus Chain &amp; Wallet — The Infrastructure Layer</div>
+            <ul class="wp-ul">
+              <li><strong>High-Throughput Consensus:</strong> A customized consensus mechanism optimized for massive data throughput, cross-chain interoperability, and ultimate asset security.</li>
+              <li><strong>Oceanus Wallet:</strong> A hyper-secure, non-custodial digital wallet featuring a premium cyber-oceanic user interface, multi-chain asset routing, and native decentralized exchange (DEX) aggregation.</li>
+            </ul>
+          </div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🤖</div>
+            <div class="wp-h3">B. Oceanus AI — The Intelligence Core</div>
+            <ul class="wp-ul">
+              <li><strong>On-Chain AI Agents:</strong> Neural network nodes running parallel to the blockchain to optimize smart contract executions, predictive liquidity analytics, and real-time security auditing.</li>
+              <li><strong>Generative Development:</strong> Integrated development kits leveraging automated generative tools, allowing creators to deploy self-optimizing dApps natively inside the ecosystem.</li>
+            </ul>
+          </div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🎮</div>
+            <div class="wp-h3">C. Mochi Labubu Land — The Gaming &amp; Metaverse Layer</div>
+            <ul class="wp-ul">
+              <li><strong>The Hub:</strong> A flagship Web3 gaming, staking, and interaction metaverse built natively on top of the Oceanus Chain.</li>
+              <li><strong>Dynamic NFTs (dNFTs):</strong> In-game items and characters powered by Oceanus AI — they adapt, level up, and evolve states based on on-chain achievements and player behavior.</li>
+              <li><strong>Economy &amp; Staking:</strong> Users lock assets in dedicated gaming staking pools to generate yield, unlock rare generative cosmetics, and participate in decentralized governance.</li>
+            </ul>
+          </div>
         </div>
-        <div class="step-card reveal reveal-delay-4">
-          <div class="step-num">04</div>
-          <div class="step-title">GAIN ACCESS</div>
-          <div class="step-desc">When the tide turns, top pioneers unlock early access, exclusive $OCS allocations, and pioneer benefits on the Ethereum network.</div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">4. Technical Architecture &amp; Security</div>
+          <div class="wp-arch">
++-------------------------------------------------------------+
+|               MOCHI LABUBU LAND (Gaming Layer)              |
++-------------------------------------------------------------+
+|             OCEANUS AI (Generative &amp; Analytics)             |
++-------------------------------------------------------------+
+|      OCEANUS CHAIN (L1/L2 Infrastructure) + CORE WALLET    |
++-------------------------------------------------------------+</div>
+          <ul class="wp-ul">
+            <li><strong>Smart Contract Guardrails:</strong> Built utilizing audited, gas-optimized execution environments (Solidity/Rust) backed by machine-learning protocols that monitor the network to prevent exploits or flash-loan attacks.</li>
+            <li><strong>Decentralized Storage:</strong> Interfacing directly with advanced off-chain and on-chain storage to guarantee visual gaming assets and AI weights remain fully decentralized and immutable.</li>
+          </ul>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">5. Tokenomics &amp; Ecosystem Economy</div>
+          <p class="wp-p">The native utility token serves as the primary fuel driving economic sustainability across the network:</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px;">
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">⛽</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">NETWORK FEES</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Powers execution fees, data storage, and smart contract validation.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">🎮</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">GAMING UTILITY</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Core exchange medium inside the NFT Marketplace and Mochi Labubu Land.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">🤖</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">AI COMPUTATION</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Settles fees for AI developer tools, analytical requests, and ML model execution.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">💎</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">STAKING &amp; YIELD</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Secures the network while distributing rewards to holders and participants.</div></div>
+          </div>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">6. Strategic Roadmap</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 1</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🌊 Deep Blue Genesis</div>
+                  <span class="wp-tag">ACTIVE</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Ecosystem architectural design and whitepaper publication.</li>
+                    <li>Development and alpha testing of the Oceanus Wallet.</li>
+                    <li>Launch of the Secure Early Access Waitlist page.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 2</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🚀 Tech-Tide Rise</div>
+                  <span class="wp-tag">UPCOMING</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Public Testnet deployment for Oceanus Chain.</li>
+                    <li>Integration of core on-chain AI monitoring tools.</li>
+                    <li>Alpha-build release and staking integration for Mochi Labubu Land.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tl-item" style="padding-bottom:0;">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 3</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🌐 The Abyss Conquest</div>
+                  <span class="wp-tag">FUTURE</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Official Mainnet deployment and public node validation.</li>
+                    <li>Launch of the native dynamic NFT Marketplace.</li>
+                    <li>Open-world public release of the Web3 gaming ecosystem.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="margin-top:24px;font-size:11px;color:rgba(255,255,255,.22);letter-spacing:1px;font-family:'Space Mono',monospace;">© 2026 Oceanus Labs. All rights reserved. Built for the future of decentralized innovation.</p>
         </div>
       </div>
     </div>
-  </section>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot blue"></span>OFFICIAL DOC</span>
+      <span class="wsb-item" style="margin-left:auto;">6 SECTIONS · v2035.1</span>
+    </div>
+  </div>
 
-  <div class="glow-line"></div>
-
-  <!-- CTA SECTION -->
-  <section style="padding:120px 40px;text-align:center;">
-    <div class="reveal"><div class="section-label" style="text-align:center;justify-content:center;display:flex;gap:12px;align-items:center;">
-      <span style="width:40px;height:1px;background:var(--blue);opacity:0.5;display:inline-block;"></span>
-      THE TIDE IS TURNING
-      <span style="width:40px;height:1px;background:var(--blue);opacity:0.5;display:inline-block;"></span>
-    </div></div>
-    <div class="reveal reveal-delay-1"><h2 class="section-title" style="text-align:center;font-size:clamp(26px,5vw,56px);">CLAIM YOUR POSITION<br>IN THE DEEP</h2></div>
-    <div class="reveal reveal-delay-2"><p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:480px;margin:0 auto 48px;line-height:1.8;">Only <strong style="color:var(--blue);">716 spots remain</strong>. Once the waitlist closes, access becomes exclusive to verified pioneers only.</p></div>
-    <div class="reveal reveal-delay-3"><button class="btn-primary" onclick="openModal()" style="padding:20px 72px;font-size:14px;letter-spacing:6px;">SECURE YOUR SPOT</button></div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">
-      <svg width="28" height="28" viewBox="0 0 140 140" fill="none">
-        <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="1.5" opacity="0.3"/>
-        <path d="M30 70 Q50 50 70 55 Q90 60 110 70 Q90 80 70 85 Q50 90 30 70Z" fill="#00B8FF" opacity="0.3"/>
-        <path d="M70 30 Q95 55 80 70 Q95 85 70 110 Q45 85 60 70 Q45 55 70 30Z" fill="#009DFF" opacity="0.4"/>
+  <!-- ════════════════════════════
+       TASKBAR
+  ═════════════════════════════ -->
+  <div id="taskbar">
+    <button id="start-btn" onclick="toggleStartMenu()">
+      <svg width="18" height="18" viewBox="0 0 140 140" fill="none">
+        <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="2" opacity="0.5"/>
+        <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="#00B8FF" opacity="0.5"/>
+        <path d="M70 22Q100 48 84 70Q100 92 70 118Q40 92 56 70Q40 48 70 22Z" fill="#009DFF" opacity="0.6"/>
+        <path d="M57 64Q64 57 70 61Q76 57 83 64Q76 71 70 67Q64 71 57 64Z" fill="#33CCFF" opacity="0.9"/>
       </svg>
-      <span class="footer-brand">OCEANUS CHAIN — $OCS</span>
+      OCEANUS
+    </button>
+    <div class="tb-sep"></div>
+    <div id="tb-wins"></div>
+    <div id="sys-tray">
+      <div class="tray-item"><span class="tray-net-dot"></span>ETH NET</div>
+      <div class="tray-item"><span class="tray-eth-dot">◆</span>$OCS</div>
+      <div>
+        <div id="sys-clock">--:--</div>
+        <div id="sys-date">--/--/----</div>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="#">Twitter/X</a>
-      <a href="#">Telegram</a>
-      <a href="#">Whitepaper</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;">
-      <span style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:2px;">POWERED BY</span>
-      <span style="color:rgba(100,150,255,0.5);font-size:14px;">◆</span>
-      <span style="font-family:'Orbitron',monospace;font-size:10px;color:rgba(100,150,255,0.5);letter-spacing:2px;">ETHEREUM</span>
-    </div>
-    <div class="footer-copy">© 2024 OCEANUS CHAIN. ALL RIGHTS RESERVED.</div>
-  </footer>
+  </div>
 
+  <!-- ════════════════════════════
+       START MENU
+  ═════════════════════════════ -->
+  <div id="start-menu">
+    <div class="sm-head">
+      <div class="sm-avatar">🌊</div>
+      <div>
+        <div class="sm-info-name">PIONEER USER</div>
+        <div class="sm-info-role">Oceanus OS v2035.1</div>
+      </div>
+    </div>
+    <div class="sm-cols">
+      <div class="sm-col">
+        <div class="sm-col-head">APPLICATIONS</div>
+        <div class="sm-item" onclick="openWindow('win-hero');toggleStartMenu()"><span class="sm-item-ico">🌊</span>Oceanus Chain</div>
+        <div class="sm-item" onclick="openWindow('win-stats');toggleStartMenu()"><span class="sm-item-ico">📊</span>Ecosystem Stats</div>
+        <div class="sm-item" onclick="openWindow('win-leaderboard');toggleStartMenu()"><span class="sm-item-ico">🏆</span>Hall of Pioneers</div>
+        <div class="sm-item" onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
+        <div class="sm-item" onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
+      </div>
+      <div class="sm-col">
+        <div class="sm-col-head">QUICK ACCESS</div>
+        <div class="sm-item" onclick="openModal();toggleStartMenu()"><span class="sm-item-ico">✉️</span>Apply Now</div>
+        <div class="sm-sep"></div>
+        <a class="sm-item" href="https://x.com/OCEANUSCHAIN" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">🐦</span>Twitter / X</a>
+        <a class="sm-item" href="https://t.me/Oceanuschain" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">💬</span>Telegram</a>
+        <a class="sm-item" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">👥</span>Community</a>
+      </div>
+    </div>
+    <div class="sm-foot">
+      <div class="sm-links">
+        <a class="sm-link" href="https://x.com/OCEANUSCHAIN" target="_blank">Twitter</a>
+        <a class="sm-link" href="https://t.me/Oceanuschain" target="_blank">Telegram</a>
+        <a class="sm-link" href="https://twitter.com/i/communities/2011553387264033029" target="_blank">Community</a>
+        <a class="sm-link" href="#">Privacy Policy</a>
+      </div>
+      <div class="sm-copy">© 2026 OCEANUS LABS</div>
+    </div>
+  </div>
+
+</div><!-- /desktop -->
 </div><!-- /site -->
 
-<!-- ===================== APPLY MODAL ===================== -->
+<!-- ══════════════════════════════════
+     APPLY MODAL — PIONEER ACCESS
+═══════════════════════════════════ -->
 <div class="modal-overlay" id="modal-apply">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    
-    <!-- FORM VIEW -->
-    <div id="form-view">
-      <div class="modal-title">PIONEER ACCESS</div>
-      <div class="modal-sub">Complete all requirements to secure your spot</div>
-
-      <div class="field-group">
-        <label class="field-label">Email Address</label>
-        <input class="field-input" type="email" id="input-email" placeholder="pioneer@domain.com" oninput="checkApply()">
-      </div>
-      <div class="field-group">
-        <label class="field-label">Ethereum Wallet Address</label>
-        <input class="field-input" type="text" id="input-wallet" placeholder="0x..." oninput="checkApply()">
-      </div>
-
-      <div class="tasks-section">
-        <div class="tasks-title">Required Tasks</div>
-        <div class="task-item" id="task-1" onclick="completeTask(1)">
-          <span class="task-status">🔒</span>
-          <span class="task-text">Follow Official X Account</span>
-          <a class="task-action" href="https://x.com" target="_blank" onclick="event.stopPropagation();setTimeout(()=>completeTask(1),3000)">FOLLOW</a>
-        </div>
-        <div class="task-item" id="task-2" onclick="completeTask(2)">
-          <span class="task-status">🔒</span>
-          <span class="task-text">Retweet Official Post</span>
-          <a class="task-action" href="https://x.com" target="_blank" onclick="event.stopPropagation();setTimeout(()=>completeTask(2),3000)">RETWEET</a>
-        </div>
-        <div class="task-item" id="task-3" onclick="completeTask(3)">
-          <span class="task-status">🔒</span>
-          <span class="task-text">Join Official Telegram</span>
-          <a class="task-action" href="https://t.me" target="_blank" onclick="event.stopPropagation();setTimeout(()=>completeTask(3),3000)">JOIN</a>
-        </div>
-        <div class="task-item" id="task-4" onclick="completeTask(4)">
-          <span class="task-status">🔒</span>
-          <span class="task-text">Verify Wallet Address</span>
-          <span class="task-action" style="cursor:pointer;" onclick="completeTask(4)">VERIFY</span>
-        </div>
-      </div>
-
-      <button class="btn-apply" id="apply-btn" disabled onclick="submitApply()">APPLY FOR ACCESS</button>
+    <div class="modal-tb">
+      <span class="modal-tb-icon">✉️</span>
+      <span class="modal-tb-title">PIONEER ACCESS — Apply for Oceanus Ecosystem</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-
-    <!-- SUCCESS VIEW -->
-    <div class="success-screen" id="success-view">
-      <div class="success-icon">🌊</div>
-      <div class="success-title">CONGRATULATIONS PIONEER</div>
-      <div class="success-sub">You have successfully secured your place in the Oceanus Chain waitlist. Check your email for future updates and exclusive opportunities.</div>
-      <button class="btn-dashboard" onclick="openDashboard()">GO TO DASHBOARD →</button>
+    <div class="modal-inner">
+      <div id="form-view">
+        <div class="modal-title">PIONEER ACCESS</div>
+        <div class="modal-sub">Complete all steps to secure your spot in the Oceanus ecosystem</div>
+        <div class="field-wrap">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" type="email" id="inp-email" placeholder="pioneer@domain.com" oninput="checkBtn()">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Ethereum Wallet Address</label>
+          <input class="field-input" type="text" id="inp-wallet" placeholder="0x..." oninput="checkBtn()">
+        </div>
+        <div class="tasks-wrap">
+          <div class="tasks-heading">Required Tasks — Complete All</div>
+          <div class="task-item" id="task1">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Follow Official X Account</span>
+            <a class="task-link" href="https://x.com/OCEANUSCHAIN" target="_blank" onclick="schedTask('task1',2500)">FOLLOW</a>
+          </div>
+          <div class="task-item" id="task2">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Retweet Official Post</span>
+            <a class="task-link" href="https://x.com/i/status/2061545461429805206" target="_blank" onclick="schedTask('task2',3000)">RETWEET</a>
+          </div>
+          <div class="task-item" id="task3">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Join the Community</span>
+            <a class="task-link" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" onclick="schedTask('task3',3000)">JOIN</a>
+          </div>
+          <div class="task-item" id="task4">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Join Official Telegram</span>
+            <a class="task-link" href="https://t.me/Oceanuschain" target="_blank" onclick="schedTask('task4',2500)">JOIN</a>
+          </div>
+        </div>
+        <div class="progress-hint" id="prog-hint">Complete all 4 tasks to unlock the apply button</div>
+        <form action="https://formsubmit.co/killsvisjordan@gmail.com" method="POST" onsubmit="handleSubmit(event)" id="apply-form">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_subject" value="New Oceanus Waitlist Registration!">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="email" id="hidden-email">
+          <input type="hidden" name="wallet_address" id="hidden-wallet">
+          <input type="hidden" name="source" value="Oceanus Chain Waitlist">
+          <button class="btn-submit-modal" id="apply-btn" type="submit" disabled>APPLY FOR ACCESS</button>
+        </form>
+      </div>
+      <div class="success-view" id="success-view">
+        <div class="success-icon">🌊</div>
+        <div class="success-title">CONGRATULATIONS PIONEER</div>
+        <p class="success-sub">You have successfully secured your place in the Oceanus Chain waitlist. Check your email for future updates and exclusive opportunities.</p>
+        <button class="btn-close-success" onclick="closeModal()">CLOSE ✓</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ===================== DASHBOARD MODAL ===================== -->
-<div class="modal-overlay" id="modal-dashboard">
-  <div class="dashboard">
-    <button class="modal-close" onclick="closeDashboard()">✕</button>
-    <div class="dash-header">
-      <div>
-        <div class="dash-title">PIONEER DASHBOARD</div>
-        <div class="dash-id" id="dash-uid">UID: OCS-0000000</div>
-      </div>
-      <div style="font-family:'Space Mono',monospace;font-size:22px;color:var(--blue);text-shadow:0 0 20px var(--blue);">#<span id="dash-rank">381</span></div>
-    </div>
-
-    <div class="dash-grid">
-      <div class="dash-card">
-        <div class="dash-card-label">Email</div>
-        <div class="dash-card-val" id="dash-email" style="font-size:14px;word-break:break-all;">—</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Wallet</div>
-        <div class="dash-card-val" id="dash-wallet" style="font-size:12px;word-break:break-all;">—</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Join Date</div>
-        <div class="dash-card-val" id="dash-date" style="font-size:14px;">—</div>
-      </div>
-      <div class="dash-card">
-        <div class="dash-card-label">Waitlist Position</div>
-        <div class="dash-card-val">#<span id="dash-pos">381</span></div>
-      </div>
-    </div>
-
-    <div class="ref-box">
-      <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:4px;">Your Referral Code</div>
-      <div class="ref-code" id="dash-refcode">OCS-X72K9A</div>
-      <div class="ref-link" id="dash-reflink">https://oceanuschain.io/ref/OCS-X72K9A</div>
-      <button class="copy-btn" onclick="copyRef()">COPY LINK</button>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px;">
-      <div class="dash-card" style="text-align:center;">
-        <div class="dash-card-label">Total Refs</div>
-        <div class="dash-card-val" id="dash-refs">0</div>
-      </div>
-      <div class="dash-card" style="text-align:center;">
-        <div class="dash-card-label">Verified</div>
-        <div class="dash-card-val" id="dash-verified">0</div>
-      </div>
-      <div class="dash-card" style="text-align:center;">
-        <div class="dash-card-label">Points</div>
-        <div class="dash-card-val" id="dash-points">500</div>
-      </div>
-    </div>
-
-    <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:14px;">Task Progress</div>
-    <div id="dash-tasks">
-      <div class="prog-item"><span class="prog-icon">✅</span><span class="prog-text">Follow X Account</span><span class="prog-check">✓</span></div>
-      <div class="prog-item"><span class="prog-icon">✅</span><span class="prog-text">Retweet Post</span><span class="prog-check">✓</span></div>
-      <div class="prog-item"><span class="prog-icon">✅</span><span class="prog-text">Join Telegram</span><span class="prog-check">✓</span></div>
-      <div class="prog-item"><span class="prog-icon">✅</span><span class="prog-text">Wallet Verified</span><span class="prog-check">✓</span></div>
-      <div class="prog-item"><span class="prog-icon">✅</span><span class="prog-text">Email Verified</span><span class="prog-check">✓</span></div>
-    </div>
-  </div>
-</div>
+<!-- TOAST -->
+<div id="toast">🌊 &nbsp;WELCOME PIONEER — CHECK YOUR EMAIL!</div>
 
 <script>
-// ============================================================
-//  CURSOR
-// ============================================================
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
+// ══ CURSOR ══
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cur.style.left=mx+'px';cur.style.top=my+'px';
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ac);})();
+document.querySelectorAll('button,a,.stat-card,.step-card,.lb-row,.field-input,.task-item,.wp-pillar,.d-ico,.tb-wbtn,.sm-item,.wbtn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';ring.style.width='50px';ring.style.height='50px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='30px';ring.style.height='30px';});
 });
-function animCursor(){
-  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
-  ring.style.left=rx+'px';ring.style.top=ry+'px';
-  requestAnimationFrame(animCursor);
-}animCursor();
-document.querySelectorAll('button,a,.task-item,.stat-card,.step-card,.lb-row').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='60px';ring.style.height='60px';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='36px';ring.style.height='36px';});
+document.addEventListener('click',e=>{
+  const r=document.createElement('div');
+  r.className='cursor-ripple';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';
+  document.body.appendChild(r);setTimeout(()=>r.remove(),650);
 });
 
-// ============================================================
-//  OCEAN CANVAS
-// ============================================================
-const canvas=document.getElementById('ocean-canvas');
-const ctx=canvas.getContext('2d');
-let W,H,particles=[];
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+// ══ OCEAN CANVAS — Enhanced ══
+const cv=document.getElementById('ocean-canvas'),cx=cv.getContext('2d');
+let W,H,pts=[];
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
 resize();window.addEventListener('resize',resize);
-class Particle{
+class P{
   constructor(){this.reset();}
-  reset(){
-    this.x=Math.random()*W;
-    this.y=Math.random()*H;
-    this.r=Math.random()*2+0.5;
-    this.vx=(Math.random()-0.5)*0.3;
-    this.vy=(Math.random()-0.5)*0.2;
-    this.alpha=Math.random()*0.5+0.1;
-    this.pulse=Math.random()*Math.PI*2;
-  }
-  update(){
-    this.x+=this.vx;this.y+=this.vy;
-    this.pulse+=0.02;
-    if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();
-  }
-  draw(){
-    ctx.save();
-    ctx.globalAlpha=this.alpha*(0.7+0.3*Math.sin(this.pulse));
-    ctx.fillStyle='#00B8FF';
-    ctx.shadowColor='#00B8FF';
-    ctx.shadowBlur=6;
-    ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();
-    ctx.restore();
-  }
+  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.6+.3;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.15;this.a=Math.random()*.38+.07;this.ph=Math.random()*Math.PI*2;}
+  update(){this.x+=this.vx;this.y+=this.vy;this.ph+=.016;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();}
+  draw(){cx.save();cx.globalAlpha=this.a*(.7+.3*Math.sin(this.ph));cx.fillStyle='#00B8FF';cx.shadowColor='#00B8FF';cx.shadowBlur=4;cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fill();cx.restore();}
 }
-for(let i=0;i<120;i++)particles.push(new Particle());
+for(let i=0;i<130;i++)pts.push(new P());
 let t=0;
-function drawOcean(){
-  ctx.clearRect(0,0,W,H);
-  // Deep glow
-  const g=ctx.createRadialGradient(W/2,H*0.6,0,W/2,H*0.6,Math.max(W,H)*0.7);
-  g.addColorStop(0,'rgba(0,30,80,0.15)');
-  g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-  // Wave lines
-  ctx.save();
-  for(let w=0;w<4;w++){
-    ctx.beginPath();
-    for(let x=0;x<=W;x+=4){
-      const y=H*0.5+Math.sin(x*0.004+t*0.4+w*1.2)*30+Math.sin(x*0.008+t*0.3)*15;
-      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle=`rgba(0,184,255,${0.04-w*0.008})`;
-    ctx.lineWidth=1.5;ctx.stroke();
+(function draw(){
+  cx.clearRect(0,0,W,H);
+  // Deep ocean gradient base
+  const g=cx.createRadialGradient(W/2,H*.6,0,W/2,H*.6,Math.max(W,H)*.72);
+  g.addColorStop(0,'rgba(0,22,60,.22)');g.addColorStop(.5,'rgba(0,8,28,.1)');g.addColorStop(1,'rgba(0,0,0,0)');
+  cx.fillStyle=g;cx.fillRect(0,0,W,H);
+  // Light rays from top
+  for(let i=0;i<6;i++){
+    const rx2=W*(0.25+i*.1)+Math.sin(t*.08+i)*30;
+    const rg=cx.createLinearGradient(rx2,0,rx2+Math.sin(t*.06+i)*80,H*.75);
+    rg.addColorStop(0,'rgba(0,184,255,0.022)');rg.addColorStop(.6,'rgba(0,120,255,0.008)');rg.addColorStop(1,'rgba(0,0,0,0)');
+    cx.save();cx.beginPath();
+    cx.moveTo(rx2-15,0);cx.lineTo(rx2+15,0);
+    cx.lineTo(rx2+Math.sin(t*.06+i)*80+50,H*.75);
+    cx.lineTo(rx2+Math.sin(t*.06+i)*80-50,H*.75);
+    cx.closePath();cx.fillStyle=rg;cx.globalAlpha=.7+.3*Math.sin(t*.15+i);cx.fill();cx.restore();
   }
-  ctx.restore();
-  particles.forEach(p=>{p.update();p.draw();});
-  t+=0.008;
-  requestAnimationFrame(drawOcean);
-}drawOcean();
-
-// ============================================================
-//  LOADING SEQUENCE
-// ============================================================
-const texts=['Initializing Oceanus Protocol...','Connecting Ethereum Network...','Synchronizing Ocean Nodes...','Verifying Access...','Entering Deep Waters...'];
-let pct=0,ti=0;
-const bar=document.getElementById('progress-bar');
-const pctEl=document.getElementById('progress-pct');
-const txtEl=document.getElementById('loading-text');
-function setProgress(p){
-  bar.style.width=p+'%';
-  pctEl.textContent=Math.round(p)+'%';
-}
-function nextText(){
-  if(ti<texts.length){
-    txtEl.style.animation='none';
-    requestAnimationFrame(()=>{
-      txtEl.style.animation='text-flicker 0.1s ease';
-      txtEl.textContent=texts[ti++];
-    });
-  }
-}
-function runLoading(){
-  const steps=[{p:18,delay:400},{p:38,delay:500},{p:58,delay:500},{p:78,delay:400},{p:95,delay:500},{p:100,delay:300}];
-  let i=0;
-  nextText();
-  function step(){
-    if(i>=steps.length){
-      setTimeout(showGate,600);return;
+  // Wave layers
+  cx.save();
+  for(let w=0;w<5;w++){
+    cx.beginPath();
+    for(let x=0;x<=W;x+=3){
+      const y=H*.5+Math.sin(x*.004+t*.35+w*1.15)*26+Math.sin(x*.009+t*.25)*11+Math.sin(x*.002+t*.18+w*.8)*8;
+      x===0?cx.moveTo(x,y):cx.lineTo(x,y);
     }
-    const s=steps[i++];
-    setTimeout(()=>{
-      setProgress(s.p);
-      if(i%1===0&&ti<texts.length)nextText();
-      step();
-    },s.delay);
-  }step();
-}
-setTimeout(runLoading,400);
+    cx.strokeStyle='rgba(0,184,255,'+(0.04-w*.006)+')';cx.lineWidth=1.5;cx.stroke();
+  }
+  cx.restore();
+  pts.forEach(p=>{p.update();p.draw();});
+  t+=.007;requestAnimationFrame(draw);
+})();
 
+// ══ LOADING ══
+const ldTexts=['Initializing Oceanus Protocol...','Loading Ethereum Driver...','Mounting Ocean File System...','Verifying Pioneer Credentials...','Synchronizing Ocean Nodes...','Launching Oceanus Desktop...'];
+let ldI=0;
+const ldBar=document.getElementById('ld-bar'),ldPct=document.getElementById('ld-pct'),ldTxt=document.getElementById('ld-text');
+function ldSet(p){ldBar.style.width=p+'%';ldPct.textContent=Math.round(p)+'%';}
+function ldNext(){if(ldI<ldTexts.length)ldTxt.textContent=ldTexts[ldI++];}
+ldNext();
+const ldSteps=[{p:18,d:420},{p:38,d:480},{p:60,d:450},{p:80,d:400},{p:96,d:470},{p:100,d:280}];
+let si=0;
+function ldRun(){
+  if(si>=ldSteps.length){setTimeout(showGate,540);return;}
+  const s=ldSteps[si++];
+  setTimeout(()=>{ldSet(s.p);if(si%2===0)ldNext();ldRun();},s.d);
+}
+setTimeout(ldRun,350);
 function showGate(){
   const ls=document.getElementById('screen-loading');
-  ls.style.opacity='0';
-  setTimeout(()=>{
-    ls.classList.add('gone');
-    const gate=document.getElementById('screen-gate');
-    gate.classList.remove('hidden');
-  },800);
+  ls.classList.add('fade');
+  setTimeout(()=>{ls.style.display='none';document.getElementById('screen-gate').classList.add('show');},800);
 }
 
+// ══ ENTER SITE ══
 function enterSite(){
-  const lock=document.getElementById('gate-lock');
-  lock.textContent='🔓';
-  lock.style.filter='drop-shadow(0 0 40px #00ff88)';
   const gate=document.getElementById('screen-gate');
+  gate.classList.add('hide');
   setTimeout(()=>{
-    gate.style.opacity='0';
-    setTimeout(()=>{
-      gate.classList.add('gone');
-      const site=document.getElementById('site');
-      site.classList.add('visible');
-    },800);
-  },600);
+    gate.style.display='none';
+    const s=document.getElementById('site');
+    s.classList.add('visible');
+    initOS();
+    openWindow('win-hero');
+    setTimeout(()=>{revealWindow('win-hero');},320);
+  },650);
 }
+function observeReveals(){}
+function observeCounters(){}
 
-// ============================================================
-//  LEADERBOARD
-// ============================================================
-const pioneers=[
-  ['OceanMaster',15840],['DeepWhale',14320],['BlueNode',13100],['EtherSailor',12500],
-  ['OceanGuardian',11980],['NeptuneX',11200],['OceanPilot',10800],['TideRunner',9900],
-  ['AbyssWalker',9200],['DeepCurrent',8700],['SeaLegend',8100],['AquaNode',7500],
-  ['OCSHolder',6900],['OceanMiner',6400],['BlueTitan',5800],['WaveHunter',5200],
-  ['DarkOcean',4700],['EtherOcean',4100],['DeepExplorer',3600],['OceanKing',3100]
-];
-const lb=document.getElementById('leaderboard-list');
-pioneers.forEach(([name,pts],i)=>{
-  const row=document.createElement('div');
-  row.className='lb-row reveal';
-  row.style.transitionDelay=(i*0.04)+'s';
-  const isTop3=i<3;
-  row.innerHTML=`
-    <div class="lb-rank ${isTop3?'top3'}">#${i+1}</div>
-    <div class="lb-avatar">${name[0]}</div>
-    <div class="lb-name">${name}</div>
-    ${i===0?'<span class="lb-badge">PIONEER</span>':''}
-    <div class="lb-pts">${pts.toLocaleString()} PTS</div>
-  `;
-  lb.appendChild(row);
-});
-
-// ============================================================
-//  SCROLL REVEALS
-// ============================================================
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}
-  });
-},{threshold:0.1});
-function observeReveals(){document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));}
-setTimeout(observeReveals,200);
-
-// ============================================================
-//  COUNTER ANIMATION
-// ============================================================
-function animCounter(id,target){
-  const el=document.getElementById(id);
-  let cur=0,dur=2000,start=null;
-  function step(ts){
-    if(!start)start=ts;
-    const p=Math.min((ts-start)/dur,1);
-    const ease=1-Math.pow(1-p,3);
-    el.textContent=Math.round(ease*target).toLocaleString();
-    if(p<1)requestAnimationFrame(step);
-    else el.textContent=target.toLocaleString();
-  }
-  requestAnimationFrame(step);
-}
-const counterObs=new IntersectionObserver(entries=>{
-  if(entries[0].isIntersecting){
-    animCounter('cnt-1',15284);
-    animCounter('cnt-2',716);
-    animCounter('cnt-3',34582);
-    animCounter('cnt-4',8947);
-    counterObs.disconnect();
-  }
-});
-const statsEl=document.getElementById('stats');
-if(statsEl)counterObs.observe(statsEl);
-
-// ============================================================
-//  COUNTDOWN
-// ============================================================
+// ══ COUNTDOWN ══
+const launchDate=(()=>{const d=new Date();d.setDate(d.getDate()+15);d.setHours(0,0,0,0);return d;})();
 function updateCd(){
-  const launch=new Date('2025-03-01T00:00:00Z');
-  const now=new Date();
-  const diff=Math.max(0,launch-now);
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor((diff%86400000)/3600000);
-  const m=Math.floor((diff%3600000)/60000);
-  const s=Math.floor((diff%60000)/1000);
-  document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
-  document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
-  document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
-  document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
+  const diff=Math.max(0,launchDate-new Date());
+  document.getElementById('cd-d').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
 }
 updateCd();setInterval(updateCd,1000);
 
-// ============================================================
-//  MODAL LOGIC
-// ============================================================
-let tasks={1:false,2:false,3:false,4:false};
+// ══ MODAL ══
+function openModal(){document.getElementById('modal-apply').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('modal-apply').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('modal-apply').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-function openModal(){
-  document.getElementById('modal-apply').classList.add('open');
-  document.body.style.overflow='hidden';
+// ══ TASKS ══
+const tasksDone={task1:false,task2:false,task3:false,task4:false};
+function schedTask(id,delay){setTimeout(()=>markTask(id),delay);}
+function markTask(id){
+  tasksDone[id]=true;
+  const el=document.getElementById(id);
+  el.classList.add('done');el.querySelector('.task-icon').textContent='✅';checkBtn();
 }
-function closeModal(){
-  document.getElementById('modal-apply').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('modal-apply').addEventListener('click',function(e){
-  if(e.target===this)closeModal();
-});
-
-function completeTask(n){
-  tasks[n]=true;
-  const item=document.getElementById('task-'+n);
-  item.classList.add('completed');
-  item.querySelector('.task-status').textContent='✅';
-  checkApply();
-}
-
-function checkApply(){
-  const email=document.getElementById('input-email').value.trim();
-  const wallet=document.getElementById('input-wallet').value.trim();
-  const allTasks=Object.values(tasks).every(Boolean);
+function checkBtn(){
+  const email=document.getElementById('inp-email').value.trim();
+  const wallet=document.getElementById('inp-wallet').value.trim();
+  const allTasks=Object.values(tasksDone).every(Boolean);
   const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validWallet=wallet.length>=10;
-  document.getElementById('apply-btn').disabled=!(validEmail&&validWallet&&allTasks);
+  const ready=validEmail&&validWallet&&allTasks;
+  document.getElementById('apply-btn').disabled=!ready;
+  const done=Object.values(tasksDone).filter(Boolean).length;
+  document.getElementById('prog-hint').textContent=allTasks?'All tasks complete — you can now apply!':'Tasks completed: '+done+' / 4';
+  if(allTasks)document.getElementById('prog-hint').style.color='#00FF88';
 }
 
-function submitApply(){
-  const email=document.getElementById('input-email').value.trim();
-  const wallet=document.getElementById('input-wallet').value.trim();
-  // Store for dashboard
-  window._userEmail=email;
-  window._userWallet=wallet;
-  window._userCode='OCS-'+Math.random().toString(36).substring(2,8).toUpperCase();
-  window._userPos=Math.floor(Math.random()*500+200);
-  // Show success
-  document.getElementById('form-view').style.display='none';
-  document.getElementById('success-view').style.display='block';
+// ══ FORM SUBMIT ══
+function handleSubmit(e){
+  const email=document.getElementById('inp-email').value.trim();
+  const wallet=document.getElementById('inp-wallet').value.trim();
+  document.getElementById('hidden-email').value=email;
+  document.getElementById('hidden-wallet').value=wallet;
+  const btn=document.getElementById('apply-btn');
+  btn.disabled=true;btn.textContent='SUBMITTING...';
+  setTimeout(()=>{document.getElementById('form-view').style.display='none';document.getElementById('success-view').style.display='block';showToast();},1400);
 }
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),5000);}
 
-function openDashboard(){
-  closeModal();
-  // Populate dashboard
-  document.getElementById('dash-email').textContent=window._userEmail||'pioneer@domain.com';
-  document.getElementById('dash-wallet').textContent=window._userWallet||'0x...';
-  document.getElementById('dash-refcode').textContent=window._userCode||'OCS-X72K9A';
-  document.getElementById('dash-reflink').textContent='https://oceanuschain.io/ref/'+(window._userCode||'OCS-X72K9A');
-  document.getElementById('dash-uid').textContent='UID: '+(window._userCode||'OCS-X72K9A');
-  document.getElementById('dash-rank').textContent=window._userPos||381;
-  document.getElementById('dash-pos').textContent=window._userPos||381;
-  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  document.getElementById('modal-dashboard').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeDashboard(){
-  document.getElementById('modal-dashboard').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('modal-dashboard').addEventListener('click',function(e){
-  if(e.target===this)closeDashboard();
+// ══ LEADERBOARD ══
+const pioneers=[['OceanMaster',15840],['DeepWhale',14320],['BlueNode',13100],['EtherSailor',12500],['OceanGuardian',11980],['NeptuneX',11200],['OceanPilot',10800],['TideRunner',9900],['AbyssWalker',9200],['DeepCurrent',8700],['SeaLegend',8100],['AquaNode',7500],['OCSHolder',6900],['OceanMiner',6400],['BlueTitan',5800],['WaveHunter',5200],['DarkOcean',4700],['EtherOcean',4100],['DeepExplorer',3600],['OceanKing',3100]];
+const lbEl=document.getElementById('lb-list');
+pioneers.forEach(([name,pts],i)=>{
+  const row=document.createElement('div');row.className='lb-row reveal';row.style.transitionDelay=(i*.03)+'s';
+  const rc=i<3?'lb-rank t3':'lb-rank';
+  const badge=i===0?'<span class="lb-badge">PIONEER</span>':'';
+  row.innerHTML='<div class="'+rc+'">#'+(i+1)+'</div><div class="lb-av">'+name[0]+'</div><div class="lb-name">'+name+'</div>'+badge+'<div class="lb-pts">'+pts.toLocaleString()+' PTS</div>';
+  lbEl.appendChild(row);
 });
+setInterval(()=>{const rows=document.querySelectorAll('.lb-row');if(!rows.length)return;const r=rows[Math.floor(Math.random()*rows.length)];r.style.background='rgba(0,184,255,.07)';setTimeout(()=>{r.style.background='';},360);},2600);
 
-function copyRef(){
-  const link='https://oceanuschain.io/ref/'+(window._userCode||'OCS-X72K9A');
-  navigator.clipboard.writeText(link).catch(()=>{});
-  const btn=document.querySelector('.copy-btn');
-  const orig=btn.textContent;
-  btn.textContent='COPIED ✓';
-  btn.style.background='var(--blue)';btn.style.color='#000';
-  setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2000);
+// ══ COUNTERS ══
+function animCountFrom(id,from,target){
+  const el=document.getElementById(id);if(!el)return;
+  el.textContent=from.toLocaleString();
+  let start=null;
+  (function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/1800,1),e=1-Math.pow(1-p,3);
+    const val=Math.round(from+e*(target-from));
+    if(!isNaN(val))el.textContent=val.toLocaleString();
+    if(p<1)requestAnimationFrame(step);
+  })();
 }
+function animCount(id,target){animCountFrom(id,0,target);}
 
-// MOBILE MENU
-function openMobileMenu(){
-  document.getElementById('mobile-menu').classList.add('open');
-  document.getElementById('menu-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeMobileMenu(){
-  document.getElementById('mobile-menu').classList.remove('open');
-  document.getElementById('menu-overlay').classList.remove('open');
-  document.body.style.overflow='';
-}
+// ══ OS WINDOW MANAGEMENT ══
+let zTop=50;
+const winStates={};
+const winMeta={
+  'win-hero':{icon:'🌊',label:'Oceanus Chain'},
+  'win-stats':{icon:'📊',label:'Ecosystem Stats'},
+  'win-leaderboard':{icon:'🏆',label:'Pioneers'},
+  'win-how':{icon:'⚙️',label:'How It Works'},
+  'win-whitepaper':{icon:'📄',label:'Whitepaper'},
+};
+let dragState=null;
+document.addEventListener('mousemove',e=>{
+  if(!dragState)return;
+  const{win:w,sx,sy,sl,st}=dragState;
+  const maxT=window.innerHeight-46-30;
+  w.style.left=(sl+e.clientX-sx)+'px';
+  w.style.top=Math.max(0,Math.min(maxT,st+e.clientY-sy))+'px';
+});
+document.addEventListener('mouseup',()=>{dragState=null;});
 
-// SMOOTH SCROLL
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const target=document.querySelector(a.getAttribute('href'));
-    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+function makeDraggable(winEl,handle){
+  handle.addEventListener('mousedown',e=>{
+    if(e.target.classList.contains('wbtn'))return;
+    if(winStates[winEl.id]?.maximized)return;
+    dragState={win:winEl,sx:e.clientX,sy:e.clientY,sl:parseInt(winEl.style.left)||0,st:parseInt(winEl.style.top)||0};
+    focusWin(winEl.id);e.preventDefault();
   });
+}
+
+function focusWin(id){
+  document.querySelectorAll('.os-win').forEach(w=>w.classList.remove('focused'));
+  const w=document.getElementById(id);if(w){w.classList.add('focused');w.style.zIndex=++zTop;}
+  document.querySelectorAll('.tb-wbtn').forEach(b=>b.classList.remove('active-win'));
+  const tb=document.getElementById('tb-'+id);if(tb)tb.classList.add('active-win');
+}
+
+function revealWindow(id){
+  document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('visible'));
+}
+
+function openWindow(id){
+  const w=document.getElementById(id);if(!w)return;
+  if(!winStates[id])winStates[id]={maximized:false};
+  if(!w._placed){placeWindow(id);w._placed=true;}
+  w.style.display='flex';
+  w.classList.remove('win-opening');void w.offsetWidth;w.classList.add('win-opening');
+  focusWin(id);
+  setTimeout(()=>revealWindow(id),150);
+  updateTbWins();
+}
+
+function closeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.style.display='none';updateTbWins();
+}
+function minimizeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.style.display='none';updateTbWins();
+}
+function maximizeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  const st=winStates[id]||(winStates[id]={});
+  if(!st.maximized){
+    st.prevL=w.style.left;st.prevT=w.style.top;st.prevW=w.style.width;st.prevH=w.style.height;
+    w.style.left='0';w.style.top='0';w.style.width='100%';w.style.height='calc(100vh - 46px)';w.style.maxHeight='calc(100vh - 46px)';
+    st.maximized=true;
+  } else {
+    w.style.left=st.prevL;w.style.top=st.prevT;w.style.width=st.prevW;w.style.height=st.prevH||'';w.style.maxHeight='';
+    st.maximized=false;
+  }
+}
+
+// Cascade positions for windows
+const cascadeBase={x:110,y:36};let cascadeOff=0;
+const presetPos={
+  'win-hero':{l:null,t:36,w:600},'win-stats':{l:null,t:56,w:520},
+  'win-leaderboard':{l:null,t:46,w:480},'win-how':{l:null,t:50,w:600},
+  'win-whitepaper':{l:null,t:36,w:680},
+};
+function placeWindow(id){
+  const w=document.getElementById(id);if(!w)return;
+  const dw=window.innerWidth,dh=window.innerHeight-46;
+  const p=presetPos[id]||{};
+  const ww=Math.min(p.w||500,dw-40);
+  const wl=Math.max(10,Math.min((dw-ww)/2+cascadeOff*28,(dw-ww-10)));
+  const wt=Math.max(10,Math.min((p.t||50)+cascadeOff*28,(dh-200)));
+  w.style.width=ww+'px';w.style.left=wl+'px';w.style.top=wt+'px';
+  cascadeOff=(cascadeOff+1)%5;
+}
+
+function initOS(){
+  document.querySelectorAll('.os-win').forEach(w=>{
+    const tb=w.querySelector('.win-tb');
+    if(tb)makeDraggable(w,tb);
+  });
+  buildTbWins();updateClock();
+}
+
+function buildTbWins(){
+  const c=document.getElementById('tb-wins');if(!c)return;c.innerHTML='';
+  Object.entries(winMeta).forEach(([id,info])=>{
+    const b=document.createElement('button');
+    b.className='tb-wbtn';b.id='tb-'+id;
+    b.innerHTML='<span class="tb-wbtn-ico">'+info.icon+'</span>'+info.label;
+    b.addEventListener('click',()=>{
+      const w=document.getElementById(id);
+      if(!w||w.style.display==='none'){openWindow(id);}
+      else if(w.classList.contains('focused')){minimizeWin(id);}
+      else{focusWin(id);}
+    });
+    c.appendChild(b);
+  });
+}
+
+function updateTbWins(){
+  Object.keys(winMeta).forEach(id=>{
+    const w=document.getElementById(id);
+    const tb=document.getElementById('tb-'+id);
+    if(!tb)return;
+    if(!w||w.style.display==='none')tb.classList.remove('active-win');
+  });
+}
+
+// ══ START MENU ══
+function toggleStartMenu(){
+  const m=document.getElementById('start-menu');m.classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('start-menu'),sb=document.getElementById('start-btn');
+  if(m&&sb&&!m.contains(e.target)&&!sb.contains(e.target))m.classList.remove('open');
 });
 
-// Re-observe reveals when site becomes visible
-const siteEl=document.getElementById('site');
-const siteObserver=new MutationObserver(()=>{
-  if(siteEl.classList.contains('visible')){
-    setTimeout(observeReveals,100);
-    siteObserver.disconnect();
-  }
-});
-siteObserver.observe(siteEl,{attributes:true,attributeFilter:['class']});
+// ══ CLOCK ══
+function updateClock(){
+  const cn=document.getElementById('sys-clock'),dn=document.getElementById('sys-date');
+  if(!cn)return;
+  const n=new Date();
+  cn.textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  dn.textContent=n.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+}
+setInterval(updateClock,1000);
 
-// LIVE LEADERBOARD FLICKER (simulated)
-setInterval(()=>{
-  const rows=document.querySelectorAll('.lb-row');
-  if(rows.length){
-    const randomRow=rows[Math.floor(Math.random()*rows.length)];
-    randomRow.style.background='rgba(0,184,255,0.08)';
-    setTimeout(()=>{randomRow.style.background='';},400);
-  }
-},2800);
+// ══ MOBILE FALLBACK ══
+function openMob(){}function closeMob(){}
+
+// On mobile: skip gate, show everything immediately
+if(window.innerWidth<=768){
+  document.querySelectorAll('.os-win').forEach(w=>w.style.display='flex');
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+  // counters already hardcoded in HTML, no animation needed
+}{}
 </script>
 </body>
 </html>
