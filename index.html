@@ -19,9 +19,20 @@
 html{scroll-behavior:smooth;}
 body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidden;cursor:none;height:100vh;width:100vw;user-select:none;}
 @media(max-width:768px){
-  body{overflow-y:auto;overflow-x:hidden;height:auto;min-height:100vh;}
+  body{overflow-y:auto;overflow-x:hidden;height:auto;min-height:100vh;cursor:auto;}
   /* Remove expensive backdrop-filter on mobile */
   .os-win,.modal,.nft-modal,#start-menu{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+  /* Fix fixed/absolute layout so page actually renders on mobile & GitHub Pages */
+  #site{position:relative!important;height:auto!important;min-height:100vh!important;}
+  #site.visible{opacity:1!important;pointer-events:all!important;}
+  #desktop{position:relative!important;bottom:auto!important;min-height:calc(100vh - 46px)!important;overflow:visible!important;}
+  #taskbar{position:fixed;bottom:0;left:0;right:0;}
+  /* Windows stack vertically instead of floating */
+  .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;margin-bottom:10px!important;border-radius:6px!important;}
+  /* Desktop icons row on mobile */
+  .dsk-icons{position:relative!important;top:auto!important;left:auto!important;flex-direction:row!important;flex-wrap:wrap!important;padding:10px 8px 4px!important;gap:6px!important;}
+  /* Start menu full width on mobile */
+  #start-menu{width:100%!important;left:0!important;right:0!important;border-radius:8px 8px 0 0!important;}
 }
 
 /* ══ CURSOR ══ */
@@ -1290,26 +1301,4 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <div class="success-view" id="success-view">
         <!-- Congrats header -->
         <div class="congrats-burst">
-          <div class="congrats-ring"></div>
-          <div class="congrats-icon">🌊</div>
-        </div>
-        <div class="success-title">CONGRATULATIONS!</div>
-        <div class="success-badge">PIONEER STATUS UNLOCKED</div>
-        <p class="success-sub">You have secured your place in the Oceanus Chain ecosystem.<br>Your application is confirmed — welcome to the deep.</p>
-
-        <!-- Referral section -->
-        <div class="referral-box">
-          <div class="referral-label">
-            <span class="referral-dot"></span>
-            YOUR PERSONAL REFERRAL LINK
-          </div>
-          <div class="referral-link-row">
-            <div class="referral-link-text" id="referral-link-display">oceanus.io/ref/loading...</div>
-            <button class="referral-copy-btn" id="copy-btn" onclick="copyReferral()">COPY</button>
-          </div>
-          <div class="referral-copied" id="referral-copied">✓ Copied to clipboard!</div>
-        </div>
-
-        <!-- Share message -->
-        <div class="share-msg">
-          <div class="share-msg-title">🏆 SHAR
+          <div class="congrats-
