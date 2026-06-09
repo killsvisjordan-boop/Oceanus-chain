@@ -18,7 +18,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidden;cursor:none;height:100vh;width:100vw;user-select:none;}
-@media(max-width:768px){body{overflow-y:auto;overflow-x:hidden;}}
+@media(max-width:768px){body{overflow-y:auto;overflow-x:hidden;height:auto;min-height:100vh;}}
 
 /* ══ CURSOR ══ */
 #cursor{width:10px;height:10px;background:var(--blue);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .25s,height .25s;box-shadow:0 0 10px var(--blue),0 0 24px var(--blue);}
@@ -31,7 +31,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 #ocean-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 
 /* ══ LOADING / OS BOOT ══ */
-#screen-loading{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at center,#020c1e 0%,#000 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s ease;}
+#screen-loading{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at center,#020c1e 0%,#000 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s ease;touch-action:auto;}
 #screen-loading.fade{opacity:0;pointer-events:none;}
 .ld-logo{width:90px;height:90px;animation:logoPulse 2s ease-in-out infinite;filter:drop-shadow(0 0 18px var(--blue));}
 @keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 18px var(--blue));}50%{filter:drop-shadow(0 0 40px var(--glow)) drop-shadow(0 0 64px var(--ocean));}}
@@ -46,7 +46,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 .ld-pct{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);letter-spacing:2px;}
 
 /* ══ GATE / OS LOGIN ══ */
-#screen-gate{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .6s ease;}
+#screen-gate{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .6s ease;touch-action:auto;}
 #screen-gate.show{opacity:1;pointer-events:all;}
 #screen-gate.hide{opacity:0;pointer-events:none;}
 .gate-win{background:rgba(4,11,24,.97);border:1px solid rgba(0,184,255,.28);border-radius:8px 8px 4px 4px;width:420px;max-width:92vw;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 40px rgba(0,184,255,.08),inset 0 1px 0 rgba(255,255,255,.05);animation:winOpen .45s cubic-bezier(.22,.61,.36,1);}
@@ -1308,4 +1308,4 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
         <!-- Share message -->
         <div class="share-msg">
           <div class="share-msg-title">🏆 SHARE &amp; BE THE TOP 1 BEFORE LAUNCH</div>
-          <p class="share-msg-text">The more you share, the more points you collect.<br>Top referrers unlock exclusive $OCS allocations and lifet
+          <p class="share-msg-text">The more you share, the more points you coll
