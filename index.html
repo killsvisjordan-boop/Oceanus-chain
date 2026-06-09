@@ -18,7 +18,11 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidden;cursor:none;height:100vh;width:100vw;user-select:none;}
-@media(max-width:768px){body{overflow-y:auto;overflow-x:hidden;height:auto;min-height:100vh;}}
+@media(max-width:768px){
+  body{overflow-y:auto;overflow-x:hidden;height:auto;min-height:100vh;}
+  /* Remove expensive backdrop-filter on mobile */
+  .os-win,.modal,.nft-modal,#start-menu{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+}
 
 /* ══ CURSOR ══ */
 #cursor{width:10px;height:10px;background:var(--blue);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .25s,height .25s;box-shadow:0 0 10px var(--blue),0 0 24px var(--blue);}
@@ -1307,5 +1311,3 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 
         <!-- Share message -->
         <div class="share-msg">
-          <div class="share-msg-title">🏆 SHARE &amp; BE THE TOP 1 BEFORE LAUNCH</div>
-          <p class="share-msg-text">The more you share, the more points you coll
