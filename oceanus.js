@@ -523,3 +523,115 @@ document.addEventListener('click', function(e){
   var om = document.getElementById('ocs-buy-modal');
   if (om && e.target===om) closeOcsBuyModal();
 });
+
+/* ═══════════════════════════════════════════════════════
+   CSP-SAFE EVENT DISPATCHER
+   Replaces inline onclick/ondblclick (which Vercel's CSP
+   blocks). Reads data-onclick / data-ondblclick attributes
+   and routes them to the correct function. No eval used.
+═══════════════════════════════════════════════════════ */
+(function () {
+  // Whitelist of callable actions → real functions
+  var ACTIONS = {
+    enterSite: function () { enterSite(); },
+    openModal: function () { openModal(); },
+    closeModal: function () { closeModal(); },
+    submitModal: function () { submitModal(); },
+    toggleStartMenu: function () { toggleStartMenu(); },
+    openOcsBuyModal: function () { openOcsBuyModal(); },
+    closeOcsBuyModal: function () { closeOcsBuyModal(); },
+    goDirectStep: function () { goDirectStep(); },
+    goBackStep: function () { goBackStep(); },
+    copyOcsAddr: function () { copyOcsAddr(); },
+    openWindow: function (arg) { openWindow(arg); },
+    closeWin: function (arg) { closeWin(arg); },
+    minimizeWin: function (arg) { minimizeWin(arg); },
+    maximizeWin: function (arg) { maximizeWin(arg); },
+    selectAmt: function (arg, el) { selectAmt(parseFloat(arg), el); }
+  };
+
+  // Parse a call string like "openWindow('win-hero')" or
+  // "openWindow('win-how');toggleStartMenu()" into [{name, arg}]
+  function parseCalls(str) {
+    var calls = [];
+    // Split on ; for chained calls
+    str.split(';').forEach(function (part) {
+      part = part.trim();
+      if (!part) return;
+      var m = part.match(/^(\w+)\s*\((.*)\)$/);
+      if (!m) return;
+      var name = m[1];
+      var argsRaw = m[2].trim();
+      var arg = null;
+      if (argsRaw) {
+        // Take first argument, strip quotes; "this" → element handled later
+        var first = argsRaw.split(',')[0].trim();
+        if (first === 'this') {
+          arg = 'this';
+        } else {
+          arg = first.replace(/^['"]|['"]$/g, '');
+        }
+      }
+      calls.push({ name: name, arg: arg });
+    });
+    return calls;
+  }
+
+  function runAction(str, el) {
+    parseCalls(str).forEach(function (call) {
+      var fn = ACTIONS[call.name];
+      if (!fn) return;
+      try {
+        if (call.name === 'selectAmt') {
+          fn(call.arg, el);
+        } else if (call.arg === 'this') {
+          fn(el);
+        } else {
+          fn(call.arg);
+        }
+      } catch (err) {
+        // swallow — don't break other handlers
+      }
+    });
+  }
+
+  // Single delegated click listener
+  document.addEventListener('click', function (e) {
+    var node = e.target;
+    // Walk up to find an element with data-onclick
+    while (node && node !== document) {
+      if (node.getAttribute && node.getAttribute('data-onclick')) {
+        runAction(node.getAttribute('data-onclick'), node);
+        break;
+      }
+      node = node.parentNode;
+    }
+  });
+
+  // Delegated dblclick listener (desktop icons)
+  document.addEventListener('dblclick', function (e) {
+    var node = e.target;
+    while (node && node !== document) {
+      if (node.getAttribute && node.getAttribute('data-ondblclick')) {
+        runAction(node.getAttribute('data-ondblclick'), node);
+        break;
+      }
+      node = node.parentNode;
+    }
+  });
+
+  // On touch devices, make single-tap work for desktop icons too
+  document.addEventListener('click', function (e) {
+    var node = e.target;
+    while (node && node !== document) {
+      if (node.getAttribute && node.getAttribute('data-ondblclick') && !node.getAttribute('data-onclick')) {
+        // Only fire on touch (no precise pointer)
+        if (window.matchMedia && window.matchMedia('(hover: none)').matches) {
+          runAction(node.getAttribute('data-ondblclick'), node);
+        }
+        break;
+      }
+      node = node.parentNode;
+    }
+  });
+})();
