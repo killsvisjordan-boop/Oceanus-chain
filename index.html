@@ -582,7 +582,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="gate-lock">🔒</span>
       <div class="gate-title">ACCESS RESTRICTED</div>
       <p class="gate-sub">Only selected pioneers will gain access to the Oceanus ecosystem. Prove your worth and enter the deep.</p>
-      <button class="btn-gate" onclick="enterSite()">ENTER THE DEEP</button>
+      <button class="btn-gate" data-onclick="enterSite()">ENTER THE DEEP</button>
       <div class="gate-eth">$OCS — ETHEREUM NETWORK</div>
     </div>
   </div>
@@ -596,35 +596,35 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 
   <!-- ── DESKTOP ICONS ── -->
   <div class="dsk-icons">
-    <div class="d-ico" ondblclick="openWindow('win-hero')" title="Oceanus Chain">
+    <div class="d-ico" data-ondblclick="openWindow('win-hero')" title="Oceanus Chain">
       <span class="d-ico-em">🌊</span>
       <span class="d-ico-lbl">Oceanus Chain</span>
     </div>
-    <div class="d-ico" ondblclick="openWindow('win-stats')" title="Ecosystem Stats">
+    <div class="d-ico" data-ondblclick="openWindow('win-stats')" title="Ecosystem Stats">
       <span class="d-ico-em">📊</span>
       <span class="d-ico-lbl">Ecosystem Stats</span>
     </div>
-    <div class="d-ico" ondblclick="openWindow('win-leaderboard')" title="Hall of Pioneers">
+    <div class="d-ico" data-ondblclick="openWindow('win-leaderboard')" title="Hall of Pioneers">
       <span class="d-ico-em">🏆</span>
       <span class="d-ico-lbl">Hall of Pioneers</span>
     </div>
-    <div class="d-ico" ondblclick="openWindow('win-how')" title="How It Works">
+    <div class="d-ico" data-ondblclick="openWindow('win-how')" title="How It Works">
       <span class="d-ico-em">⚙️</span>
       <span class="d-ico-lbl">How It Works</span>
     </div>
-    <div class="d-ico" ondblclick="openWindow('win-whitepaper')" title="Whitepaper">
+    <div class="d-ico" data-ondblclick="openWindow('win-whitepaper')" title="Whitepaper">
       <span class="d-ico-em">📄</span>
       <span class="d-ico-lbl">Whitepaper</span>
     </div>
-    <div class="d-ico" ondblclick="openModal()" title="Apply Now">
+    <div class="d-ico" data-ondblclick="openModal()" title="Apply Now">
       <span class="d-ico-em">✉️</span>
       <span class="d-ico-lbl">Apply Now</span>
     </div>
-    <div class="d-ico" ondblclick="openWindow('win-partners')" title="Partners">
+    <div class="d-ico" data-ondblclick="openWindow('win-partners')" title="Partners">
       <span class="d-ico-em">🤝</span>
       <span class="d-ico-lbl">Partners</span>
     </div>
-    <div class="d-ico" ondblclick="openWindow('win-buy-ocs')" title="Buy $OCS">
+    <div class="d-ico" data-ondblclick="openWindow('win-buy-ocs')" title="Buy $OCS">
       <span class="d-ico-em">💎</span>
       <span class="d-ico-lbl">Buy $OCS</span>
     </div>
@@ -638,9 +638,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">💎</span>
       <span class="win-tb-title">BUY $OCS — Oceanus Chain Presale · Live</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-buy-ocs')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-buy-ocs')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-buy-ocs')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-buy-ocs')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-buy-ocs')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-buy-ocs')">✕</button>
       </div>
     </div>
     <div class="win-body">
@@ -723,7 +723,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 
       <!-- BUY BUTTON -->
       <div class="reveal rd2">
-        <button class="ocs-buy-btn" onclick="openOcsBuyModal()">💎 BUY $OCS NOW</button>
+        <button class="ocs-buy-btn" data-onclick="openOcsBuyModal()">💎 BUY $OCS NOW</button>
       </div>
 
       <!-- Live Activity Feed -->
@@ -784,9 +784,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">🌊</span>
       <span class="win-tb-title">OCEANUS CHAIN — $OCS · Powered by Ethereum</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-hero')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-hero')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-hero')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-hero')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-hero')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-hero')">✕</button>
       </div>
     </div>
     <div class="win-body" id="hero-body">
@@ -805,13 +805,13 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
           <div class="cd-block"><span class="cd-num" id="cd-s">00</span><div class="cd-unit">Secs</div></div>
         </div>
       </div>
-      <div class="reveal rd3"><button class="btn-enter-hero" onclick="openModal()">SECURE YOUR SPOT</button></div>
+      <div class="reveal rd3"><button class="btn-enter-hero" data-onclick="openModal()">SECURE YOUR SPOT</button></div>
       <!-- CTA -->
       <div class="cta-mini reveal rd4">
         <p class="cta-mini-eyebrow">THE TIDE IS TURNING</p>
         <h2 class="cta-title-inner">CLAIM YOUR POSITION<br>IN THE DEEP</h2>
         <p class="cta-sub-inner">Only <strong style="color:var(--blue);">2,790 spots remain.</strong> Once the waitlist closes, access is exclusive to verified pioneers only.</p>
-        <button class="btn-cta" onclick="openModal()">SECURE YOUR SPOT</button>
+        <button class="btn-cta" data-onclick="openModal()">SECURE YOUR SPOT</button>
       </div>
     </div>
     <div class="win-sb">
@@ -829,9 +829,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">📊</span>
       <span class="win-tb-title">ECOSYSTEM STATS · Live Network Data</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-stats')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-stats')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-stats')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-stats')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-stats')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-stats')">✕</button>
       </div>
     </div>
     <div class="win-body" id="stats">
@@ -859,9 +859,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">🏆</span>
       <span class="win-tb-title">HALL OF PIONEERS · Top Leaderboard</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-leaderboard')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-leaderboard')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-leaderboard')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-leaderboard')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-leaderboard')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-leaderboard')">✕</button>
       </div>
     </div>
     <div class="win-body" id="leaderboard">
@@ -887,9 +887,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">⚙️</span>
       <span class="win-tb-title">HOW IT WORKS · Pioneer Protocol</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-how')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-how')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-how')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-how')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-how')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-how')">✕</button>
       </div>
     </div>
     <div class="win-body" id="how">
@@ -916,9 +916,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">📄</span>
       <span class="win-tb-title">WHITEPAPER · Official Documentation v2035</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-whitepaper')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-whitepaper')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-whitepaper')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-whitepaper')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-whitepaper')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-whitepaper')">✕</button>
       </div>
     </div>
     <div class="win-body" id="whitepaper">
@@ -1060,9 +1060,9 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="win-tb-icon">🤝</span>
       <span class="win-tb-title">PARTNERSHIPS · Oceanus Chain Network</span>
       <div class="win-ctrls">
-        <button class="wbtn wbtn-min" onclick="minimizeWin('win-partners')">—</button>
-        <button class="wbtn wbtn-max" onclick="maximizeWin('win-partners')">□</button>
-        <button class="wbtn wbtn-cls" onclick="closeWin('win-partners')">✕</button>
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-partners')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-partners')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-partners')">✕</button>
       </div>
     </div>
     <div class="win-body">
@@ -1172,7 +1172,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
        TASKBAR
   ═════════════════════════════ -->
   <div id="taskbar">
-    <button id="start-btn" onclick="toggleStartMenu()">
+    <button id="start-btn" data-onclick="toggleStartMenu()">
       <svg width="18" height="18" viewBox="0 0 140 140" fill="none">
         <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="2" opacity="0.5"/>
         <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="#00B8FF" opacity="0.5"/>
@@ -1207,21 +1207,21 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
     <div class="sm-cols">
       <div class="sm-col">
         <div class="sm-col-head">APPLICATIONS</div>
-        <div class="sm-item" onclick="openWindow('win-hero');toggleStartMenu()"><span class="sm-item-ico">🌊</span>Oceanus Chain</div>
-        <div class="sm-item" onclick="openWindow('win-stats');toggleStartMenu()"><span class="sm-item-ico">📊</span>Ecosystem Stats</div>
-        <div class="sm-item" onclick="openWindow('win-leaderboard');toggleStartMenu()"><span class="sm-item-ico">🏆</span>Hall of Pioneers</div>
-        <div class="sm-item" onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
-        <div class="sm-item" onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
-        <div class="sm-item" onclick="openWindow('win-partners');toggleStartMenu()"><span class="sm-item-ico">🤝</span>Partners</div>
-        <div class="sm-item" onclick="openWindow('win-buy-ocs');toggleStartMenu()"><span class="sm-item-ico">💎</span>Buy $OCS</div>
+        <div class="sm-item" data-onclick="openWindow('win-hero');toggleStartMenu()"><span class="sm-item-ico">🌊</span>Oceanus Chain</div>
+        <div class="sm-item" data-onclick="openWindow('win-stats');toggleStartMenu()"><span class="sm-item-ico">📊</span>Ecosystem Stats</div>
+        <div class="sm-item" data-onclick="openWindow('win-leaderboard');toggleStartMenu()"><span class="sm-item-ico">🏆</span>Hall of Pioneers</div>
+        <div class="sm-item" data-onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
+        <div class="sm-item" data-onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
+        <div class="sm-item" data-onclick="openWindow('win-partners');toggleStartMenu()"><span class="sm-item-ico">🤝</span>Partners</div>
+        <div class="sm-item" data-onclick="openWindow('win-buy-ocs');toggleStartMenu()"><span class="sm-item-ico">💎</span>Buy $OCS</div>
       </div>
       <div class="sm-col">
         <div class="sm-col-head">QUICK ACCESS</div>
-        <div class="sm-item" onclick="openModal();toggleStartMenu()"><span class="sm-item-ico">✉️</span>Apply Now</div>
+        <div class="sm-item" data-onclick="openModal();toggleStartMenu()"><span class="sm-item-ico">✉️</span>Apply Now</div>
         <div class="sm-sep"></div>
-        <a class="sm-item" href="https://x.com/OCEANUSCHAIN" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">🐦</span>Twitter / X</a>
-        <a class="sm-item" href="https://t.me/Oceanuschain" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">💬</span>Telegram</a>
-        <a class="sm-item" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" style="text-decoration:none;color:inherit;" onclick="toggleStartMenu()"><span class="sm-item-ico">👥</span>Community</a>
+        <a class="sm-item" href="https://x.com/OCEANUSCHAIN" target="_blank" style="text-decoration:none;color:inherit;" data-onclick="toggleStartMenu()"><span class="sm-item-ico">🐦</span>Twitter / X</a>
+        <a class="sm-item" href="https://t.me/Oceanuschain" target="_blank" style="text-decoration:none;color:inherit;" data-onclick="toggleStartMenu()"><span class="sm-item-ico">💬</span>Telegram</a>
+        <a class="sm-item" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" style="text-decoration:none;color:inherit;" data-onclick="toggleStartMenu()"><span class="sm-item-ico">👥</span>Community</a>
       </div>
     </div>
     <div class="sm-foot">
@@ -1246,7 +1246,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
     <div class="ocs-modal-tb">
       <span style="font-size:13px;">💎</span>
       <span style="flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);margin-left:8px;" id="ocs-modal-title">BUY $OCS — SELECT AMOUNT</span>
-      <button class="ocs-modal-close" onclick="closeOcsBuyModal()">✕</button>
+      <button class="ocs-modal-close" data-onclick="closeOcsBuyModal()">✕</button>
     </div>
     <div class="ocs-modal-inner">
 
@@ -1261,10 +1261,10 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <div id="ocs-step-1">
         <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:14px;">STEP 1 — SELECT PURCHASE AMOUNT</div>
         <div class="ocs-amt-grid">
-          <div class="ocs-amt-btn" onclick="selectAmt(100,this)">$100<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-100"></span></div>
-          <div class="ocs-amt-btn" onclick="selectAmt(300,this)">$300<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-300"></span></div>
-          <div class="ocs-amt-btn" onclick="selectAmt(600,this)">$600<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-600"></span></div>
-          <div class="ocs-amt-btn" onclick="selectAmt(1000,this)">$1,000<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-1000"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(100,this)">$100<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-100"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(300,this)">$300<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-300"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(600,this)">$600<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-600"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(1000,this)">$1,000<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-1000"></span></div>
         </div>
         <div class="ocs-custom-wrap">
           <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px;">CUSTOM AMOUNT (USD)</div>
@@ -1280,7 +1280,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
             <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;margin-top:3px;">≈ $<span id="ocs-calc-usd">0.00</span></div>
           </div>
         </div>
-        <button class="ocs-action-btn" id="ocs-step1-next" onclick="goDirectStep()" disabled>SEND ETH →</button>
+        <button class="ocs-action-btn" id="ocs-step1-next" data-onclick="goDirectStep()" disabled>SEND ETH →</button>
       </div>
 
       <!-- ── STEP 2: SEND ETH ── -->
@@ -1290,7 +1290,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
           <div class="ocs-eth-addr-label">OFFICIAL RECEIVING ADDRESS</div>
           <div class="ocs-eth-addr-val" id="ocs-eth-addr">0x7E7a9d68C6F08ad6b7EaEBBD2ba7133bc492b283</div>
           <div class="ocs-eth-actions">
-            <button class="ocs-copy-addr-btn" id="ocs-copy-addr-btn" onclick="copyOcsAddr()">📋 COPY ADDRESS</button>
+            <button class="ocs-copy-addr-btn" id="ocs-copy-addr-btn" data-onclick="copyOcsAddr()">📋 COPY ADDRESS</button>
 
           </div>
         </div>
@@ -1302,59 +1302,4 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
             <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:4px;">SEND EXACTLY</div>
             <div style="font-family:'Orbitron',monospace;font-size:18px;color:var(--blue);letter-spacing:2px;" id="ocs-send-usd">$0</div>
             <div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.35);margin-top:4px;" id="ocs-send-eth">≈ 0.000 ETH</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:4px;">YOU RECEIVE</div>
-            <div style="font-family:'Orbitron',monospace;font-size:15px;color:var(--success);letter-spacing:1px;" id="ocs-recv-ocs">0 OCS</div>
-          </div>
-        </div>
-        <div style="background:rgba(255,160,0,.06);border:1px solid rgba(255,160,0,.2);border-radius:3px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:rgba(255,200,80,.7);line-height:1.65;">
-          ⚠️ Send <strong>only ETH</strong> on Ethereum mainnet. OCS tokens distributed after presale closes.
-        </div>
-        <button class="ocs-action-btn" onclick="closeOcsBuyModal()">✅ I'VE SENT ETH — CLOSE</button>
-        <div style="text-align:center;margin-top:10px;">
-          <span style="font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);letter-spacing:2px;cursor:pointer;" onclick="goBackStep()">← BACK</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════
-     PIONEER APPLY MODAL
-═══════════════════════════════════ -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <div class="modal-tb">
-      <span class="modal-tb-icon">✉️</span>
-      <span class="modal-tb-title">PIONEER APPLICATION — OCEANUS CHAIN</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-inner">
-      <div id="modal-content">
-        <div class="modal-title">SECURE YOUR SPOT</div>
-        <div class="modal-sub">Join the Oceanus Chain pioneer waitlist before access closes forever.</div>
-        <div class="field-wrap">
-          <label class="field-label">Email Address</label>
-          <input class="field-input" id="modal-email" type="email" placeholder="pioneer@example.com">
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">ETH Wallet Address (optional)</label>
-          <input class="field-input" id="modal-wallet" type="text" placeholder="0x...">
-        </div>
-        <button class="btn-submit-modal" onclick="submitModal()">SECURE MY SPOT →</button>
-      </div>
-      <div class="success-view" id="success-view">
-        <div class="congrats-burst"><div class="congrats-ring"></div><span class="congrats-icon">🌊</span></div>
-        <div class="success-title">PIONEER CONFIRMED</div>
-        <div class="success-badge">ACCESS SECURED</div>
-        <p class="success-sub">You're in. You'll be among the first contacted when exclusive Oceanus Chain access opens.</p>
-        <button class="btn-close-success" onclick="closeModal()">CLOSE</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="./oceanus.js"></script>
-</body>
-</html>
+          </
