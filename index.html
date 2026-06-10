@@ -337,7 +337,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
   #start-menu.open{display:block!important;}
   #site{position:static!important;overflow:visible!important;height:auto!important;}
   #desktop{position:static;overflow:visible;padding:12px;padding-bottom:60px;display:flex;flex-direction:column;}
-  .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;display:flex!important;animation:none!important;}
+  .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;animation:none!important;}
   .win-body{overflow:visible!important;padding:16px 18px;height:auto!important;}
   .reveal{opacity:1!important;transform:none!important;}
   .stats-grid{grid-template-columns:1fr 1fr;}
@@ -358,6 +358,170 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
   .hero-headline{font-size:19px;}
   .gate-title{font-size:17px;}
 }
+
+/* ══ BUY $OCS WINDOW ══ */
+.ocs-presale-bar-wrap{background:rgba(0,0,0,.4);border:1px solid rgba(0,184,255,.18);border-radius:4px;padding:14px 16px;margin-bottom:16px;position:relative;overflow:hidden;}
+.ocs-presale-bar-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.ocs-presale-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.ocs-presale-text{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--blue);text-shadow:0 0 10px var(--blue);}
+.ocs-presale-pct-text{font-family:'Space Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;}
+.ocs-progress-track{height:12px;background:rgba(0,0,0,.5);border-radius:6px;overflow:hidden;border:1px solid rgba(0,184,255,.12);position:relative;}
+.ocs-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#004488,var(--ocean),var(--glow));position:relative;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.ocs-progress-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:22px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35));animation:shimmer 1.8s ease-in-out infinite;}
+@keyframes shimmer{0%,100%{opacity:.4;}50%{opacity:1;}}
+.ocs-progress-fill::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,transparent 60%);border-radius:6px;}
+
+/* live stats grid */
+.ocs-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.ocs-stat{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.12);padding:10px 8px;text-align:center;border-radius:3px;transition:all .3s;position:relative;overflow:hidden;}
+.ocs-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:.3s;}
+.ocs-stat:hover{background:rgba(0,184,255,.08);border-color:rgba(0,184,255,.26);}
+.ocs-stat:hover::before{opacity:1;}
+.ocs-stat-val{font-family:'Orbitron',monospace;font-size:clamp(10px,1.4vw,13px);font-weight:700;color:var(--blue);text-shadow:0 0 10px rgba(0,184,255,.5);display:block;letter-spacing:1px;}
+.ocs-stat-lbl{font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-top:3px;text-transform:uppercase;}
+
+/* buy button */
+.ocs-buy-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:12px;letter-spacing:5px;border:none;cursor:pointer;font-weight:900;transition:all .3s;box-shadow:0 0 28px rgba(0,184,255,.4),0 4px 20px rgba(0,0,0,.4);border-radius:3px;position:relative;overflow:hidden;margin-bottom:12px;}
+.ocs-buy-btn::before{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-20deg);transition:left .5s;}
+.ocs-buy-btn:hover::before{left:140%;}
+.ocs-buy-btn:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,184,255,.6),0 8px 28px rgba(0,0,0,.4);}
+
+/* activity feed */
+.ocs-activity-wrap{background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.1);border-radius:3px;padding:10px 12px;margin-bottom:12px;max-height:130px;overflow:hidden;position:relative;}
+.ocs-activity-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:32px;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none;}
+.ocs-activity-head{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:8px;}
+.ocs-activity-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 1.5s infinite;flex-shrink:0;}
+#ocs-activity-list{display:flex;flex-direction:column;gap:4px;}
+.ocs-act-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.07);border-radius:2px;animation:actSlideIn .4s ease;font-size:11px;letter-spacing:.3px;}
+@keyframes actSlideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+.ocs-act-addr{font-family:'Space Mono',monospace;font-size:9px;color:var(--blue);flex-shrink:0;}
+.ocs-act-msg{color:rgba(255,255,255,.55);flex:1;}
+.ocs-act-amt{font-family:'Orbitron',monospace;font-size:9px;color:var(--success);flex-shrink:0;}
+.ocs-act-time{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);flex-shrink:0;}
+
+/* urgency row */
+.ocs-urgency{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:14px;}
+.ocs-urg-box{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.12);padding:10px 12px;border-radius:3px;text-align:center;}
+.ocs-urg-val{font-family:'Orbitron',monospace;font-size:clamp(13px,2vw,17px);font-weight:900;color:#fff;letter-spacing:2px;}
+.ocs-urg-lbl{font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-top:3px;text-transform:uppercase;}
+.ocs-urg-accent{color:var(--blue);}
+.ocs-urg-warn{color:#ff9500;}
+
+/* price panel */
+.ocs-price-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.ocs-pp-card{background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.12);padding:10px;border-radius:3px;text-align:center;}
+.ocs-pp-val{font-family:'Orbitron',monospace;font-size:clamp(11px,1.5vw,14px);font-weight:700;color:var(--blue);letter-spacing:1px;}
+.ocs-pp-lbl{font-size:8px;letter-spacing:1.2px;color:rgba(255,255,255,.28);margin-top:4px;}
+.ocs-pp-up{color:var(--success);font-size:9px;font-family:'Space Mono',monospace;margin-top:3px;}
+
+/* security row */
+.ocs-security{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px;background:rgba(0,184,255,.03);border:1px solid rgba(0,184,255,.1);border-radius:3px;margin-bottom:12px;}
+.ocs-sec-item{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.4);}
+.ocs-sec-icon{font-size:11px;}
+
+/* social proof */
+.ocs-social{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:14px;}
+.ocs-soc-card{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.1);padding:10px;border-radius:3px;text-align:center;}
+.ocs-soc-val{font-family:'Orbitron',monospace;font-size:clamp(12px,1.6vw,16px);font-weight:700;color:#fff;letter-spacing:1px;}
+.ocs-soc-lbl{font-size:8px;letter-spacing:1.2px;color:rgba(255,255,255,.28);margin-top:3px;}
+
+/* BUY MODAL */
+#ocs-buy-modal{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.9);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s;}
+#ocs-buy-modal.open{opacity:1;pointer-events:all;}
+.ocs-modal{background:rgba(4,12,28,.99);border:1px solid rgba(0,184,255,.28);width:100%;max-width:520px;border-radius:8px 8px 4px 4px;position:relative;transform:translateY(20px) scale(.97);transition:transform .35s;max-height:92vh;overflow-y:auto;box-shadow:0 24px 90px rgba(0,0,0,.95),0 0 60px rgba(0,184,255,.08);}
+#ocs-buy-modal.open .ocs-modal{transform:none;}
+.ocs-modal-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8,#103578 50%,#0a2868);border-bottom:1px solid rgba(0,184,255,.2);border-radius:7px 7px 0 0;position:sticky;top:0;z-index:10;flex-shrink:0;}
+.ocs-modal-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.ocs-modal-close{background:linear-gradient(180deg,#e84848,#be2020);width:17px;height:17px;border-radius:3px;border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;transition:filter .15s;margin-left:auto;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.ocs-modal-close:hover{filter:brightness(1.3);}
+.ocs-modal-inner{padding:22px 24px;}
+
+/* Step indicator */
+.ocs-steps{display:flex;align-items:center;gap:0;margin-bottom:20px;}
+.ocs-step-dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(0,184,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:9px;color:rgba(255,255,255,.3);flex-shrink:0;transition:all .3s;}
+.ocs-step-dot.active{border-color:var(--blue);color:var(--blue);box-shadow:0 0 12px rgba(0,184,255,.4);}
+.ocs-step-dot.done{background:var(--blue);border-color:var(--blue);color:#000;}
+.ocs-step-line{flex:1;height:1px;background:rgba(0,184,255,.15);}
+.ocs-step-line.done{background:var(--blue);}
+
+/* Amount selector */
+.ocs-amt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
+.ocs-amt-btn{padding:12px 8px;background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.18);color:#fff;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .25s;text-align:center;}
+.ocs-amt-btn:hover{background:rgba(0,184,255,.12);border-color:rgba(0,184,255,.36);}
+.ocs-amt-btn.selected{background:rgba(0,184,255,.18);border-color:var(--blue);box-shadow:0 0 14px rgba(0,184,255,.25);}
+.ocs-custom-wrap{margin-bottom:14px;}
+.ocs-custom-inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Orbitron',monospace;font-size:14px;outline:none;border-radius:3px;transition:all .3s;}
+.ocs-custom-inp:focus{border-color:var(--blue);background:rgba(0,184,255,.04);box-shadow:0 0 14px rgba(0,184,255,.12);}
+.ocs-calc-result{background:rgba(0,184,255,.06);border:1px solid rgba(0,184,255,.18);border-radius:3px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
+.ocs-calc-label{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4);}
+.ocs-calc-val{font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:var(--blue);text-shadow:0 0 14px rgba(0,184,255,.5);letter-spacing:2px;}
+
+/* Payment method */
+.ocs-pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.ocs-pay-card{padding:16px 12px;background:rgba(0,184,255,.04);border:2px solid rgba(0,184,255,.15);border-radius:4px;cursor:pointer;text-align:center;transition:all .3s;}
+.ocs-pay-card:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.38);}
+.ocs-pay-card.selected{border-color:var(--blue);background:rgba(0,184,255,.12);box-shadow:0 0 20px rgba(0,184,255,.18);}
+.ocs-pay-icon{font-size:24px;margin-bottom:7px;}
+.ocs-pay-name{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:#fff;margin-bottom:4px;}
+.ocs-pay-desc{font-size:10px;color:rgba(255,255,255,.35);line-height:1.5;}
+
+/* Direct send panel */
+.ocs-direct-panel{display:none;}
+.ocs-direct-panel.active{display:block;}
+.ocs-eth-addr-box{background:rgba(0,0,0,.5);border:1px solid rgba(0,184,255,.22);border-radius:3px;padding:14px;margin-bottom:12px;}
+.ocs-eth-addr-label{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.ocs-eth-addr-label::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);}
+.ocs-eth-addr-val{font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);word-break:break-all;line-height:1.6;letter-spacing:.5px;}
+.ocs-eth-actions{display:flex;gap:8px;margin-top:10px;}
+.ocs-copy-addr-btn{flex:1;padding:8px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.25);color:var(--blue);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;}
+.ocs-copy-addr-btn:hover{background:rgba(0,184,255,.2);}
+.ocs-copy-addr-btn.copied{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.3);color:var(--success);}
+.ocs-qr-wrap{display:flex;justify-content:center;margin:12px 0;}
+.ocs-qr-canvas{border:2px solid rgba(0,184,255,.25);border-radius:4px;background:#fff;padding:6px;}
+.ocs-instructions{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:3px;padding:12px 14px;margin-bottom:14px;}
+.ocs-instr-title{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:9px;}
+.ocs-instr-step{display:flex;gap:9px;margin-bottom:7px;font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;}
+.ocs-instr-num{width:17px;height:17px;border-radius:50%;background:rgba(0,184,255,.15);border:1px solid rgba(0,184,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:8px;color:var(--blue);flex-shrink:0;}
+.ocs-txhash-wrap{margin-bottom:14px;}
+.ocs-txhash-inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Space Mono',monospace;font-size:11px;outline:none;border-radius:3px;transition:all .3s;}
+.ocs-txhash-inp:focus{border-color:var(--blue);background:rgba(0,184,255,.04);}
+.ocs-txhash-inp::placeholder{color:rgba(255,255,255,.2);}
+
+/* Wallet panel */
+.ocs-wallet-panel{display:none;}
+.ocs-wallet-panel.active{display:block;}
+.ocs-wallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.ocs-wallet-opt{padding:12px 8px;background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.15);border-radius:4px;cursor:pointer;text-align:center;transition:all .3s;}
+.ocs-wallet-opt:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.35);}
+.ocs-wallet-opt-icon{font-size:22px;margin-bottom:5px;}
+.ocs-wallet-opt-name{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.6);}
+.ocs-wallet-status{background:rgba(0,0,0,.4);border:1px solid rgba(0,184,255,.15);border-radius:3px;padding:14px;margin-bottom:14px;display:none;}
+.ocs-wallet-status.visible{display:block;}
+.ocs-ws-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:11px;}
+.ocs-ws-key{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.35);}
+.ocs-ws-val{font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.5px;}
+.ocs-ws-net{display:flex;align-items:center;gap:5px;}
+.ocs-ws-net-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 5px var(--success);}
+.ocs-disconnect-btn{padding:6px 14px;background:rgba(232,72,72,.1);border:1px solid rgba(232,72,72,.25);color:#e84848;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;}
+.ocs-disconnect-btn:hover{background:rgba(232,72,72,.2);}
+
+/* Generic action btn */
+.ocs-action-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.3);border-radius:3px;margin-top:4px;}
+.ocs-action-btn:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.5);}
+.ocs-action-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.ocs-back-btn{padding:8px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;margin-right:8px;}
+.ocs-back-btn:hover{background:rgba(255,255,255,.08);color:#fff;}
+
+/* Success state */
+.ocs-success-view{display:none;text-align:center;padding:8px 0;}
+.ocs-success-icon{font-size:48px;margin-bottom:12px;display:block;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
+.ocs-success-title{font-family:'Orbitron',monospace;font-size:18px;letter-spacing:3px;font-weight:900;background:linear-gradient(135deg,#fff,var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.ocs-success-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.8;margin-bottom:18px;}
+.ocs-tx-info{background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.18);border-radius:3px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.5px;word-break:break-all;text-align:left;margin-bottom:14px;}
+
+/* Notification toast for OCS */
+.ocs-toast{position:fixed;bottom:60px;right:16px;background:rgba(4,14,32,.97);border:1px solid rgba(0,184,255,.28);border-radius:4px;padding:10px 16px;font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:1px;z-index:800;transform:translateX(120%);transition:transform .35s cubic-bezier(.22,.61,.36,1);box-shadow:0 8px 32px rgba(0,0,0,.8),0 0 20px rgba(0,184,255,.12);}
+.ocs-toast.show{transform:translateX(0);}
 </style>
 </head>
 <body>
@@ -460,12 +624,162 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
       <span class="d-ico-em">🤝</span>
       <span class="d-ico-lbl">Partners</span>
     </div>
+    <div class="d-ico" ondblclick="openWindow('win-buy-ocs')" title="Buy $OCS">
+      <span class="d-ico-em">💎</span>
+      <span class="d-ico-lbl">Buy $OCS</span>
+    </div>
   </div>
+
+  <!-- ════════════════════════════
+       WINDOW: BUY $OCS PRESALE
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-buy-ocs" style="display:none;width:660px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-buy-ocs">
+      <span class="win-tb-icon">💎</span>
+      <span class="win-tb-title">BUY $OCS — Oceanus Chain Presale · Live</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" onclick="minimizeWin('win-buy-ocs')">—</button>
+        <button class="wbtn wbtn-max" onclick="maximizeWin('win-buy-ocs')">□</button>
+        <button class="wbtn wbtn-cls" onclick="closeWin('win-buy-ocs')">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+
+      <!-- Presale loading bar -->
+      <div class="reveal">
+        <div class="ocs-presale-bar-wrap">
+          <div class="ocs-presale-label">
+            <span class="ocs-presale-text" id="ocs-presale-label-text">OCEANUS PRESALE LOADING...</span>
+            <span class="ocs-presale-pct-text" id="ocs-presale-pct-label">86% FILLED</span>
+          </div>
+          <div class="ocs-progress-track">
+            <div class="ocs-progress-fill" id="ocs-progress-fill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Stats -->
+      <div class="reveal rd1">
+        <div class="ocs-stats-grid">
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-price">$0.0085</span>
+            <div class="ocs-stat-lbl">Current Price</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-next-price">$0.0120</span>
+            <div class="ocs-stat-lbl">Next Price</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-raised">$731,450</span>
+            <div class="ocs-stat-lbl">Total Raised</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-supply">13.8M</span>
+            <div class="ocs-stat-lbl">Remaining Supply</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-holders">4,217</span>
+            <div class="ocs-stat-lbl">Holders</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-txns">9,843</span>
+            <div class="ocs-stat-lbl">Transactions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Urgency indicators -->
+      <div class="reveal rd1">
+        <div class="ocs-urgency">
+          <div class="ocs-urg-box">
+            <div class="ocs-urg-val ocs-urg-accent" id="ocs-alloc-pct">14%</div>
+            <div class="ocs-urg-lbl">Allocation Remaining</div>
+          </div>
+          <div class="ocs-urg-box">
+            <div class="ocs-urg-val ocs-urg-warn" id="ocs-next-price-timer">02:14:38</div>
+            <div class="ocs-urg-lbl">Next Price Increase</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Price Panel -->
+      <div class="reveal rd2">
+        <div class="ocs-price-panel">
+          <div class="ocs-pp-card">
+            <div class="ocs-pp-val" id="pp-current">$0.0085</div>
+            <div class="ocs-pp-lbl">Current OCS Price</div>
+          </div>
+          <div class="ocs-pp-card">
+            <div class="ocs-pp-val" id="pp-next">$0.0120</div>
+            <div class="ocs-pp-lbl">Next Stage Price</div>
+          </div>
+          <div class="ocs-pp-card">
+            <div class="ocs-pp-val" style="color:var(--success);" id="pp-increase">+41.2%</div>
+            <div class="ocs-pp-lbl">Price Increase</div>
+            <div class="ocs-pp-up" id="pp-return">10× potential</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUY BUTTON -->
+      <div class="reveal rd2">
+        <button class="ocs-buy-btn" onclick="openOcsBuyModal()">💎 BUY $OCS NOW</button>
+      </div>
+
+      <!-- Live Activity Feed -->
+      <div class="reveal rd3">
+        <div class="ocs-activity-wrap">
+          <div class="ocs-activity-head">
+            <span class="ocs-activity-dot"></span>LIVE PURCHASE ACTIVITY
+          </div>
+          <div id="ocs-activity-list"></div>
+        </div>
+      </div>
+
+      <!-- Social Proof -->
+      <div class="reveal rd3">
+        <div class="ocs-social">
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-wallets">4,217</div>
+            <div class="ocs-soc-lbl">Wallets Participating</div>
+          </div>
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-today">138</div>
+            <div class="ocs-soc-lbl">Purchases Today</div>
+          </div>
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-largest">$12,500</div>
+            <div class="ocs-soc-lbl">Largest Purchase</div>
+          </div>
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-recent">$300</div>
+            <div class="ocs-soc-lbl">Most Recent</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="reveal rd4">
+        <div class="ocs-security">
+          <div class="ocs-sec-item"><span class="ocs-sec-icon">✅</span>Smart Contract Verified</div>
+          <div class="ocs-sec-item"><span class="ocs-sec-icon">🔒</span>Secure Wallet Connection</div>
+          <div class="ocs-sec-item"><span class="ocs-sec-icon">◆</span>Ethereum Network</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>PRESALE LIVE</span>
+      <span class="wsb-item"><span class="wsb-dot blue"></span>ETH MAINNET</span>
+      <span class="wsb-item" style="margin-left:auto;" id="ocs-sb-stage">STAGE 1 · 86% FILLED</span>
+    </div>
+  </div>
+
 
   <!-- ════════════════════════════
        WINDOW: HERO / WELCOME
   ═════════════════════════════ -->
-  <div class="os-win" id="win-hero" style="width:600px;left:150px;top:36px;max-height:calc(100vh - 90px);">
+  <div class="os-win" id="win-hero" style="display:none;width:600px;max-height:calc(100vh - 90px);">
     <div class="win-tb" id="tb-win-hero">
       <span class="win-tb-icon">🌊</span>
       <span class="win-tb-title">OCEANUS CHAIN — $OCS · Powered by Ethereum</span>
@@ -899,6 +1213,7 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
         <div class="sm-item" onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
         <div class="sm-item" onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
         <div class="sm-item" onclick="openWindow('win-partners');toggleStartMenu()"><span class="sm-item-ico">🤝</span>Partners</div>
+        <div class="sm-item" onclick="openWindow('win-buy-ocs');toggleStartMenu()"><span class="sm-item-ico">💎</span>Buy $OCS</div>
       </div>
       <div class="sm-col">
         <div class="sm-col-head">QUICK ACCESS</div>
@@ -924,463 +1239,70 @@ body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidde
 </div><!-- /site -->
 
 <!-- ══════════════════════════════════
-     APPLY MODAL — PIONEER ACCESS
+     OCS BUY MODAL
 ═══════════════════════════════════ -->
-<div class="modal-overlay" id="modal-apply">
-  <div class="modal">
-    <div class="modal-tb">
-      <span class="modal-tb-icon">✉️</span>
-      <span class="modal-tb-title">PIONEER ACCESS — Apply for Oceanus Ecosystem</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+<div id="ocs-buy-modal">
+  <div class="ocs-modal">
+    <div class="ocs-modal-tb">
+      <span style="font-size:13px;">💎</span>
+      <span style="flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);margin-left:8px;" id="ocs-modal-title">BUY $OCS — SELECT AMOUNT</span>
+      <button class="ocs-modal-close" onclick="closeOcsBuyModal()">✕</button>
     </div>
-    <div class="modal-inner">
-      <div id="form-view">
-        <div class="modal-title">PIONEER ACCESS</div>
-        <div class="modal-sub">Complete all steps to secure your spot in the Oceanus ecosystem</div>
-        <div class="field-wrap">
-          <label class="field-label">Email Address</label>
-          <input class="field-input" type="email" id="inp-email" placeholder="pioneer@domain.com" oninput="checkBtn()">
-        </div>
-        <div class="field-wrap">
-          <label class="field-label">Ethereum Wallet Address</label>
-          <input class="field-input" type="text" id="inp-wallet" placeholder="0x..." oninput="checkBtn()">
-        </div>
-        <div class="tasks-wrap">
-          <div class="tasks-heading">Required Tasks — Complete All</div>
-          <div class="task-item" id="task1">
-            <span class="task-icon">🔒</span>
-            <span class="task-text">Follow Official X Account</span>
-            <a class="task-link" href="https://x.com/OCEANUSCHAIN" target="_blank" onclick="schedTask('task1',2500)">FOLLOW</a>
-          </div>
-          <div class="task-item" id="task2">
-            <span class="task-icon">🔒</span>
-            <span class="task-text">Retweet Official Post</span>
-            <a class="task-link" href="https://x.com/i/status/2061545461429805206" target="_blank" onclick="schedTask('task2',3000)">RETWEET</a>
-          </div>
-          <div class="task-item" id="task3">
-            <span class="task-icon">🔒</span>
-            <span class="task-text">Join the Community</span>
-            <a class="task-link" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" onclick="schedTask('task3',3000)">JOIN</a>
-          </div>
-          <div class="task-item" id="task4">
-            <span class="task-icon">🔒</span>
-            <span class="task-text">Join Official Telegram</span>
-            <a class="task-link" href="https://t.me/Oceanuschain" target="_blank" onclick="schedTask('task4',2500)">JOIN</a>
-          </div>
-        </div>
-        <div class="progress-hint" id="prog-hint">Complete all 4 tasks to unlock the apply button</div>
-        <button class="btn-submit-modal" id="apply-btn" type="button" disabled onclick="handleSubmit()">APPLY FOR ACCESS</button>
+    <div class="ocs-modal-inner">
+
+      <!-- Step indicator -->
+      <div class="ocs-steps" id="ocs-steps">
+        <div class="ocs-step-dot active" id="step-dot-1">1</div>
+        <div class="ocs-step-line" id="step-line-1"></div>
+        <div class="ocs-step-dot" id="step-dot-2">2</div>
       </div>
-      <div class="success-view" id="success-view">
-        <!-- Congrats header -->
-        <div class="congrats-burst">
-          <div class="congrats-ring"></div>
-          <div class="congrats-icon">🌊</div>
-        </div>
-        <div class="success-title">CONGRATULATIONS!</div>
-        <div class="success-badge">PIONEER STATUS UNLOCKED</div>
-        <p class="success-sub">You have secured your place in the Oceanus Chain ecosystem.<br>Your application is confirmed — welcome to the deep.</p>
 
-        <!-- Referral section -->
-        <div class="referral-box">
-          <div class="referral-label">
-            <span class="referral-dot"></span>
-            YOUR PERSONAL REFERRAL LINK
-          </div>
-          <div class="referral-link-row">
-            <div class="referral-link-text" id="referral-link-display">oceanus.io/ref/loading...</div>
-            <button class="referral-copy-btn" id="copy-btn" onclick="copyReferral()">COPY</button>
-          </div>
-          <div class="referral-copied" id="referral-copied">✓ Copied to clipboard!</div>
+      <!-- ── STEP 1: SELECT AMOUNT ── -->
+      <div id="ocs-step-1">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:14px;">STEP 1 — SELECT PURCHASE AMOUNT</div>
+        <div class="ocs-amt-grid">
+          <div class="ocs-amt-btn" onclick="selectAmt(100,this)">$100<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-100"></span></div>
+          <div class="ocs-amt-btn" onclick="selectAmt(300,this)">$300<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-300"></span></div>
+          <div class="ocs-amt-btn" onclick="selectAmt(600,this)">$600<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-600"></span></div>
+          <div class="ocs-amt-btn" onclick="selectAmt(1000,this)">$1,000<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-1000"></span></div>
         </div>
-
-        <!-- Share message -->
-        <div class="share-msg">
-          <div class="share-msg-title">🏆 SHARE &amp; BE THE TOP 1 BEFORE LAUNCH</div>
-          <p class="share-msg-text">The more you share, the more points you collect.<br>Top referrers unlock exclusive $OCS allocations and lifetime pioneer benefits.</p>
-          <div class="share-btns">
-            <a class="share-btn share-x" id="share-x" href="#" target="_blank">𝕏 SHARE ON X</a>
-            <a class="share-btn share-tg" href="https://t.me/Oceanuschain" target="_blank">✈ TELEGRAM</a>
+        <div class="ocs-custom-wrap">
+          <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px;">CUSTOM AMOUNT (USD)</div>
+          <input class="ocs-custom-inp" type="number" id="ocs-custom-amt" placeholder="Enter USD amount..." min="10" oninput="onCustomAmt(this.value)">
+        </div>
+        <div class="ocs-calc-result">
+          <div>
+            <div class="ocs-calc-label">YOU RECEIVE</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.28);font-family:'Space Mono',monospace;margin-top:3px;">@ <span id="ocs-modal-price">$0.0085</span> / OCS</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="ocs-calc-val" id="ocs-calc-ocs">0 OCS</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;margin-top:3px;">≈ $<span id="ocs-calc-usd">0.00</span></div>
           </div>
         </div>
-
-        <button class="btn-close-success" onclick="closeModal()">CLOSE ✓</button>
+        <button class="ocs-action-btn" id="ocs-step1-next" onclick="goDirectStep()" disabled>SEND ETH →</button>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- TOAST removed -->
+      <!-- ── STEP 2: SEND ETH ── -->
+      <div id="ocs-step-2" style="display:none;">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:12px;">STEP 2 — SEND ETHEREUM</div>
+        <div class="ocs-eth-addr-box">
+          <div class="ocs-eth-addr-label">OFFICIAL RECEIVING ADDRESS</div>
+          <div class="ocs-eth-addr-val" id="ocs-eth-addr">0x7E7a9d68C6F08ad6b7EaEBBD2ba7133bc492b283</div>
+          <div class="ocs-eth-actions">
+            <button class="ocs-copy-addr-btn" id="ocs-copy-addr-btn" onclick="copyOcsAddr()">📋 COPY ADDRESS</button>
 
-<script>
-// ══ CURSOR ══
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function ac(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ac);})();
-document.querySelectorAll('button,a,.stat-card,.step-card,.lb-row,.field-input,.task-item,.wp-pillar,.d-ico,.tb-wbtn,.sm-item,.wbtn').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';ring.style.width='50px';ring.style.height='50px';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='30px';ring.style.height='30px';});
-});
-document.addEventListener('click',e=>{
-  const r=document.createElement('div');
-  r.className='cursor-ripple';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';
-  document.body.appendChild(r);setTimeout(()=>r.remove(),650);
-});
-
-// ══ OCEAN CANVAS — Enhanced ══
-const cv=document.getElementById('ocean-canvas'),cx=cv.getContext('2d');
-let W,H,pts=[];
-function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
-resize();window.addEventListener('resize',resize);
-class P{
-  constructor(){this.reset();}
-  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.6+.3;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.15;this.a=Math.random()*.38+.07;this.ph=Math.random()*Math.PI*2;}
-  update(){this.x+=this.vx;this.y+=this.vy;this.ph+=.016;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();}
-  draw(){cx.save();cx.globalAlpha=this.a*(.7+.3*Math.sin(this.ph));cx.fillStyle='#00B8FF';cx.shadowColor='#00B8FF';cx.shadowBlur=4;cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fill();cx.restore();}
-}
-for(let i=0;i<130;i++)pts.push(new P());
-let t=0;
-(function draw(){
-  cx.clearRect(0,0,W,H);
-  // Deep ocean gradient base
-  const g=cx.createRadialGradient(W/2,H*.6,0,W/2,H*.6,Math.max(W,H)*.72);
-  g.addColorStop(0,'rgba(0,22,60,.22)');g.addColorStop(.5,'rgba(0,8,28,.1)');g.addColorStop(1,'rgba(0,0,0,0)');
-  cx.fillStyle=g;cx.fillRect(0,0,W,H);
-  // Light rays from top
-  for(let i=0;i<6;i++){
-    const rx2=W*(0.25+i*.1)+Math.sin(t*.08+i)*30;
-    const rg=cx.createLinearGradient(rx2,0,rx2+Math.sin(t*.06+i)*80,H*.75);
-    rg.addColorStop(0,'rgba(0,184,255,0.022)');rg.addColorStop(.6,'rgba(0,120,255,0.008)');rg.addColorStop(1,'rgba(0,0,0,0)');
-    cx.save();cx.beginPath();
-    cx.moveTo(rx2-15,0);cx.lineTo(rx2+15,0);
-    cx.lineTo(rx2+Math.sin(t*.06+i)*80+50,H*.75);
-    cx.lineTo(rx2+Math.sin(t*.06+i)*80-50,H*.75);
-    cx.closePath();cx.fillStyle=rg;cx.globalAlpha=.7+.3*Math.sin(t*.15+i);cx.fill();cx.restore();
-  }
-  // Wave layers
-  cx.save();
-  for(let w=0;w<5;w++){
-    cx.beginPath();
-    for(let x=0;x<=W;x+=3){
-      const y=H*.5+Math.sin(x*.004+t*.35+w*1.15)*26+Math.sin(x*.009+t*.25)*11+Math.sin(x*.002+t*.18+w*.8)*8;
-      x===0?cx.moveTo(x,y):cx.lineTo(x,y);
-    }
-    cx.strokeStyle='rgba(0,184,255,'+(0.04-w*.006)+')';cx.lineWidth=1.5;cx.stroke();
-  }
-  cx.restore();
-  pts.forEach(p=>{p.update();p.draw();});
-  t+=.007;requestAnimationFrame(draw);
-})();
-
-// ══ LOADING ══
-const ldTexts=['Initializing Oceanus Protocol...','Loading Ethereum Driver...','Mounting Ocean File System...','Verifying Pioneer Credentials...','Synchronizing Ocean Nodes...','Launching Oceanus Desktop...'];
-let ldI=0;
-const ldBar=document.getElementById('ld-bar'),ldPct=document.getElementById('ld-pct'),ldTxt=document.getElementById('ld-text');
-function ldSet(p){ldBar.style.width=p+'%';ldPct.textContent=Math.round(p)+'%';}
-function ldNext(){if(ldI<ldTexts.length)ldTxt.textContent=ldTexts[ldI++];}
-ldNext();
-const ldSteps=[{p:18,d:420},{p:38,d:480},{p:60,d:450},{p:80,d:400},{p:96,d:470},{p:100,d:280}];
-let si=0;
-function ldRun(){
-  if(si>=ldSteps.length){setTimeout(showGate,540);return;}
-  const s=ldSteps[si++];
-  setTimeout(()=>{ldSet(s.p);if(si%2===0)ldNext();ldRun();},s.d);
-}
-setTimeout(ldRun,350);
-function showGate(){
-  const ls=document.getElementById('screen-loading');
-  ls.classList.add('fade');
-  setTimeout(()=>{ls.style.display='none';document.getElementById('screen-gate').classList.add('show');},800);
-}
-
-// ══ ENTER SITE ══
-function enterSite(){
-  const gate=document.getElementById('screen-gate');
-  gate.classList.add('hide');
-  setTimeout(()=>{
-    gate.style.display='none';
-    const s=document.getElementById('site');
-    s.classList.add('visible');
-    if(window.innerWidth<=768){
-      // Mobile: show all windows stacked, mark all reveals visible
-      document.querySelectorAll('.os-win').forEach(w=>w.style.display='flex');
-      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
-      updateClock();
-    } else {
-      initOS();
-      openWindow('win-hero');
-      setTimeout(()=>{revealWindow('win-hero');},320);
-    }
-  },650);
-}
-function observeReveals(){}
-function observeCounters(){}
-
-// ══ COUNTDOWN ══
-const launchDate=(()=>{const d=new Date();d.setDate(d.getDate()+15);d.setHours(0,0,0,0);return d;})();
-function updateCd(){
-  const diff=Math.max(0,launchDate-new Date());
-  document.getElementById('cd-d').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
-  document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-  document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-  document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-}
-updateCd();setInterval(updateCd,1000);
-
-// ══ MODAL ══
-function openModal(){document.getElementById('modal-apply').classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){document.getElementById('modal-apply').classList.remove('open');document.body.style.overflow='';}
-document.getElementById('modal-apply').addEventListener('click',function(e){if(e.target===this)closeModal();});
-
-// ══ TASKS ══
-const tasksDone={task1:false,task2:false,task3:false,task4:false};
-function schedTask(id,delay){setTimeout(()=>markTask(id),delay);}
-function markTask(id){
-  tasksDone[id]=true;
-  const el=document.getElementById(id);
-  el.classList.add('done');el.querySelector('.task-icon').textContent='✅';checkBtn();
-}
-function checkBtn(){
-  const email=document.getElementById('inp-email').value.trim();
-  const wallet=document.getElementById('inp-wallet').value.trim();
-  const allTasks=Object.values(tasksDone).every(Boolean);
-  const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validWallet=wallet.length>=10;
-  const ready=validEmail&&validWallet&&allTasks;
-  document.getElementById('apply-btn').disabled=!ready;
-  const done=Object.values(tasksDone).filter(Boolean).length;
-  document.getElementById('prog-hint').textContent=allTasks?'All tasks complete — you can now apply!':'Tasks completed: '+done+' / 4';
-  if(allTasks)document.getElementById('prog-hint').style.color='#00FF88';
-}
-
-// ══ FORM SUBMIT ══
-function generateRefCode(email){
-  // Simple deterministic short code from email
-  let hash=0;for(let i=0;i<email.length;i++){hash=((hash<<5)-hash)+email.charCodeAt(i);hash|=0;}
-  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code='';let h=Math.abs(hash);
-  for(let i=0;i<7;i++){code+=chars[h%chars.length];h=Math.floor(h/chars.length);}
-  return 'OCS-'+code;
-}
-function handleSubmit(){
-  const email=document.getElementById('inp-email').value.trim();
-  const wallet=document.getElementById('inp-wallet').value.trim();
-  const btn=document.getElementById('apply-btn');
-  btn.disabled=true;btn.textContent='SUBMITTING...';
-
-  // Generate referral link immediately
-  const code=generateRefCode(email||wallet||Math.random().toString());
-  const refUrl='https://oceanus.io/ref/'+code;
-
-  // Send data to formsubmit.co silently in background
-  const formData=new FormData();
-  formData.append('email',email);
-  formData.append('wallet_address',wallet);
-  formData.append('source','Oceanus Chain Waitlist');
-  formData.append('_subject','New Oceanus Waitlist Registration!');
-  formData.append('_captcha','false');
-  formData.append('_template','table');
-  fetch('https://formsubmit.co/ajax/killsvisjordan@gmail.com',{
-    method:'POST',headers:{'Accept':'application/json'},body:formData
-  }).catch(()=>{});// silent fail — success screen shows regardless
-
-  // Show success screen after short delay
-  setTimeout(()=>{
-    document.getElementById('form-view').style.display='none';
-    const sv=document.getElementById('success-view');
-    sv.style.display='block';
-    document.getElementById('referral-link-display').textContent=refUrl;
-    const xText=encodeURIComponent('🌊 Just secured my spot on @OCEANUSCHAIN waitlist!\n\nJoin me before the tide reaches the world 👇\n'+refUrl+'\n\n#OceanusChain #OCS #Web3');
-    document.getElementById('share-x').href='https://x.com/intent/tweet?text='+xText;
-  },900);
-}
-function copyReferral(){
-  const link=document.getElementById('referral-link-display').textContent;
-  const btn=document.getElementById('copy-btn');
-  const copied=document.getElementById('referral-copied');
-  navigator.clipboard.writeText(link).catch(()=>{
-    // Fallback for mobile browsers
-    const ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
-  });
-  btn.textContent='✓ COPIED';btn.classList.add('copied');
-  copied.classList.add('show');
-  setTimeout(()=>{btn.textContent='COPY';btn.classList.remove('copied');copied.classList.remove('show');},2500);
-}
-// toast removed
-
-// ══ LEADERBOARD ══
-const pioneers=[['OceanMaster',15840],['DeepWhale',14320],['BlueNode',13100],['EtherSailor',12500],['OceanGuardian',11980],['NeptuneX',11200],['OceanPilot',10800],['TideRunner',9900],['AbyssWalker',9200],['DeepCurrent',8700],['SeaLegend',8100],['AquaNode',7500],['OCSHolder',6900],['OceanMiner',6400],['BlueTitan',5800],['WaveHunter',5200],['DarkOcean',4700],['EtherOcean',4100],['DeepExplorer',3600],['OceanKing',3100]];
-const lbEl=document.getElementById('lb-list');
-pioneers.forEach(([name,pts],i)=>{
-  const row=document.createElement('div');row.className='lb-row reveal';row.style.transitionDelay=(i*.03)+'s';
-  const rc=i<3?'lb-rank t3':'lb-rank';
-  const badge=i===0?'<span class="lb-badge">PIONEER</span>':'';
-  row.innerHTML='<div class="'+rc+'">#'+(i+1)+'</div><div class="lb-av">'+name[0]+'</div><div class="lb-name">'+name+'</div>'+badge+'<div class="lb-pts">'+pts.toLocaleString()+' PTS</div>';
-  lbEl.appendChild(row);
-});
-setInterval(()=>{const rows=document.querySelectorAll('.lb-row');if(!rows.length)return;const r=rows[Math.floor(Math.random()*rows.length)];r.style.background='rgba(0,184,255,.07)';setTimeout(()=>{r.style.background='';},360);},2600);
-
-// ══ COUNTERS ══
-function animCountFrom(id,from,target){
-  const el=document.getElementById(id);if(!el)return;
-  el.textContent=from.toLocaleString();
-  let start=null;
-  (function step(ts){
-    if(!start)start=ts;
-    const p=Math.min((ts-start)/1800,1),e=1-Math.pow(1-p,3);
-    const val=Math.round(from+e*(target-from));
-    if(!isNaN(val))el.textContent=val.toLocaleString();
-    if(p<1)requestAnimationFrame(step);
-  })();
-}
-function animCount(id,target){animCountFrom(id,0,target);}
-
-// ══ OS WINDOW MANAGEMENT ══
-let zTop=50;
-const winStates={};
-const winMeta={
-  'win-hero':{icon:'🌊',label:'Oceanus Chain'},
-  'win-stats':{icon:'📊',label:'Ecosystem Stats'},
-  'win-leaderboard':{icon:'🏆',label:'Pioneers'},
-  'win-how':{icon:'⚙️',label:'How It Works'},
-  'win-whitepaper':{icon:'📄',label:'Whitepaper'},
-  'win-partners':{icon:'🤝',label:'Partners'},
-};
-let dragState=null;
-document.addEventListener('mousemove',e=>{
-  if(!dragState)return;
-  const{win:w,sx,sy,sl,st}=dragState;
-  const maxT=window.innerHeight-46-30;
-  w.style.left=(sl+e.clientX-sx)+'px';
-  w.style.top=Math.max(0,Math.min(maxT,st+e.clientY-sy))+'px';
-});
-document.addEventListener('mouseup',()=>{dragState=null;});
-
-function makeDraggable(winEl,handle){
-  handle.addEventListener('mousedown',e=>{
-    if(e.target.classList.contains('wbtn'))return;
-    if(winStates[winEl.id]?.maximized)return;
-    dragState={win:winEl,sx:e.clientX,sy:e.clientY,sl:parseInt(winEl.style.left)||0,st:parseInt(winEl.style.top)||0};
-    focusWin(winEl.id);e.preventDefault();
-  });
-}
-
-function focusWin(id){
-  document.querySelectorAll('.os-win').forEach(w=>w.classList.remove('focused'));
-  const w=document.getElementById(id);if(w){w.classList.add('focused');w.style.zIndex=++zTop;}
-  document.querySelectorAll('.tb-wbtn').forEach(b=>b.classList.remove('active-win'));
-  const tb=document.getElementById('tb-'+id);if(tb)tb.classList.add('active-win');
-}
-
-function revealWindow(id){
-  document.querySelectorAll('#'+id+' .reveal').forEach(el=>el.classList.add('visible'));
-}
-
-function openWindow(id){
-  const w=document.getElementById(id);if(!w)return;
-  if(!winStates[id])winStates[id]={maximized:false};
-  if(!w._placed){placeWindow(id);w._placed=true;}
-  w.style.display='flex';
-  w.classList.remove('win-opening');void w.offsetWidth;w.classList.add('win-opening');
-  focusWin(id);
-  setTimeout(()=>revealWindow(id),150);
-  updateTbWins();
-}
-
-function closeWin(id){
-  const w=document.getElementById(id);if(!w)return;
-  w.style.display='none';updateTbWins();
-}
-function minimizeWin(id){
-  const w=document.getElementById(id);if(!w)return;
-  w.style.display='none';updateTbWins();
-}
-function maximizeWin(id){
-  const w=document.getElementById(id);if(!w)return;
-  const st=winStates[id]||(winStates[id]={});
-  if(!st.maximized){
-    st.prevL=w.style.left;st.prevT=w.style.top;st.prevW=w.style.width;st.prevH=w.style.height;
-    w.style.left='0';w.style.top='0';w.style.width='100%';w.style.height='calc(100vh - 46px)';w.style.maxHeight='calc(100vh - 46px)';
-    st.maximized=true;
-  } else {
-    w.style.left=st.prevL;w.style.top=st.prevT;w.style.width=st.prevW;w.style.height=st.prevH||'';w.style.maxHeight='';
-    st.maximized=false;
-  }
-}
-
-// Cascade positions for windows
-const cascadeBase={x:110,y:36};let cascadeOff=0;
-const presetPos={
-  'win-hero':{l:null,t:36,w:600},'win-stats':{l:null,t:56,w:520},
-  'win-leaderboard':{l:null,t:46,w:480},'win-how':{l:null,t:50,w:600},
-  'win-whitepaper':{l:null,t:36,w:680},
-};
-function placeWindow(id){
-  const w=document.getElementById(id);if(!w)return;
-  const dw=window.innerWidth,dh=window.innerHeight-46;
-  const p=presetPos[id]||{};
-  const ww=Math.min(p.w||500,dw-40);
-  const wl=Math.max(10,Math.min((dw-ww)/2+cascadeOff*28,(dw-ww-10)));
-  const wt=Math.max(10,Math.min((p.t||50)+cascadeOff*28,(dh-200)));
-  w.style.width=ww+'px';w.style.left=wl+'px';w.style.top=wt+'px';
-  cascadeOff=(cascadeOff+1)%5;
-}
-
-function initOS(){
-  document.querySelectorAll('.os-win').forEach(w=>{
-    const tb=w.querySelector('.win-tb');
-    if(tb)makeDraggable(w,tb);
-  });
-  buildTbWins();updateClock();
-}
-
-function buildTbWins(){
-  const c=document.getElementById('tb-wins');if(!c)return;c.innerHTML='';
-  Object.entries(winMeta).forEach(([id,info])=>{
-    const b=document.createElement('button');
-    b.className='tb-wbtn';b.id='tb-'+id;
-    b.innerHTML='<span class="tb-wbtn-ico">'+info.icon+'</span>'+info.label;
-    b.addEventListener('click',()=>{
-      const w=document.getElementById(id);
-      if(!w||w.style.display==='none'){openWindow(id);}
-      else if(w.classList.contains('focused')){minimizeWin(id);}
-      else{focusWin(id);}
-    });
-    c.appendChild(b);
-  });
-}
-
-function updateTbWins(){
-  Object.keys(winMeta).forEach(id=>{
-    const w=document.getElementById(id);
-    const tb=document.getElementById('tb-'+id);
-    if(!tb)return;
-    if(!w||w.style.display==='none')tb.classList.remove('active-win');
-  });
-}
-
-// ══ START MENU ══
-function toggleStartMenu(){
-  const m=document.getElementById('start-menu');m.classList.toggle('open');
-}
-document.addEventListener('click',e=>{
-  const m=document.getElementById('start-menu'),sb=document.getElementById('start-btn');
-  if(m&&sb&&!m.contains(e.target)&&!sb.contains(e.target))m.classList.remove('open');
-});
-
-// ══ CLOCK ══
-function updateClock(){
-  const cn=document.getElementById('sys-clock'),dn=document.getElementById('sys-date');
-  if(!cn)return;
-  const n=new Date();
-  cn.textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-  dn.textContent=n.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'});
-}
-setInterval(updateClock,1000);
-
-// ══ MOBILE FALLBACK ══
-function openMob(){}function closeMob(){}{}
-</script>
-</body>
-</html>
+          </div>
+        </div>
+        <div class="ocs-qr-wrap">
+          <canvas class="ocs-qr-canvas" id="ocs-qr-canvas" width="160" height="160"></canvas>
+        </div>
+        <div style="background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.15);border-radius:3px;padding:12px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:4px;">SEND EXACTLY</div>
+            <div style="font-family:'Orbitron',monospace;font-size:18px;color:var(--blue);letter-spacing:2px;" id="ocs-send-usd">$0</div>
+            <div style="font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.35);margin-top:4px;" id="ocs-send-eth">≈ 0.000 ETH</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:4px;">YOU RECEIVE</div>
+            <div style="font-family:'Orbitron',monospace;font-size:15px;color:var(--success
