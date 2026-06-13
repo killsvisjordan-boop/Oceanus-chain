@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oceanus Chain — $OCS | Oceanus OS v2035</title>
+<meta name="description" content="Oceanus Chain — Join the next-generation Web3 ecosystem. Secure your pioneer spot before the tide reaches the world.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* ══ ROOT ══ */
+:root{
+  --blue:#00B8FF;--ocean:#009DFF;--glow:#33CCFF;
+  --navy:#07111F;--dark:#050D1A;--black:#000;--white:#fff;
+  --glass:rgba(0,184,255,.07);--gb:rgba(0,184,255,.18);--success:#00FF88;
+  --tb-h:30px;--bar-h:46px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Rajdhani',sans-serif;background:#000;color:#fff;overflow:hidden;cursor:none;height:100vh;width:100vw;user-select:none;}
+@media(max-width:768px){body{overflow-y:auto;overflow-x:hidden;}}
+
+/* ══ CURSOR ══ */
+#cursor{width:10px;height:10px;background:var(--blue);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .25s,height .25s;box-shadow:0 0 10px var(--blue),0 0 24px var(--blue);}
+#cursor-ring{width:30px;height:30px;border:1px solid rgba(0,184,255,.38);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
+.cursor-ripple{position:fixed;pointer-events:none;z-index:99997;border-radius:50%;border:1px solid rgba(0,184,255,.5);animation:rippleOut .6s ease forwards;top:0;left:0;}
+@keyframes rippleOut{from{width:0;height:0;opacity:.8;transform:translate(-50%,-50%) scale(0);}to{width:56px;height:56px;opacity:0;transform:translate(-50%,-50%) scale(1);}}
+@media(hover:none){#cursor,#cursor-ring{display:none;}body{cursor:auto;}}
+
+/* ══ CANVAS ══ */
+#ocean-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+/* ══ LOADING / OS BOOT ══ */
+#screen-loading{position:fixed;inset:0;z-index:500;background:radial-gradient(ellipse at center,#020c1e 0%,#000 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s ease;}
+#screen-loading.fade{opacity:0;pointer-events:none;}
+.ld-logo{width:90px;height:90px;animation:logoPulse 2s ease-in-out infinite;filter:drop-shadow(0 0 18px var(--blue));}
+@keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 18px var(--blue));}50%{filter:drop-shadow(0 0 40px var(--glow)) drop-shadow(0 0 64px var(--ocean));}}
+.ld-os-brand{text-align:center;margin-top:2px;}
+.ld-os-title{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;letter-spacing:8px;color:#fff;text-shadow:0 0 20px var(--blue);line-height:1.2;}
+.ld-os-ver{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;color:rgba(255,255,255,.3);margin-top:4px;}
+.ld-eth{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(100,160,255,.5);margin-top:2px;}
+.ld-text{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--blue);text-shadow:0 0 14px var(--blue);min-height:16px;text-align:center;padding:0 24px;}
+.ld-bar-wrap{width:260px;max-width:80vw;height:3px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.ld-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--ocean),var(--glow));border-radius:3px;transition:width .35s ease;position:relative;}
+.ld-bar::after{content:'';position:absolute;right:0;top:-4px;width:4px;height:11px;background:var(--glow);border-radius:2px;box-shadow:0 0 10px var(--glow);}
+.ld-pct{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);letter-spacing:2px;}
+
+/* ══ GATE / OS LOGIN ══ */
+#screen-gate{position:fixed;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .6s ease;}
+#screen-gate.show{opacity:1;pointer-events:all;}
+#screen-gate.hide{opacity:0;pointer-events:none;}
+.gate-win{background:rgba(4,11,24,.97);border:1px solid rgba(0,184,255,.28);border-radius:8px 8px 4px 4px;width:420px;max-width:92vw;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 40px rgba(0,184,255,.08),inset 0 1px 0 rgba(255,255,255,.05);animation:winOpen .45s cubic-bezier(.22,.61,.36,1);}
+@keyframes winOpen{from{opacity:0;transform:scale(.93) translateY(14px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.gate-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.22);user-select:none;position:relative;}
+.gate-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);}
+.gate-tb-icon{font-size:13px;}
+.gate-tb-label{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);}
+.gate-tb-btns{display:flex;gap:3px;}
+.gtbtn{width:17px;height:17px;border-radius:3px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;transition:filter .15s;}
+.gtbtn:hover{filter:brightness(1.3);}
+.gtbtn-min{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
+.gtbtn-cls{background:linear-gradient(180deg,#e84848,#be2020);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2);}
+.gate-body{padding:30px 32px 28px;text-align:center;}
+.gate-lock{font-size:50px;filter:drop-shadow(0 0 22px var(--blue));animation:lockFloat 3s ease-in-out infinite;display:block;margin-bottom:16px;}
+@keyframes lockFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.gate-title{font-family:'Orbitron',monospace;font-size:clamp(16px,5vw,22px);letter-spacing:6px;font-weight:900;background:linear-gradient(135deg,#fff 40%,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.gate-sub{font-size:13px;color:rgba(255,255,255,.42);max-width:320px;margin:0 auto 22px;line-height:1.75;}
+.btn-gate{padding:11px 38px;background:linear-gradient(180deg,#2a8de8 0%,#1a62b0 45%,#144ea0 100%);border:1px solid rgba(0,184,255,.4);color:#fff;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;cursor:pointer;transition:all .3s;border-radius:3px;box-shadow:0 4px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.16);}
+.btn-gate:hover{background:linear-gradient(180deg,#3a9ef8,#2a72c0,#1a5ea8);box-shadow:0 0 24px rgba(0,184,255,.38),0 4px 18px rgba(0,0,0,.45);}
+.gate-eth{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.18);margin-top:18px;}
+
+/* ══ SITE / DESKTOP ══ */
+#site{position:fixed;inset:0;z-index:10;opacity:0;pointer-events:none;transition:opacity 1s ease;}
+#site.visible{opacity:1;pointer-events:all;}
+#desktop{position:absolute;inset:0;bottom:var(--bar-h);overflow:hidden;}
+
+/* ══ DESKTOP ICONS ══ */
+.dsk-icons{position:absolute;top:18px;left:14px;display:flex;flex-direction:column;gap:4px;z-index:5;}
+.d-ico{display:flex;flex-direction:column;align-items:center;gap:5px;width:72px;padding:8px 4px 6px;border-radius:4px;cursor:pointer;transition:background .15s;user-select:none;}
+.d-ico:hover{background:rgba(0,184,255,.16);backdrop-filter:blur(10px);}
+.d-ico:active{background:rgba(0,184,255,.28);}
+.d-ico-em{font-size:30px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.8)) drop-shadow(0 0 8px rgba(0,184,255,.28));}
+.d-ico-lbl{font-size:10px;color:#fff;text-align:center;line-height:1.3;letter-spacing:.3px;text-shadow:1px 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.7);word-break:break-word;max-width:70px;}
+
+/* ══ OS WINDOWS ══ */
+.os-win{position:absolute;display:flex;flex-direction:column;background:rgba(4,11,24,.93);backdrop-filter:blur(28px);border-radius:8px 8px 4px 4px;border:1px solid rgba(0,184,255,.2);box-shadow:0 8px 48px rgba(0,0,0,.78),0 0 0 1px rgba(0,184,255,.06),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden;z-index:50;transition:box-shadow .25s;}
+.os-win.focused{box-shadow:0 14px 70px rgba(0,0,0,.88),0 0 32px rgba(0,184,255,.1),0 0 0 1px rgba(0,184,255,.24);}
+.os-win.win-opening{animation:winOpen .28s cubic-bezier(.22,.61,.36,1);}
+
+/* Title bar */
+.win-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.2);cursor:grab;user-select:none;flex-shrink:0;position:relative;}
+.win-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.win-tb:active{cursor:grabbing;}
+.win-tb-icon{font-size:13px;flex-shrink:0;filter:drop-shadow(0 0 5px rgba(0,184,255,.5));}
+.win-tb-title{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 9px rgba(0,184,255,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.win-ctrls{display:flex;gap:3px;flex-shrink:0;}
+.wbtn{width:18px;height:18px;border-radius:3px;border:none;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:900;line-height:1;transition:filter .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.wbtn:hover{filter:brightness(1.3);}
+.wbtn-min{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;}
+.wbtn-max{background:linear-gradient(180deg,#3a88e0,#1e60b0);color:#fff;}
+.wbtn-cls{background:linear-gradient(180deg,#e84848,#be2020);color:#fff;}
+
+/* Window body */
+.win-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:22px 26px;scrollbar-width:thin;scrollbar-color:rgba(0,184,255,.3) rgba(0,0,0,.2);}
+.win-body::-webkit-scrollbar{width:5px;}
+.win-body::-webkit-scrollbar-track{background:rgba(0,0,0,.2);}
+.win-body::-webkit-scrollbar-thumb{background:rgba(0,184,255,.3);border-radius:3px;}
+
+/* Status bar */
+.win-sb{height:20px;display:flex;align-items:center;padding:0 12px;gap:14px;background:rgba(0,0,0,.3);border-top:1px solid rgba(0,184,255,.07);flex-shrink:0;}
+.wsb-item{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:5px;}
+.wsb-dot{width:4px;height:4px;border-radius:50%;background:var(--success);box-shadow:0 0 4px var(--success);}
+.wsb-dot.blue{background:var(--blue);box-shadow:0 0 4px var(--blue);}
+
+/* ══ TASKBAR ══ */
+#taskbar{position:fixed;bottom:0;left:0;right:0;height:var(--bar-h);background:linear-gradient(180deg,rgba(6,16,38,.97) 0%,rgba(3,9,22,.99) 100%);backdrop-filter:blur(22px);border-top:1px solid rgba(0,184,255,.18);display:flex;align-items:center;gap:3px;padding:0 5px;z-index:200;box-shadow:0 -2px 28px rgba(0,0,0,.65),inset 0 1px 0 rgba(0,184,255,.07);}
+
+/* Start button */
+#start-btn{display:flex;align-items:center;gap:7px;padding:4px 14px;height:35px;background:linear-gradient(180deg,#2a8de8 0%,#1a62b0 45%,#144ea0 100%);border:1px solid rgba(0,184,255,.42);border-radius:4px;cursor:pointer;color:#fff;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;font-weight:700;transition:all .2s;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18);}
+#start-btn:hover{background:linear-gradient(180deg,#3a9ef8,#2a72c0,#1a62aa);box-shadow:0 0 20px rgba(0,184,255,.4),0 2px 10px rgba(0,0,0,.5);}
+#start-btn svg{filter:drop-shadow(0 0 5px rgba(0,184,255,.7));}
+.tb-sep{width:1px;height:28px;background:rgba(0,184,255,.1);flex-shrink:0;margin:0 3px;}
+
+/* Window task buttons */
+#tb-wins{display:flex;gap:2px;flex:1;overflow-x:auto;padding:0 3px;}
+#tb-wins::-webkit-scrollbar{height:2px;}
+#tb-wins::-webkit-scrollbar-thumb{background:rgba(0,184,255,.2);}
+.tb-wbtn{display:flex;align-items:center;gap:6px;padding:3px 10px;height:33px;min-width:115px;max-width:155px;background:rgba(0,32,72,.45);border:1px solid rgba(0,184,255,.12);border-radius:3px;cursor:pointer;color:rgba(255,255,255,.62);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:.7px;transition:all .18s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.tb-wbtn:hover{background:rgba(0,55,120,.52);border-color:rgba(0,184,255,.26);color:#fff;}
+.tb-wbtn.active-win{background:rgba(0,68,148,.45);border-color:rgba(0,184,255,.38);color:#fff;box-shadow:inset 0 2px 5px rgba(0,0,0,.4);}
+.tb-wbtn-ico{font-size:13px;flex-shrink:0;}
+
+/* System tray */
+#sys-tray{display:flex;align-items:center;gap:10px;padding:0 10px;margin-left:auto;border-left:1px solid rgba(0,184,255,.1);height:35px;flex-shrink:0;}
+.tray-item{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.44);letter-spacing:1px;}
+.tray-net-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 2s infinite;}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tray-eth-dot{color:rgba(100,170,255,.55);font-size:12px;}
+#sys-clock{font-family:'Orbitron',monospace;font-size:11px;color:rgba(255,255,255,.65);letter-spacing:2px;text-align:right;line-height:1.2;}
+#sys-date{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.28);letter-spacing:1px;text-align:right;margin-top:1px;}
+
+/* ══ START MENU ══ */
+#start-menu{position:fixed;bottom:var(--bar-h);left:5px;width:340px;background:linear-gradient(180deg,rgba(6,17,40,.98) 0%,rgba(3,10,26,.99) 100%);backdrop-filter:blur(26px);border:1px solid rgba(0,184,255,.22);border-radius:8px 8px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,.8),0 0 24px rgba(0,184,255,.07);z-index:210;display:none;overflow:hidden;}
+#start-menu.open{display:block;animation:menuUp .22s cubic-bezier(.22,.61,.36,1);}
+@keyframes menuUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.sm-head{background:linear-gradient(135deg,#1a4a8a,#0d2d5c);padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(0,184,255,.15);}
+.sm-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#001428,#002448);border:2px solid rgba(0,184,255,.4);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 16px rgba(0,184,255,.3);flex-shrink:0;}
+.sm-info-name{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:#fff;}
+.sm-info-role{font-size:10px;color:rgba(255,255,255,.36);letter-spacing:.8px;margin-top:3px;}
+.sm-cols{display:grid;grid-template-columns:1fr 1fr;}
+.sm-col{padding:6px 0;}
+.sm-col:first-child{border-right:1px solid rgba(0,184,255,.07);}
+.sm-col-head{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.28);padding:6px 14px 2px;text-transform:uppercase;}
+.sm-item{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;transition:background .15s;color:rgba(255,255,255,.75);font-size:13px;letter-spacing:.3px;}
+.sm-item:hover{background:rgba(0,184,255,.1);color:var(--blue);}
+.sm-item-ico{font-size:15px;}
+.sm-sep{height:1px;background:rgba(0,184,255,.07);margin:3px 0;}
+.sm-foot{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid rgba(0,184,255,.1);background:rgba(0,0,0,.28);flex-wrap:wrap;gap:8px;}
+.sm-links{display:flex;gap:10px;flex-wrap:wrap;}
+.sm-link{font-size:9px;letter-spacing:.8px;color:rgba(255,255,255,.28);text-decoration:none;transition:color .2s;}
+.sm-link:hover{color:var(--blue);}
+.sm-copy{font-family:'Space Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);letter-spacing:1px;}
+
+/* ══ SECTION LABELS ══ */
+.sec-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--blue);margin-bottom:10px;text-transform:uppercase;}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(16px,3vw,26px);font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.sec-line{width:40px;height:2px;background:linear-gradient(90deg,var(--blue),transparent);margin-bottom:22px;}
+
+/* ══ HERO (inside window) ══ */
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:26px;height:1px;background:var(--blue);opacity:.5;}
+.hero-headline{font-family:'Orbitron',monospace;font-size:clamp(18px,3.2vw,32px);font-weight:900;line-height:1.1;letter-spacing:2px;background:linear-gradient(135deg,#fff 0%,var(--glow) 50%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;}
+.hero-sub{font-size:clamp(12px,1.6vw,14px);color:rgba(255,255,255,.48);max-width:480px;line-height:1.75;margin-bottom:24px;letter-spacing:.2px;}
+.cd-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:11px;text-align:center;}
+.countdown-wrap{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;}
+.cd-block{background:rgba(0,184,255,.06);border:1px solid rgba(0,184,255,.2);padding:11px 13px;min-width:62px;text-align:center;position:relative;overflow:hidden;border-radius:2px;}
+.cd-block::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.cd-num{font-family:'Orbitron',monospace;font-size:clamp(18px,3vw,30px);font-weight:900;color:var(--blue);text-shadow:0 0 18px var(--blue);display:block;line-height:1;}
+.cd-unit{font-size:7px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-top:4px;text-transform:uppercase;}
+.cd-sep{font-family:'Orbitron',monospace;font-size:20px;color:var(--blue);opacity:.35;padding-bottom:5px;}
+.btn-enter-hero{padding:12px 42px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.36);margin-bottom:14px;border-radius:2px;}
+.btn-enter-hero:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.52);}
+.scroll-hint{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.18);}
+.cta-mini{margin-top:22px;padding-top:18px;border-top:1px solid rgba(0,184,255,.08);}
+.cta-mini-eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--blue);margin-bottom:8px;}
+.cta-title-inner{font-family:'Orbitron',monospace;font-size:clamp(13px,2.2vw,20px);font-weight:900;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.cta-sub-inner{font-size:13px;color:rgba(255,255,255,.4);max-width:360px;line-height:1.75;margin-bottom:14px;}
+.btn-cta{padding:12px 38px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.32);border-radius:2px;}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.5);}
+
+/* ══ STATS ══ */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;max-width:560px;}
+.stat-card{background:var(--glass);border:1px solid var(--gb);padding:22px 16px;text-align:center;backdrop-filter:blur(8px);transition:all .35s;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:opacity .35s;}
+.stat-card:hover{background:rgba(0,184,255,.09);transform:translateY(-3px);}
+.stat-card:hover::before{opacity:1;}
+.stat-num{font-family:'Orbitron',monospace;font-size:clamp(20px,3.2vw,34px);font-weight:900;color:var(--blue);text-shadow:0 0 20px var(--blue);display:block;}
+.stat-lbl{font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.34);margin-top:5px;text-transform:uppercase;}
+
+/* ══ LEADERBOARD ══ */
+.lb-wrap{max-width:540px;}
+.live-ind{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.32);letter-spacing:2px;margin-bottom:12px;}
+.live-dot{width:5px;height:5px;background:var(--success);border-radius:50%;animation:livePulse 1.5s ease-in-out infinite;box-shadow:0 0 6px var(--success);}
+.lb-row{display:flex;align-items:center;gap:11px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04);transition:all .25s;cursor:default;}
+.lb-row:hover{background:rgba(0,184,255,.05);padding-left:20px;}
+.lb-row:hover .lb-name{color:var(--blue);}
+.lb-rank{font-family:'Orbitron',monospace;font-size:10px;color:rgba(255,255,255,.26);width:26px;text-align:right;letter-spacing:1px;}
+.lb-rank.t3{color:var(--blue);text-shadow:0 0 8px var(--blue);}
+.lb-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--ocean));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--blue);border:1px solid rgba(0,184,255,.24);flex-shrink:0;}
+.lb-name{flex:1;font-size:13px;font-weight:600;letter-spacing:.4px;transition:color .25s;}
+.lb-pts{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.26);letter-spacing:1px;}
+.lb-badge{font-size:7px;letter-spacing:2px;padding:2px 6px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.24);color:var(--blue);text-transform:uppercase;}
+
+/* ══ HOW IT WORKS ══ */
+.steps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:620px;}
+.step-card{padding:20px 16px;background:var(--glass);border:1px solid var(--gb);position:relative;overflow:hidden;transition:all .35s;}
+.step-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),transparent);transform:scaleX(0);transition:transform .35s;transform-origin:left;}
+.step-card:hover{transform:translateY(-4px);background:rgba(0,184,255,.07);}
+.step-card:hover::after{transform:scaleX(1);}
+.step-num{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:rgba(0,184,255,.11);line-height:1;margin-bottom:9px;}
+.step-ttl{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;margin-bottom:6px;}
+.step-desc{font-size:12px;color:rgba(255,255,255,.4);line-height:1.65;}
+
+/* ══ WHITEPAPER ══ */
+.wp-inner{max-width:680px;}
+.wp-section{margin-bottom:34px;}
+.wp-h2{font-family:'Orbitron',monospace;font-size:clamp(11px,1.8vw,15px);letter-spacing:2px;font-weight:700;color:var(--blue);margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid rgba(0,184,255,.12);}
+.wp-h3{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;font-weight:600;color:#fff;margin-bottom:7px;margin-top:13px;}
+.wp-p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.78;letter-spacing:.15px;margin-bottom:10px;}
+.wp-ul{list-style:none;padding:0;}
+.wp-ul li{font-size:13px;color:rgba(255,255,255,.47);line-height:1.7;padding:5px 0 5px 15px;position:relative;border-bottom:1px solid rgba(255,255,255,.03);}
+.wp-ul li::before{content:'◆';position:absolute;left:0;color:var(--blue);font-size:7px;top:9px;}
+.wp-pillar{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.1);padding:16px 18px;margin-bottom:12px;transition:all .3s;}
+.wp-pillar:hover{background:rgba(0,184,255,.07);border-color:rgba(0,184,255,.18);}
+.wp-pillar-icon{font-size:18px;margin-bottom:6px;}
+.wp-arch{background:rgba(0,0,0,.55);border:1px solid rgba(0,184,255,.14);padding:14px;font-family:'Space Mono',monospace;font-size:10px;color:rgba(0,184,255,.62);line-height:1.7;overflow-x:auto;margin:12px 0;}
+.wp-phase{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.wp-phase-num{font-family:'Orbitron',monospace;font-size:10px;color:var(--blue);white-space:nowrap;padding-top:2px;min-width:66px;}
+.wp-phase-content .wp-h3{margin-top:0;margin-bottom:5px;}
+.wp-tag{display:inline-block;font-size:8px;letter-spacing:2px;padding:2px 7px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.22);color:var(--blue);margin-right:5px;margin-top:3px;text-transform:uppercase;}
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{content:'';position:absolute;left:4px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--blue),transparent);}
+.tl-item{position:relative;padding-bottom:22px;}
+.tl-item::before{content:'';position:absolute;left:-19px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+
+/* ══ MODAL (Apply Window) ══ */
+.modal-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:rgba(4,11,24,.98);border:1px solid rgba(0,184,255,.24);width:100%;max-width:500px;border-radius:8px 8px 4px 4px;position:relative;transform:translateY(20px) scale(.97);transition:transform .35s;max-height:90vh;overflow-y:auto;box-shadow:0 20px 80px rgba(0,0,0,.9),0 0 0 1px rgba(0,184,255,.07);}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8 0%,#103578 50%,#0a2868 100%);border-bottom:1px solid rgba(0,184,255,.2);border-radius:7px 7px 0 0;position:sticky;top:0;z-index:10;flex-shrink:0;}
+.modal-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.modal-tb-icon{font-size:13px;}
+.modal-tb-title{flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);}
+.modal-close{background:linear-gradient(180deg,#e84848,#be2020);width:17px;height:17px;border-radius:3px;border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;transition:filter .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.modal-close:hover{filter:brightness(1.25);}
+.modal-inner{padding:24px 28px;}
+.modal-title{font-family:'Orbitron',monospace;font-size:18px;letter-spacing:3px;font-weight:900;margin-bottom:5px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.35);letter-spacing:.4px;margin-bottom:20px;}
+.field-wrap{margin-bottom:15px;}
+.field-label{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:6px;display:block;text-transform:uppercase;}
+.field-input{width:100%;padding:11px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;outline:none;transition:all .3s;border-radius:2px;}
+.field-input:focus{border-color:var(--blue);background:rgba(0,184,255,.04);box-shadow:0 0 14px rgba(0,184,255,.1);}
+.field-input::placeholder{color:rgba(255,255,255,.2);}
+.tasks-wrap{margin:18px 0;}
+.tasks-heading{font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:10px;text-transform:uppercase;}
+.task-item{display:flex;align-items:center;gap:11px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);margin-bottom:6px;transition:all .28s;cursor:default;border-radius:2px;}
+.task-item:hover{background:rgba(0,184,255,.06);border-color:rgba(0,184,255,.18);}
+.task-item.done{border-color:rgba(0,255,136,.18);}
+.task-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.task-text{flex:1;font-size:13px;letter-spacing:.2px;}
+.task-item.done .task-text{color:rgba(255,255,255,.36);text-decoration:line-through;}
+.task-link{font-size:8px;letter-spacing:2px;color:var(--blue);text-decoration:none;padding:4px 8px;border:1px solid rgba(0,184,255,.28);transition:all .25s;white-space:nowrap;flex-shrink:0;border-radius:2px;}
+.task-link:hover{background:var(--blue);color:#000;}
+.btn-submit-modal{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 18px rgba(0,184,255,.26);margin-top:5px;border-radius:2px;}
+.btn-submit-modal:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;}
+.btn-submit-modal:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 5px 28px rgba(0,184,255,.44);}
+.progress-hint{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:8px;letter-spacing:1px;}
+.success-view{display:none;text-align:center;padding:10px 0 4px;}
+/* Congrats burst */
+.congrats-burst{position:relative;width:80px;height:80px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;}
+.congrats-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--blue);animation:burstRing 1.2s ease forwards;}
+@keyframes burstRing{0%{transform:scale(0);opacity:1;}100%{transform:scale(1.8);opacity:0;}}
+.congrats-icon{font-size:44px;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
+@keyframes popIn{0%{transform:scale(0);}100%{transform:scale(1);}}
+.success-title{font-family:'Orbitron',monospace;font-size:clamp(18px,5vw,26px);letter-spacing:4px;font-weight:900;background:linear-gradient(135deg,#fff 30%,var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.success-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;padding:4px 14px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.35);color:var(--blue);margin-bottom:14px;border-radius:2px;}
+.success-sub{font-size:13px;color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:22px;}
+/* Referral box */
+.referral-box{background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.22);padding:16px;margin-bottom:18px;text-align:left;border-radius:4px;position:relative;overflow:hidden;}
+.referral-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.referral-label{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.36);margin-bottom:10px;}
+.referral-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 1.5s infinite;}
+.referral-link-row{display:flex;align-items:center;gap:8px;}
+.referral-link-text{flex:1;font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.18);padding:9px 12px;border-radius:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.5px;}
+.referral-copy-btn{flex-shrink:0;padding:9px 16px;background:linear-gradient(180deg,#2a8de8,#1a62b0);border:1px solid rgba(0,184,255,.4);color:#fff;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.15);}
+.referral-copy-btn:hover{background:linear-gradient(180deg,#3a9ef8,#2272c0);box-shadow:0 0 14px rgba(0,184,255,.3);}
+.referral-copy-btn.copied{background:linear-gradient(180deg,#00c853,#00952e);border-color:rgba(0,255,136,.4);}
+.referral-copied{font-family:'Space Mono',monospace;font-size:9px;color:var(--success);letter-spacing:2px;margin-top:7px;opacity:0;transition:opacity .3s;text-align:center;}
+.referral-copied.show{opacity:1;}
+/* Share message */
+.share-msg{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.1);padding:16px;margin-bottom:18px;border-radius:4px;text-align:left;}
+.share-msg-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:#fff;margin-bottom:8px;}
+.share-msg-text{font-size:12px;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:14px;}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.share-btn{padding:9px 18px;font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;text-decoration:none;border-radius:3px;transition:all .25s;font-weight:700;cursor:pointer;}
+.share-x{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;}
+.share-x:hover{background:#000;border-color:rgba(255,255,255,.5);box-shadow:0 0 12px rgba(255,255,255,.1);}
+.share-tg{background:rgba(0,136,204,.15);border:1px solid rgba(0,136,204,.35);color:#29b6f6;}
+.share-tg:hover{background:rgba(0,136,204,.25);box-shadow:0 0 12px rgba(0,136,204,.2);}
+.btn-close-success{padding:10px 34px;background:transparent;border:1px solid var(--blue);color:var(--blue);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;cursor:pointer;transition:all .28s;border-radius:2px;}
+.btn-close-success:hover{background:var(--blue);color:#000;}
+
+/* ══ PARTNERS ══ */
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.partner-card{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.12);padding:18px 12px 14px;text-align:center;transition:all .3s;cursor:default;border-radius:4px;position:relative;overflow:hidden;}
+.partner-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,255,.4),transparent);opacity:0;transition:opacity .3s;}
+.partner-card:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.3);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 16px rgba(0,184,255,.08);}
+.partner-card:hover::before{opacity:1;}
+.partner-logo-wrap{width:54px;height:54px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);border-radius:50%;border:1px solid rgba(0,184,255,.14);padding:8px;}
+.partner-logo{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+.partner-name{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:1.5px;color:#fff;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.partner-tag{font-size:7px;letter-spacing:2px;padding:2px 7px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.22);color:var(--blue);display:inline-block;text-transform:uppercase;}
+@media(max-width:768px){.partners-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:440px){.partners-grid{grid-template-columns:repeat(2,1fr);}}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.08s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.24s;}.rd4{transition-delay:.32s;}
+
+/* ══ TOAST ══ */
+/* toast removed */
+
+/* ══ MOBILE RESPONSIVE ══ */
+@media(max-width:768px){
+  body{overflow-y:auto;overflow-x:hidden;}
+  #start-menu,.dsk-icons{display:none;}
+  #start-menu.open{display:block!important;}
+  #site{position:static!important;overflow:visible!important;height:auto!important;}
+  #desktop{position:static;overflow:visible;padding:12px;padding-bottom:60px;display:flex;flex-direction:column;}
+  .os-win{position:relative!important;left:auto!important;top:auto!important;width:100%!important;max-width:100%!important;height:auto!important;max-height:none!important;margin-bottom:12px;border-radius:6px;animation:none!important;}
+  .win-body{overflow:visible!important;padding:16px 18px;height:auto!important;}
+  .reveal{opacity:1!important;transform:none!important;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .steps-grid{grid-template-columns:1fr;}
+  .wp-phase{flex-direction:column;gap:5px;}
+  .hero-headline{font-size:22px;}
+  .cd-block{min-width:58px;padding:10px 9px;}
+  #ocean-canvas{display:none;}
+  /* Taskbar mobile tweaks */
+  #taskbar{position:fixed;bottom:0;left:0;right:0;z-index:200;padding:0 6px;}
+  #tb-wins{display:none;}
+  .tb-sep{display:none;}
+  #sys-tray{margin-left:0;border-left:none;padding-left:0;gap:8px;}
+  #start-btn{font-size:8px;letter-spacing:1px;padding:4px 10px;}
+}
+@media(max-width:440px){
+  .stats-grid{grid-template-columns:1fr;}
+  .hero-headline{font-size:19px;}
+  .gate-title{font-size:17px;}
+}
+
+/* ══ BUY $OCS WINDOW ══ */
+.ocs-presale-bar-wrap{background:rgba(0,0,0,.4);border:1px solid rgba(0,184,255,.18);border-radius:4px;padding:14px 16px;margin-bottom:16px;position:relative;overflow:hidden;}
+.ocs-presale-bar-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.ocs-presale-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.ocs-presale-text{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--blue);text-shadow:0 0 10px var(--blue);}
+.ocs-presale-pct-text{font-family:'Space Mono',monospace;font-size:10px;color:var(--success);letter-spacing:2px;}
+.ocs-progress-track{height:12px;background:rgba(0,0,0,.5);border-radius:6px;overflow:hidden;border:1px solid rgba(0,184,255,.12);position:relative;}
+.ocs-progress-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#004488,var(--ocean),var(--glow));position:relative;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.ocs-progress-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:22px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35));animation:shimmer 1.8s ease-in-out infinite;}
+@keyframes shimmer{0%,100%{opacity:.4;}50%{opacity:1;}}
+.ocs-progress-fill::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,transparent 60%);border-radius:6px;}
+
+/* live stats grid */
+.ocs-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.ocs-stat{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.12);padding:10px 8px;text-align:center;border-radius:3px;transition:all .3s;position:relative;overflow:hidden;}
+.ocs-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:0;transition:.3s;}
+.ocs-stat:hover{background:rgba(0,184,255,.08);border-color:rgba(0,184,255,.26);}
+.ocs-stat:hover::before{opacity:1;}
+.ocs-stat-val{font-family:'Orbitron',monospace;font-size:clamp(10px,1.4vw,13px);font-weight:700;color:var(--blue);text-shadow:0 0 10px rgba(0,184,255,.5);display:block;letter-spacing:1px;}
+.ocs-stat-lbl{font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-top:3px;text-transform:uppercase;}
+
+/* buy button */
+.ocs-buy-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:12px;letter-spacing:5px;border:none;cursor:pointer;font-weight:900;transition:all .3s;box-shadow:0 0 28px rgba(0,184,255,.4),0 4px 20px rgba(0,0,0,.4);border-radius:3px;position:relative;overflow:hidden;margin-bottom:12px;}
+.ocs-buy-btn::before{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-20deg);transition:left .5s;}
+.ocs-buy-btn:hover::before{left:140%;}
+.ocs-buy-btn:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,184,255,.6),0 8px 28px rgba(0,0,0,.4);}
+
+/* activity feed */
+.ocs-activity-wrap{background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.1);border-radius:3px;padding:10px 12px;margin-bottom:12px;max-height:130px;overflow:hidden;position:relative;}
+.ocs-activity-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:32px;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none;}
+.ocs-activity-head{display:flex;align-items:center;gap:7px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:8px;}
+.ocs-activity-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:livePulse 1.5s infinite;flex-shrink:0;}
+#ocs-activity-list{display:flex;flex-direction:column;gap:4px;}
+.ocs-act-row{display:flex;align-items:center;gap:8px;padding:5px 8px;background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.07);border-radius:2px;animation:actSlideIn .4s ease;font-size:11px;letter-spacing:.3px;}
+@keyframes actSlideIn{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
+.ocs-act-addr{font-family:'Space Mono',monospace;font-size:9px;color:var(--blue);flex-shrink:0;}
+.ocs-act-msg{color:rgba(255,255,255,.55);flex:1;}
+.ocs-act-amt{font-family:'Orbitron',monospace;font-size:9px;color:var(--success);flex-shrink:0;}
+.ocs-act-time{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);flex-shrink:0;}
+
+/* urgency row */
+.ocs-urgency{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:14px;}
+.ocs-urg-box{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.12);padding:10px 12px;border-radius:3px;text-align:center;}
+.ocs-urg-val{font-family:'Orbitron',monospace;font-size:clamp(13px,2vw,17px);font-weight:900;color:#fff;letter-spacing:2px;}
+.ocs-urg-lbl{font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-top:3px;text-transform:uppercase;}
+.ocs-urg-accent{color:var(--blue);}
+.ocs-urg-warn{color:#ff9500;}
+
+/* price panel */
+.ocs-price-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.ocs-pp-card{background:rgba(0,0,0,.35);border:1px solid rgba(0,184,255,.12);padding:10px;border-radius:3px;text-align:center;}
+.ocs-pp-val{font-family:'Orbitron',monospace;font-size:clamp(11px,1.5vw,14px);font-weight:700;color:var(--blue);letter-spacing:1px;}
+.ocs-pp-lbl{font-size:8px;letter-spacing:1.2px;color:rgba(255,255,255,.28);margin-top:4px;}
+.ocs-pp-up{color:var(--success);font-size:9px;font-family:'Space Mono',monospace;margin-top:3px;}
+
+/* security row */
+.ocs-security{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px;background:rgba(0,184,255,.03);border:1px solid rgba(0,184,255,.1);border-radius:3px;margin-bottom:12px;}
+.ocs-sec-item{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.4);}
+.ocs-sec-icon{font-size:11px;}
+
+/* social proof */
+.ocs-social{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:14px;}
+.ocs-soc-card{background:rgba(0,0,0,.3);border:1px solid rgba(0,184,255,.1);padding:10px;border-radius:3px;text-align:center;}
+.ocs-soc-val{font-family:'Orbitron',monospace;font-size:clamp(12px,1.6vw,16px);font-weight:700;color:#fff;letter-spacing:1px;}
+.ocs-soc-lbl{font-size:8px;letter-spacing:1.2px;color:rgba(255,255,255,.28);margin-top:3px;}
+
+/* BUY MODAL */
+#ocs-buy-modal{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.9);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s;}
+#ocs-buy-modal.open{opacity:1;pointer-events:all;}
+.ocs-modal{background:rgba(4,12,28,.99);border:1px solid rgba(0,184,255,.28);width:100%;max-width:520px;border-radius:8px 8px 4px 4px;position:relative;transform:translateY(20px) scale(.97);transition:transform .35s;max-height:92vh;overflow-y:auto;box-shadow:0 24px 90px rgba(0,0,0,.95),0 0 60px rgba(0,184,255,.08);}
+#ocs-buy-modal.open .ocs-modal{transform:none;}
+.ocs-modal-tb{display:flex;align-items:center;gap:8px;padding:0 8px 0 12px;height:var(--tb-h);background:linear-gradient(180deg,#1e5aa8,#103578 50%,#0a2868);border-bottom:1px solid rgba(0,184,255,.2);border-radius:7px 7px 0 0;position:sticky;top:0;z-index:10;flex-shrink:0;}
+.ocs-modal-tb::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);}
+.ocs-modal-close{background:linear-gradient(180deg,#e84848,#be2020);width:17px;height:17px;border-radius:3px;border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;transition:filter .15s;margin-left:auto;box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+.ocs-modal-close:hover{filter:brightness(1.3);}
+.ocs-modal-inner{padding:22px 24px;}
+
+/* Step indicator */
+.ocs-steps{display:flex;align-items:center;gap:0;margin-bottom:20px;}
+.ocs-step-dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(0,184,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:9px;color:rgba(255,255,255,.3);flex-shrink:0;transition:all .3s;}
+.ocs-step-dot.active{border-color:var(--blue);color:var(--blue);box-shadow:0 0 12px rgba(0,184,255,.4);}
+.ocs-step-dot.done{background:var(--blue);border-color:var(--blue);color:#000;}
+.ocs-step-line{flex:1;height:1px;background:rgba(0,184,255,.15);}
+.ocs-step-line.done{background:var(--blue);}
+
+/* Amount selector */
+.ocs-amt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
+.ocs-amt-btn{padding:12px 8px;background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.18);color:#fff;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .25s;text-align:center;}
+.ocs-amt-btn:hover{background:rgba(0,184,255,.12);border-color:rgba(0,184,255,.36);}
+.ocs-amt-btn.selected{background:rgba(0,184,255,.18);border-color:var(--blue);box-shadow:0 0 14px rgba(0,184,255,.25);}
+.ocs-custom-wrap{margin-bottom:14px;}
+.ocs-custom-inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Orbitron',monospace;font-size:14px;outline:none;border-radius:3px;transition:all .3s;}
+.ocs-custom-inp:focus{border-color:var(--blue);background:rgba(0,184,255,.04);box-shadow:0 0 14px rgba(0,184,255,.12);}
+.ocs-calc-result{background:rgba(0,184,255,.06);border:1px solid rgba(0,184,255,.18);border-radius:3px;padding:12px 16px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
+.ocs-calc-label{font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4);}
+.ocs-calc-val{font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:var(--blue);text-shadow:0 0 14px rgba(0,184,255,.5);letter-spacing:2px;}
+
+/* Payment method */
+.ocs-pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.ocs-pay-card{padding:16px 12px;background:rgba(0,184,255,.04);border:2px solid rgba(0,184,255,.15);border-radius:4px;cursor:pointer;text-align:center;transition:all .3s;}
+.ocs-pay-card:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.38);}
+.ocs-pay-card.selected{border-color:var(--blue);background:rgba(0,184,255,.12);box-shadow:0 0 20px rgba(0,184,255,.18);}
+.ocs-pay-icon{font-size:24px;margin-bottom:7px;}
+.ocs-pay-name{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:#fff;margin-bottom:4px;}
+.ocs-pay-desc{font-size:10px;color:rgba(255,255,255,.35);line-height:1.5;}
+
+/* Direct send panel */
+.ocs-direct-panel{display:none;}
+.ocs-direct-panel.active{display:block;}
+.ocs-eth-addr-box{background:rgba(0,0,0,.5);border:1px solid rgba(0,184,255,.22);border-radius:3px;padding:14px;margin-bottom:12px;}
+.ocs-eth-addr-label{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.ocs-eth-addr-label::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);}
+.ocs-eth-addr-val{font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);word-break:break-all;line-height:1.6;letter-spacing:.5px;}
+.ocs-eth-actions{display:flex;gap:8px;margin-top:10px;}
+.ocs-copy-addr-btn{flex:1;padding:8px;background:rgba(0,184,255,.1);border:1px solid rgba(0,184,255,.25);color:var(--blue);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;}
+.ocs-copy-addr-btn:hover{background:rgba(0,184,255,.2);}
+.ocs-copy-addr-btn.copied{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.3);color:var(--success);}
+.ocs-qr-wrap{display:flex;justify-content:center;margin:12px 0;}
+.ocs-qr-canvas{border:2px solid rgba(0,184,255,.25);border-radius:4px;background:#fff;padding:6px;}
+.ocs-instructions{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:3px;padding:12px 14px;margin-bottom:14px;}
+.ocs-instr-title{font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:9px;}
+.ocs-instr-step{display:flex;gap:9px;margin-bottom:7px;font-size:11px;color:rgba(255,255,255,.5);line-height:1.5;}
+.ocs-instr-num{width:17px;height:17px;border-radius:50%;background:rgba(0,184,255,.15);border:1px solid rgba(0,184,255,.25);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:8px;color:var(--blue);flex-shrink:0;}
+.ocs-txhash-wrap{margin-bottom:14px;}
+.ocs-txhash-inp{width:100%;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);color:#fff;font-family:'Space Mono',monospace;font-size:11px;outline:none;border-radius:3px;transition:all .3s;}
+.ocs-txhash-inp:focus{border-color:var(--blue);background:rgba(0,184,255,.04);}
+.ocs-txhash-inp::placeholder{color:rgba(255,255,255,.2);}
+
+/* Wallet panel */
+.ocs-wallet-panel{display:none;}
+.ocs-wallet-panel.active{display:block;}
+.ocs-wallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.ocs-wallet-opt{padding:12px 8px;background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.15);border-radius:4px;cursor:pointer;text-align:center;transition:all .3s;}
+.ocs-wallet-opt:hover{background:rgba(0,184,255,.1);border-color:rgba(0,184,255,.35);}
+.ocs-wallet-opt-icon{font-size:22px;margin-bottom:5px;}
+.ocs-wallet-opt-name{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.6);}
+.ocs-wallet-status{background:rgba(0,0,0,.4);border:1px solid rgba(0,184,255,.15);border-radius:3px;padding:14px;margin-bottom:14px;display:none;}
+.ocs-wallet-status.visible{display:block;}
+.ocs-ws-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:11px;}
+.ocs-ws-key{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.35);}
+.ocs-ws-val{font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.5px;}
+.ocs-ws-net{display:flex;align-items:center;gap:5px;}
+.ocs-ws-net-dot{width:5px;height:5px;border-radius:50%;background:var(--success);box-shadow:0 0 5px var(--success);}
+.ocs-disconnect-btn{padding:6px 14px;background:rgba(232,72,72,.1);border:1px solid rgba(232,72,72,.25);color:#e84848;font-family:'Orbitron',monospace;font-size:8px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;}
+.ocs-disconnect-btn:hover{background:rgba(232,72,72,.2);}
+
+/* Generic action btn */
+.ocs-action-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--ocean),var(--glow));color:#000;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;border:none;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 0 22px rgba(0,184,255,.3);border-radius:3px;margin-top:4px;}
+.ocs-action-btn:hover{transform:translateY(-2px);box-shadow:0 5px 32px rgba(0,184,255,.5);}
+.ocs-action-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.ocs-wallet-box{background:rgba(0,184,255,.04);border:1px solid rgba(0,184,255,.2);border-radius:4px;padding:14px;margin-bottom:8px;}
+.ocs-wallet-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ocs-wallet-badge{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:2px;color:#000;background:var(--success);padding:2px 6px;border-radius:2px;font-weight:700;}
+.ocs-wallet-btns{display:flex;gap:8px;}
+.ocs-connect-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;background:rgba(255,255,255,.05);border:1px solid rgba(0,184,255,.25);color:#fff;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:3px;transition:all .25s;}
+.ocs-connect-btn:hover{background:rgba(0,184,255,.12);border-color:var(--blue);transform:translateY(-1px);}
+.ocs-wallet-row{display:flex;justify-content:space-between;align-items:center;}
+.ocs-wallet-addr{font-family:'Space Mono',monospace;font-size:11px;color:var(--success);}
+.ocs-or-divider{display:flex;align-items:center;text-align:center;margin:14px 0;}
+.ocs-or-divider::before,.ocs-or-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1);}
+.ocs-or-divider span{padding:0 12px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.25);}
+.ocs-back-btn{padding:8px 18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all .2s;margin-right:8px;}
+.ocs-back-btn:hover{background:rgba(255,255,255,.08);color:#fff;}
+
+/* Success state */
+.ocs-success-view{display:none;text-align:center;padding:8px 0;}
+.ocs-success-icon{font-size:48px;margin-bottom:12px;display:block;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275);}
+.ocs-success-title{font-family:'Orbitron',monospace;font-size:18px;letter-spacing:3px;font-weight:900;background:linear-gradient(135deg,#fff,var(--glow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:7px;}
+.ocs-success-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.8;margin-bottom:18px;}
+.ocs-tx-info{background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.18);border-radius:3px;padding:12px 14px;font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:.5px;word-break:break-all;text-align:left;margin-bottom:14px;}
+
+/* Notification toast for OCS */
+.ocs-toast{position:fixed;bottom:60px;right:16px;background:rgba(4,14,32,.97);border:1px solid rgba(0,184,255,.28);border-radius:4px;padding:10px 16px;font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:1px;z-index:800;transform:translateX(120%);transition:transform .35s cubic-bezier(.22,.61,.36,1);box-shadow:0 8px 32px rgba(0,0,0,.8),0 0 20px rgba(0,184,255,.12);}
+.ocs-toast.show{transform:translateX(0);}
+</style>
+</head>
+<body>
+
+<!-- ══ CURSOR ══ -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ══ CANVAS BACKGROUND ══ -->
+<canvas id="ocean-canvas"></canvas>
+
+<!-- ══════════════════════════════════
+     LOADING — OS BOOT SEQUENCE
+═══════════════════════════════════ -->
+<div id="screen-loading">
+  <svg class="ld-logo" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="70" cy="70" r="58" stroke="#009DFF" stroke-width="1" opacity="0.15"/>
+    <circle cx="70" cy="70" r="47" stroke="#00B8FF" stroke-width="0.5" opacity="0.1"/>
+    <path d="M70 18C93 18 118 40 118 70C118 100 93 122 70 122C47 122 22 100 22 70C22 40 47 18 70 18Z" stroke="#00B8FF" stroke-width="1.5" fill="none" opacity="0.4"/>
+    <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="url(#wg1)" opacity="0.25"/>
+    <path d="M70 22Q100 48 84 70Q100 92 70 118Q40 92 56 70Q40 48 70 22Z" fill="url(#wg2)" opacity="0.28"/>
+    <circle cx="70" cy="70" r="18" fill="#00B8FF" opacity="0.08" stroke="#33CCFF" stroke-width="1.5"/>
+    <circle cx="70" cy="70" r="10" fill="#00B8FF" opacity="0.15"/>
+    <path d="M57 64Q64 57 70 61Q76 57 83 64Q76 71 70 67Q64 71 57 64Z" fill="#33CCFF" opacity="0.55"/>
+    <circle cx="96" cy="42" r="3" fill="#00B8FF" opacity="0.5"/>
+    <circle cx="102" cy="55" r="2" fill="#33CCFF" opacity="0.4"/>
+    <circle cx="44" cy="96" r="2.5" fill="#009DFF" opacity="0.4"/>
+    <defs>
+      <linearGradient id="wg1" x1="22" y1="70" x2="118" y2="70"><stop offset="0" stop-color="#009DFF"/><stop offset="0.5" stop-color="#33CCFF"/><stop offset="1" stop-color="#009DFF"/></linearGradient>
+      <linearGradient id="wg2" x1="70" y1="22" x2="70" y2="118"><stop offset="0" stop-color="#00B8FF"/><stop offset="0.5" stop-color="#33CCFF"/><stop offset="1" stop-color="#009DFF"/></linearGradient>
+    </defs>
+  </svg>
+  <div class="ld-os-brand">
+    <div class="ld-os-title">OCEANUS OS</div>
+    <div class="ld-os-ver">VERSION 2035.1 · ETHEREUM NETWORK EDITION</div>
+  </div>
+  <div class="ld-eth"><span style="color:rgba(100,150,255,.6);font-size:14px;">◆</span>POWERED BY ETHEREUM</div>
+  <div class="ld-text" id="ld-text">Initializing Oceanus Protocol...</div>
+  <div class="ld-bar-wrap"><div class="ld-bar" id="ld-bar"></div></div>
+  <div class="ld-pct" id="ld-pct">0%</div>
+</div>
+
+<!-- ══════════════════════════════════
+     ACCESS GATE — OS LOGIN DIALOG
+═══════════════════════════════════ -->
+<div id="screen-gate">
+  <div class="gate-win">
+    <div class="gate-tb">
+      <span class="gate-tb-icon">🌊</span>
+      <span class="gate-tb-label">OCEANUS OS — PIONEER ACCESS CONTROL</span>
+      <div class="gate-tb-btns">
+        <button class="gtbtn gtbtn-min">—</button>
+        <button class="gtbtn gtbtn-cls">✕</button>
+      </div>
+    </div>
+    <div class="gate-body">
+      <span class="gate-lock">🔒</span>
+      <div class="gate-title">ACCESS RESTRICTED</div>
+      <p class="gate-sub">Only selected pioneers will gain access to the Oceanus ecosystem. Prove your worth and enter the deep.</p>
+      <button class="btn-gate" data-onclick="enterSite()">ENTER THE DEEP</button>
+      <div class="gate-eth">$OCS — ETHEREUM NETWORK</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SITE — OCEANUS OS DESKTOP
+═══════════════════════════════════ -->
+<div id="site">
+<div id="desktop">
+
+  <!-- ── DESKTOP ICONS ── -->
+  <div class="dsk-icons">
+    <div class="d-ico" data-ondblclick="openWindow('win-hero')" title="Oceanus Chain">
+      <span class="d-ico-em">🌊</span>
+      <span class="d-ico-lbl">Oceanus Chain</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openWindow('win-stats')" title="Ecosystem Stats">
+      <span class="d-ico-em">📊</span>
+      <span class="d-ico-lbl">Ecosystem Stats</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openWindow('win-leaderboard')" title="Hall of Pioneers">
+      <span class="d-ico-em">🏆</span>
+      <span class="d-ico-lbl">Hall of Pioneers</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openWindow('win-how')" title="How It Works">
+      <span class="d-ico-em">⚙️</span>
+      <span class="d-ico-lbl">How It Works</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openWindow('win-whitepaper')" title="Whitepaper">
+      <span class="d-ico-em">📄</span>
+      <span class="d-ico-lbl">Whitepaper</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openModal()" title="Apply Now">
+      <span class="d-ico-em">✉️</span>
+      <span class="d-ico-lbl">Apply Now</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openWindow('win-partners')" title="Partners">
+      <span class="d-ico-em">🤝</span>
+      <span class="d-ico-lbl">Partners</span>
+    </div>
+    <div class="d-ico" data-ondblclick="openWindow('win-buy-ocs')" title="Buy $OCS">
+      <span class="d-ico-em">💎</span>
+      <span class="d-ico-lbl">Buy $OCS</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: BUY $OCS PRESALE
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-buy-ocs" style="display:none;width:660px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-buy-ocs">
+      <span class="win-tb-icon">💎</span>
+      <span class="win-tb-title">BUY $OCS — Oceanus Chain Presale · Live</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-buy-ocs')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-buy-ocs')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-buy-ocs')">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+
+      <!-- Presale loading bar -->
+      <div class="reveal">
+        <div class="ocs-presale-bar-wrap">
+          <div class="ocs-presale-label">
+            <span class="ocs-presale-text" id="ocs-presale-label-text">OCEANUS PRESALE LOADING...</span>
+            <span class="ocs-presale-pct-text" id="ocs-presale-pct-label">86% FILLED</span>
+          </div>
+          <div class="ocs-progress-track">
+            <div class="ocs-progress-fill" id="ocs-progress-fill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Stats -->
+      <div class="reveal rd1">
+        <div class="ocs-stats-grid">
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-price">$0.0085</span>
+            <div class="ocs-stat-lbl">Current Price</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-next-price">$0.0120</span>
+            <div class="ocs-stat-lbl">Next Price</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-raised">$731,450</span>
+            <div class="ocs-stat-lbl">Total Raised</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-supply">13.8M</span>
+            <div class="ocs-stat-lbl">Remaining Supply</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-holders">4,217</span>
+            <div class="ocs-stat-lbl">Holders</div>
+          </div>
+          <div class="ocs-stat">
+            <span class="ocs-stat-val" id="ocs-txns">9,843</span>
+            <div class="ocs-stat-lbl">Transactions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Urgency indicators -->
+      <div class="reveal rd1">
+        <div class="ocs-urgency">
+          <div class="ocs-urg-box">
+            <div class="ocs-urg-val ocs-urg-accent" id="ocs-alloc-pct">14%</div>
+            <div class="ocs-urg-lbl">Allocation Remaining</div>
+          </div>
+          <div class="ocs-urg-box">
+            <div class="ocs-urg-val ocs-urg-warn" id="ocs-next-price-timer">02:14:38</div>
+            <div class="ocs-urg-lbl">Next Price Increase</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Price Panel -->
+      <div class="reveal rd2">
+        <div class="ocs-price-panel">
+          <div class="ocs-pp-card">
+            <div class="ocs-pp-val" id="pp-current">$0.0085</div>
+            <div class="ocs-pp-lbl">Current OCS Price</div>
+          </div>
+          <div class="ocs-pp-card">
+            <div class="ocs-pp-val" id="pp-next">$0.0120</div>
+            <div class="ocs-pp-lbl">Next Stage Price</div>
+          </div>
+          <div class="ocs-pp-card">
+            <div class="ocs-pp-val" style="color:var(--success);" id="pp-increase">+41.2%</div>
+            <div class="ocs-pp-lbl">Price Increase</div>
+            <div class="ocs-pp-up" id="pp-return">10× potential</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUY BUTTON -->
+      <div class="reveal rd2">
+        <button class="ocs-buy-btn" data-onclick="openOcsBuyModal()">💎 BUY $OCS NOW</button>
+      </div>
+
+      <!-- Live Activity Feed -->
+      <div class="reveal rd3">
+        <div class="ocs-activity-wrap">
+          <div class="ocs-activity-head">
+            <span class="ocs-activity-dot"></span>LIVE PURCHASE ACTIVITY
+          </div>
+          <div id="ocs-activity-list"></div>
+        </div>
+      </div>
+
+      <!-- Social Proof -->
+      <div class="reveal rd3">
+        <div class="ocs-social">
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-wallets">4,217</div>
+            <div class="ocs-soc-lbl">Wallets Participating</div>
+          </div>
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-today">138</div>
+            <div class="ocs-soc-lbl">Purchases Today</div>
+          </div>
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-largest">$12,500</div>
+            <div class="ocs-soc-lbl">Largest Purchase</div>
+          </div>
+          <div class="ocs-soc-card">
+            <div class="ocs-soc-val" id="soc-recent">$300</div>
+            <div class="ocs-soc-lbl">Most Recent</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="reveal rd4">
+        <div class="ocs-security">
+          <div class="ocs-sec-item"><span class="ocs-sec-icon">✅</span>Smart Contract Verified</div>
+          <div class="ocs-sec-item"><span class="ocs-sec-icon">🔒</span>Secure Wallet Connection</div>
+          <div class="ocs-sec-item"><span class="ocs-sec-icon">◆</span>Ethereum Network</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>PRESALE LIVE</span>
+      <span class="wsb-item"><span class="wsb-dot blue"></span>ETH MAINNET</span>
+      <span class="wsb-item" style="margin-left:auto;" id="ocs-sb-stage">STAGE 1 · 86% FILLED</span>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════
+       WINDOW: HERO / WELCOME
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-hero" style="display:none;width:600px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-hero">
+      <span class="win-tb-icon">🌊</span>
+      <span class="win-tb-title">OCEANUS CHAIN — $OCS · Powered by Ethereum</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-hero')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-hero')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-hero')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="hero-body">
+      <div class="reveal"><div class="hero-eyebrow">OCEANUS CHAIN — $OCS</div></div>
+      <div class="reveal rd1"><h1 class="hero-headline">THE FUTURE FLOWS<br>BENEATH THE SURFACE</h1></div>
+      <div class="reveal rd2"><p class="hero-sub">Oceanus Chain is building a next-generation ecosystem where early pioneers gain exclusive access before the tide reaches the world.</p></div>
+      <div class="reveal rd2">
+        <div class="cd-label">⏳ WAITLIST CLOSES IN</div>
+        <div class="countdown-wrap">
+          <div class="cd-block"><span class="cd-num" id="cd-d">15</span><div class="cd-unit">Days</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-h">00</span><div class="cd-unit">Hours</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-m">00</span><div class="cd-unit">Mins</div></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-block"><span class="cd-num" id="cd-s">00</span><div class="cd-unit">Secs</div></div>
+        </div>
+      </div>
+      <div class="reveal rd3"><button class="btn-enter-hero" data-onclick="openWindow('win-buy-ocs')">BUY $OCS</button></div>
+      <!-- CTA -->
+      <div class="cta-mini reveal rd4">
+        <p class="cta-mini-eyebrow">THE TIDE IS TURNING</p>
+        <h2 class="cta-title-inner">CLAIM YOUR POSITION<br>IN THE DEEP</h2>
+        <p class="cta-sub-inner">Only <strong style="color:var(--blue);">2,790 spots remain.</strong> Once the waitlist closes, access is exclusive to verified pioneers only.</p>
+        <button class="btn-cta" data-onclick="openWindow('win-buy-ocs')">BUY $OCS</button>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>ETHEREUM MAINNET</span>
+      <span class="wsb-item"><span class="wsb-dot blue"></span>$OCS LIVE</span>
+      <span class="wsb-item" style="margin-left:auto;">OCEANUS OS v2035.1</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: ECOSYSTEM STATS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-stats" style="display:none;width:520px;">
+    <div class="win-tb" id="tb-win-stats">
+      <span class="win-tb-icon">📊</span>
+      <span class="win-tb-title">ECOSYSTEM STATS · Live Network Data</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-stats')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-stats')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-stats')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="stats">
+      <div class="reveal"><div class="sec-label">LIVE NETWORK DATA</div></div>
+      <div class="reveal rd1"><div class="sec-title">ECOSYSTEM METRICS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-num" id="cnt1">7,210</span><div class="stat-lbl">Total Applicants</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt2">2,790</span><div class="stat-lbl">Spots Remaining</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt3">12,480</span><div class="stat-lbl">Community Members</div></div>
+        <div class="stat-card"><span class="stat-num" id="cnt4">3,640</span><div class="stat-lbl">Referral Rewards</div></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>LIVE DATA</span>
+      <span class="wsb-item" style="margin-left:auto;">4 METRICS ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: LEADERBOARD
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-leaderboard" style="display:none;width:480px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-leaderboard">
+      <span class="win-tb-icon">🏆</span>
+      <span class="win-tb-title">HALL OF PIONEERS · Top Leaderboard</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-leaderboard')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-leaderboard')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-leaderboard')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="leaderboard">
+      <div class="reveal"><div class="sec-label">HALL OF PIONEERS</div></div>
+      <div class="reveal rd1"><div class="sec-title">TOP PIONEERS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="reveal rd2 lb-wrap">
+        <div class="live-ind"><span class="live-dot"></span>LIVE — UPDATING IN REAL TIME</div>
+        <div id="lb-list"></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>LIVE</span>
+      <span class="wsb-item" style="margin-left:auto;">20 PIONEERS RANKED</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: HOW IT WORKS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-how" style="display:none;width:600px;">
+    <div class="win-tb" id="tb-win-how">
+      <span class="win-tb-icon">⚙️</span>
+      <span class="win-tb-title">HOW IT WORKS · Pioneer Protocol</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-how')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-how')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-how')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="how">
+      <div class="reveal"><div class="sec-label">PIONEER PROTOCOL</div></div>
+      <div class="reveal rd1"><div class="sec-title">HOW IT WORKS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="steps-grid">
+        <div class="step-card reveal rd1"><div class="step-num">01</div><div class="step-ttl">APPLY</div><div class="step-desc">Submit your email and Ethereum wallet address to secure your place in the Oceanus Chain waitlist before access closes forever.</div></div>
+        <div class="step-card reveal rd2"><div class="step-num">02</div><div class="step-ttl">COMPLETE TASKS</div><div class="step-desc">Follow on X, retweet, join the community and Telegram. Every action earns priority ranking and boosts your ecosystem position.</div></div>
+        <div class="step-card reveal rd3"><div class="step-num">03</div><div class="step-ttl">REFER & RISE</div><div class="step-desc">Share your referral link. Every verified pioneer you bring earns rewards and elevates your rank on the leaderboard.</div></div>
+        <div class="step-card reveal rd4"><div class="step-num">04</div><div class="step-ttl">GAIN ACCESS</div><div class="step-desc">Top pioneers unlock early access, exclusive $OCS allocations, and lifetime pioneer benefits on the Ethereum network.</div></div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot blue"></span>4 STEPS TO PIONEER STATUS</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: WHITEPAPER
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-whitepaper" style="display:none;width:680px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-whitepaper">
+      <span class="win-tb-icon">📄</span>
+      <span class="win-tb-title">WHITEPAPER · Official Documentation v2035</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-whitepaper')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-whitepaper')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-whitepaper')">✕</button>
+      </div>
+    </div>
+    <div class="win-body" id="whitepaper">
+      <div class="wp-inner">
+        <div class="reveal"><div class="sec-label">OFFICIAL DOCUMENTATION</div></div>
+        <div class="reveal rd1"><div class="sec-title">WHITEPAPER</div></div>
+        <div class="reveal rd1" style="margin-bottom:6px;"><p style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.32);">The Convergence of Layer-1 Blockchain, Next-Gen AI &amp; Web3 Gaming Infrastructure</p></div>
+        <div class="reveal rd2"><div class="sec-line"></div></div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">1. Executive Summary</div>
+          <p class="wp-p">The Oceanus Ecosystem is a pioneering, next-generation decentralized infrastructure engineered to bridge the gap between high-performance blockchain technology, advanced Artificial Intelligence (AI), and immersive Web3 Gaming. Built upon the ultra-secure and highly scalable Layer-1/Layer-2 <strong style="color:var(--blue);">Oceanus Chain</strong>, the platform introduces a seamless environment where decentralized applications (dApps), autonomous AI agents, and play-and-own gaming metaverses coexist natively.</p>
+          <p class="wp-p">By eliminating high gas fees, ensuring sub-second transaction finality, and providing built-in AI model compilation, Oceanus is architected to sustain the next billion users in the digital global economy.</p>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">2. Core Vision &amp; Problem Statement</div>
+          <p class="wp-p">Current Web3 environments suffer from fragmented user experiences, high transaction costs, and isolated systems. Traditional blockchains lack the native computational capability to host complex Artificial Intelligence models or sustain fast-paced gaming logic directly on-chain.</p>
+          <p class="wp-p">Oceanus solves these structural bottlenecks by fusing heavy cryptographic ledger security with high-speed AI processing layers and dynamic gaming asset registries into one unified ecosystem.</p>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">3. The Three Structural Pillars</div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🌊</div>
+            <div class="wp-h3">A. Oceanus Chain &amp; Wallet — The Infrastructure Layer</div>
+            <ul class="wp-ul">
+              <li><strong>High-Throughput Consensus:</strong> A customized consensus mechanism optimized for massive data throughput, cross-chain interoperability, and ultimate asset security.</li>
+              <li><strong>Oceanus Wallet:</strong> A hyper-secure, non-custodial digital wallet featuring a premium cyber-oceanic user interface, multi-chain asset routing, and native decentralized exchange (DEX) aggregation.</li>
+            </ul>
+          </div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🤖</div>
+            <div class="wp-h3">B. Oceanus AI — The Intelligence Core</div>
+            <ul class="wp-ul">
+              <li><strong>On-Chain AI Agents:</strong> Neural network nodes running parallel to the blockchain to optimize smart contract executions, predictive liquidity analytics, and real-time security auditing.</li>
+              <li><strong>Generative Development:</strong> Integrated development kits leveraging automated generative tools, allowing creators to deploy self-optimizing dApps natively inside the ecosystem.</li>
+            </ul>
+          </div>
+          <div class="wp-pillar">
+            <div class="wp-pillar-icon">🎮</div>
+            <div class="wp-h3">C. Mochi Labubu Land — The Gaming &amp; Metaverse Layer</div>
+            <ul class="wp-ul">
+              <li><strong>The Hub:</strong> A flagship Web3 gaming, staking, and interaction metaverse built natively on top of the Oceanus Chain.</li>
+              <li><strong>Dynamic NFTs (dNFTs):</strong> In-game items and characters powered by Oceanus AI — they adapt, level up, and evolve states based on on-chain achievements and player behavior.</li>
+              <li><strong>Economy &amp; Staking:</strong> Users lock assets in dedicated gaming staking pools to generate yield, unlock rare generative cosmetics, and participate in decentralized governance.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">4. Technical Architecture &amp; Security</div>
+          <div class="wp-arch">
++-------------------------------------------------------------+
+|               MOCHI LABUBU LAND (Gaming Layer)              |
++-------------------------------------------------------------+
+|             OCEANUS AI (Generative &amp; Analytics)             |
++-------------------------------------------------------------+
+|      OCEANUS CHAIN (L1/L2 Infrastructure) + CORE WALLET    |
++-------------------------------------------------------------+</div>
+          <ul class="wp-ul">
+            <li><strong>Smart Contract Guardrails:</strong> Built utilizing audited, gas-optimized execution environments (Solidity/Rust) backed by machine-learning protocols that monitor the network to prevent exploits or flash-loan attacks.</li>
+            <li><strong>Decentralized Storage:</strong> Interfacing directly with advanced off-chain and on-chain storage to guarantee visual gaming assets and AI weights remain fully decentralized and immutable.</li>
+          </ul>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">5. Tokenomics &amp; Ecosystem Economy</div>
+          <p class="wp-p">The native utility token serves as the primary fuel driving economic sustainability across the network:</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px;">
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">⛽</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">NETWORK FEES</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Powers execution fees, data storage, and smart contract validation.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">🎮</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">GAMING UTILITY</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Core exchange medium inside the NFT Marketplace and Mochi Labubu Land.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">🤖</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">AI COMPUTATION</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Settles fees for AI developer tools, analytical requests, and ML model execution.</div></div>
+            <div class="wp-pillar" style="margin-bottom:0;"><div style="font-size:18px;margin-bottom:5px;">💎</div><div style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--blue);margin-bottom:5px;">STAKING &amp; YIELD</div><div style="font-size:12px;color:rgba(255,255,255,.44);">Secures the network while distributing rewards to holders and participants.</div></div>
+          </div>
+        </div>
+
+        <div class="wp-section reveal rd1">
+          <div class="wp-h2">6. Strategic Roadmap</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 1</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🌊 Deep Blue Genesis</div>
+                  <span class="wp-tag">ACTIVE</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Ecosystem architectural design and whitepaper publication.</li>
+                    <li>Development and alpha testing of the Oceanus Wallet.</li>
+                    <li>Launch of the Secure Early Access Waitlist page.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 2</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🚀 Tech-Tide Rise</div>
+                  <span class="wp-tag">UPCOMING</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Public Testnet deployment for Oceanus Chain.</li>
+                    <li>Integration of core on-chain AI monitoring tools.</li>
+                    <li>Alpha-build release and staking integration for Mochi Labubu Land.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="tl-item" style="padding-bottom:0;">
+              <div class="wp-phase">
+                <div class="wp-phase-num">PHASE 3</div>
+                <div class="wp-phase-content">
+                  <div class="wp-h3">🌐 The Abyss Conquest</div>
+                  <span class="wp-tag">FUTURE</span>
+                  <ul class="wp-ul" style="margin-top:9px;">
+                    <li>Official Mainnet deployment and public node validation.</li>
+                    <li>Launch of the native dynamic NFT Marketplace.</li>
+                    <li>Open-world public release of the Web3 gaming ecosystem.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="margin-top:24px;font-size:11px;color:rgba(255,255,255,.22);letter-spacing:1px;font-family:'Space Mono',monospace;">© 2026 Oceanus Labs. All rights reserved. Built for the future of decentralized innovation.</p>
+        </div>
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot blue"></span>OFFICIAL DOC</span>
+      <span class="wsb-item" style="margin-left:auto;">6 SECTIONS · v2035.1</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       WINDOW: PARTNERSHIPS
+  ═════════════════════════════ -->
+  <div class="os-win" id="win-partners" style="display:none;width:620px;max-height:calc(100vh - 90px);">
+    <div class="win-tb" id="tb-win-partners">
+      <span class="win-tb-icon">🤝</span>
+      <span class="win-tb-title">PARTNERSHIPS · Oceanus Chain Network</span>
+      <div class="win-ctrls">
+        <button class="wbtn wbtn-min" data-onclick="minimizeWin('win-partners')">—</button>
+        <button class="wbtn wbtn-max" data-onclick="maximizeWin('win-partners')">□</button>
+        <button class="wbtn wbtn-cls" data-onclick="closeWin('win-partners')">✕</button>
+      </div>
+    </div>
+    <div class="win-body">
+      <div class="reveal"><div class="sec-label">VERIFIED PARTNERS</div></div>
+      <div class="reveal rd1"><div class="sec-title">OCEANUS CHAIN PARTNERS</div></div>
+      <div class="reveal rd2"><div class="sec-line"></div></div>
+      <div class="reveal rd2"><p style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:24px;">Oceanus Chain is backed by leading protocols and networks across the Web3 ecosystem. These strategic partnerships power our infrastructure, liquidity, and cross-chain capabilities.</p></div>
+      <div class="partners-grid reveal rd3">
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="#e8821a" opacity=".15" stroke="#e8821a" stroke-width="1.5"/><polygon points="50,18 72,30 72,55 50,67 28,55 28,30" fill="none" stroke="#f6851b" stroke-width="2"/><polygon points="50,32 62,39 62,54 50,61 38,54 38,39" fill="#f6851b" opacity=".7"/><circle cx="50" cy="47" r="7" fill="#f6851b"/></svg>
+          </div>
+          <div class="partner-name">MetaMask</div>
+          <div class="partner-tag">WALLET</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><polygon points="50,5 95,50 50,95 5,50" fill="#627eea" opacity=".15" stroke="#627eea" stroke-width="1.5"/><polygon points="50,14 50,57" stroke="#627eea" stroke-width="2.5" stroke-linecap="round"/><polygon points="50,14 78,52 50,65 22,52" fill="none" stroke="#627eea" stroke-width="1.8"/><polygon points="50,65 78,52 50,86 22,52" fill="#627eea" opacity=".5"/><circle cx="50" cy="50" r="6" fill="#627eea"/></svg>
+          </div>
+          <div class="partner-name">Ethereum</div>
+          <div class="partner-tag">LAYER 1</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#00bfa5" stroke-width="1.5" opacity=".4"/><circle cx="50" cy="50" r="28" fill="none" stroke="#00bfa5" stroke-width="2"/><path d="M30 50 Q50 25 70 50 Q50 75 30 50Z" fill="#00bfa5" opacity=".5"/><circle cx="50" cy="50" r="8" fill="#00bfa5"/></svg>
+          </div>
+          <div class="partner-name">AION</div>
+          <div class="partner-tag">NETWORK</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><rect x="10" y="10" width="80" height="80" rx="14" fill="#e3365e" opacity=".12" stroke="#e3365e" stroke-width="1.5"/><path d="M30 50 L50 22 L70 50 L50 78Z" fill="none" stroke="#e3365e" stroke-width="2.2"/><path d="M35 50 L50 30 L65 50 L50 70Z" fill="#e3365e" opacity=".5"/><circle cx="50" cy="50" r="7" fill="#e3365e"/></svg>
+          </div>
+          <div class="partner-name">Akash Network</div>
+          <div class="partner-tag">COMPUTE</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f7c948" stroke-width="1.5" opacity=".3"/><path d="M50 12 L62 42 L94 42 L68 60 L78 90 L50 72 L22 90 L32 60 L6 42 L38 42Z" fill="none" stroke="#f7c948" stroke-width="1.8"/><path d="M50 28 L58 48 L78 48 L63 59 L68 78 L50 67 L32 78 L37 59 L22 48 L42 48Z" fill="#f7c948" opacity=".45"/></svg>
+          </div>
+          <div class="partner-name">Alpaca Finance</div>
+          <div class="partner-tag">DeFi</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#2762ff" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="26" fill="none" stroke="#2762ff" stroke-width="2"/><line x1="50" y1="10" x2="50" y2="90" stroke="#2762ff" stroke-width="1.5" opacity=".4"/><line x1="10" y1="50" x2="90" y2="50" stroke="#2762ff" stroke-width="1.5" opacity=".4"/><circle cx="50" cy="50" r="9" fill="#2762ff" opacity=".8"/></svg>
+          </div>
+          <div class="partner-name">Centrifuge</div>
+          <div class="partner-tag">RWA</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f04a4a" stroke-width="1.5" opacity=".3"/><path d="M20 35 Q50 10 80 35 L80 65 Q50 90 20 65Z" fill="none" stroke="#f04a4a" stroke-width="2"/><path d="M30 42 Q50 22 70 42 L70 58 Q50 78 30 58Z" fill="#f04a4a" opacity=".35"/><circle cx="50" cy="50" r="8" fill="#f04a4a" opacity=".9"/></svg>
+          </div>
+          <div class="partner-name">Convex Finance</div>
+          <div class="partner-tag">YIELD</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#1e4dd8" stroke-width="1.5" opacity=".4"/><path d="M20 50 Q35 20 50 35 Q65 50 50 65 Q35 80 20 50Z" fill="none" stroke="#1e4dd8" stroke-width="2"/><path d="M80 50 Q65 20 50 35 Q35 50 50 65 Q65 80 80 50Z" fill="#1e4dd8" opacity=".45"/><circle cx="50" cy="50" r="7" fill="#4d88ff"/></svg>
+          </div>
+          <div class="partner-name">CoW Protocol</div>
+          <div class="partner-tag">DEX</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#1c75bc" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="28" fill="none" stroke="#1c75bc" stroke-width="2"/><path d="M38 35 L62 35 L74 50 L62 65 L38 65 L26 50Z" fill="none" stroke="#1c75bc" stroke-width="1.8"/><circle cx="50" cy="50" r="9" fill="#1c75bc" opacity=".85"/></svg>
+          </div>
+          <div class="partner-name">Dash</div>
+          <div class="partner-tag">PAYMENTS</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#f9c231" stroke-width="1.5" opacity=".35"/><circle cx="50" cy="50" r="26" fill="none" stroke="#f9c231" stroke-width="2"/><circle cx="50" cy="42" r="8" fill="none" stroke="#f9c231" stroke-width="2"/><path d="M36 60 Q50 52 64 60" stroke="#f9c231" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#f9c231" opacity=".7"/></svg>
+          </div>
+          <div class="partner-name">Grin</div>
+          <div class="partner-tag">PRIVACY</div>
+        </div>
+
+        <div class="partner-card">
+          <div class="partner-logo-wrap">
+            <svg viewBox="0 0 100 100" width="38" height="38"><circle cx="50" cy="50" r="42" fill="none" stroke="#ff007a" stroke-width="1.5" opacity=".35"/><polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="#ff007a" stroke-width="2"/><polygon points="50,24 76,38 76,62 50,76 24,62 24,38" fill="#ff007a" opacity=".2"/><circle cx="50" cy="50" r="9" fill="#ff007a" opacity=".9" style="filter:drop-shadow(0 0 6px #ff007a)"/></svg>
+          </div>
+          <div class="partner-name">HEX</div>
+          <div class="partner-tag">STAKING</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="win-sb">
+      <span class="wsb-item"><span class="wsb-dot"></span>11 VERIFIED PARTNERS</span>
+      <span class="wsb-item" style="margin-left:auto;">OCEANUS ECOSYSTEM</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       TASKBAR
+  ═════════════════════════════ -->
+  <div id="taskbar">
+    <button id="start-btn" data-onclick="toggleStartMenu()">
+      <svg width="18" height="18" viewBox="0 0 140 140" fill="none">
+        <circle cx="70" cy="70" r="68" stroke="#00B8FF" stroke-width="2" opacity="0.5"/>
+        <path d="M22 70Q44 44 70 50Q96 56 118 70Q96 84 70 90Q44 96 22 70Z" fill="#00B8FF" opacity="0.5"/>
+        <path d="M70 22Q100 48 84 70Q100 92 70 118Q40 92 56 70Q40 48 70 22Z" fill="#009DFF" opacity="0.6"/>
+        <path d="M57 64Q64 57 70 61Q76 57 83 64Q76 71 70 67Q64 71 57 64Z" fill="#33CCFF" opacity="0.9"/>
+      </svg>
+      OCEANUS
+    </button>
+    <div class="tb-sep"></div>
+    <div id="tb-wins"></div>
+    <div id="sys-tray">
+      <div class="tray-item"><span class="tray-net-dot"></span>ETH NET</div>
+      <div class="tray-item"><span class="tray-eth-dot">◆</span>$OCS</div>
+      <div>
+        <div id="sys-clock">--:--</div>
+        <div id="sys-date">--/--/----</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════
+       START MENU
+  ═════════════════════════════ -->
+  <div id="start-menu">
+    <div class="sm-head">
+      <div class="sm-avatar">🌊</div>
+      <div>
+        <div class="sm-info-name">PIONEER USER</div>
+        <div class="sm-info-role">Oceanus OS v2035.1</div>
+      </div>
+    </div>
+    <div class="sm-cols">
+      <div class="sm-col">
+        <div class="sm-col-head">APPLICATIONS</div>
+        <div class="sm-item" data-onclick="openWindow('win-hero');toggleStartMenu()"><span class="sm-item-ico">🌊</span>Oceanus Chain</div>
+        <div class="sm-item" data-onclick="openWindow('win-stats');toggleStartMenu()"><span class="sm-item-ico">📊</span>Ecosystem Stats</div>
+        <div class="sm-item" data-onclick="openWindow('win-leaderboard');toggleStartMenu()"><span class="sm-item-ico">🏆</span>Hall of Pioneers</div>
+        <div class="sm-item" data-onclick="openWindow('win-how');toggleStartMenu()"><span class="sm-item-ico">⚙️</span>How It Works</div>
+        <div class="sm-item" data-onclick="openWindow('win-whitepaper');toggleStartMenu()"><span class="sm-item-ico">📄</span>Whitepaper</div>
+        <div class="sm-item" data-onclick="openWindow('win-partners');toggleStartMenu()"><span class="sm-item-ico">🤝</span>Partners</div>
+        <div class="sm-item" data-onclick="openWindow('win-buy-ocs');toggleStartMenu()"><span class="sm-item-ico">💎</span>Buy $OCS</div>
+      </div>
+      <div class="sm-col">
+        <div class="sm-col-head">QUICK ACCESS</div>
+        <div class="sm-item" data-onclick="openModal();toggleStartMenu()"><span class="sm-item-ico">✉️</span>Apply Now</div>
+        <div class="sm-sep"></div>
+        <a class="sm-item" href="https://x.com/OCEANUSCHAIN" target="_blank" style="text-decoration:none;color:inherit;" data-onclick="toggleStartMenu()"><span class="sm-item-ico">🐦</span>Twitter / X</a>
+        <a class="sm-item" href="https://t.me/Oceanuschain" target="_blank" style="text-decoration:none;color:inherit;" data-onclick="toggleStartMenu()"><span class="sm-item-ico">💬</span>Telegram</a>
+        <a class="sm-item" href="https://twitter.com/i/communities/2011553387264033029" target="_blank" style="text-decoration:none;color:inherit;" data-onclick="toggleStartMenu()"><span class="sm-item-ico">👥</span>Community</a>
+      </div>
+    </div>
+    <div class="sm-foot">
+      <div class="sm-links">
+        <a class="sm-link" href="https://x.com/OCEANUSCHAIN" target="_blank">Twitter</a>
+        <a class="sm-link" href="https://t.me/Oceanuschain" target="_blank">Telegram</a>
+        <a class="sm-link" href="https://twitter.com/i/communities/2011553387264033029" target="_blank">Community</a>
+        <a class="sm-link" href="#">Privacy Policy</a>
+      </div>
+      <div class="sm-copy">© 2026 OCEANUS LABS</div>
+    </div>
+  </div>
+
+</div><!-- /desktop -->
+</div><!-- /site -->
+
+<!-- ══════════════════════════════════
+     OCS BUY MODAL
+═══════════════════════════════════ -->
+<div id="ocs-buy-modal">
+  <div class="ocs-modal">
+    <div class="ocs-modal-tb">
+      <span style="font-size:13px;">💎</span>
+      <span style="flex:1;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;text-shadow:0 0 8px rgba(0,184,255,.4);margin-left:8px;" id="ocs-modal-title">BUY $OCS — SELECT AMOUNT</span>
+      <button class="ocs-modal-close" data-onclick="closeOcsBuyModal()">✕</button>
+    </div>
+    <div class="ocs-modal-inner">
+
+      <!-- Step indicator -->
+      <div class="ocs-steps" id="ocs-steps">
+        <div class="ocs-step-dot active" id="step-dot-1">1</div>
+        <div class="ocs-step-line" id="step-line-1"></div>
+        <div class="ocs-step-dot" id="step-dot-2">2</div>
+      </div>
+
+      <!-- ── STEP 1: SELECT AMOUNT ── -->
+      <div id="ocs-step-1">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:14px;">STEP 1 — SELECT PURCHASE AMOUNT</div>
+        <div class="ocs-amt-grid">
+          <div class="ocs-amt-btn" data-onclick="selectAmt(100,this)">$100<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-100"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(300,this)">$300<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-300"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(600,this)">$600<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-600"></span></div>
+          <div class="ocs-amt-btn" data-onclick="selectAmt(1000,this)">$1,000<br><span style="font-size:9px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;" id="ocs-est-1000"></span></div>
+        </div>
+        <div class="ocs-custom-wrap">
+          <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:6px;">CUSTOM AMOUNT (USD)</div>
+          <input class="ocs-custom-inp" type="number" id="ocs-custom-amt" placeholder="Enter USD amount..." min="10" oninput="onCustomAmt(this.value)">
+        </div>
+        <div class="ocs-calc-result">
+          <div>
+            <div class="ocs-calc-label">YOU RECEIVE</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.28);font-family:'Space Mono',monospace;margin-top:3px;">@ <span id="ocs-modal-price">$0.0085</span> / OCS</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="ocs-calc-val" id="ocs-calc-ocs">0 OCS</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.25);font-family:'Space Mono',monospace;margin-top:3px;">≈ $<span id="ocs-calc-usd">0.00</span></div>
+          </div>
+        </div>
+        <button class="ocs-action-btn" id="ocs-step1-next" data-onclick="goDirectStep()" disabled>SEND ETH →</button>
+      </div>
+
+      <!-- ── STEP 2: SEND ETH ── -->
+      <div id="ocs-step-2" style="display:none;">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.3);margin-bottom:12px;">STEP 2 — SEND ETHEREUM</div>
+
+        <!-- ══ OPTION A: CONNECT WALLET & PAY ══ -->
+        <div class="ocs-wallet-box">
+          <div class="ocs-wallet-head">
+            <span class="ocs-wallet-badge">RECOMMENDED</span>
+            <span style="font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:#fff;">PAY WITH WALLET</span>
+          </div>
+          <div id="ocs-wallet-disconnected">
+            <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:12px;">Connect your wallet to send ETH directly. Your wallet will ask you to confirm the transaction.</div>
+            <div class="ocs-wallet-btns">
+              <button class="ocs-connect-btn" data-onclick="connectWallet('metamask')">
+                <span style="font-size:15px;">🦊</span> MetaMask
+              </button>
+              <button class="ocs-connect-btn" data-onclick="connectWallet('phantom')">
+                <span style="font-size:15px;">👻</span> Phantom
+              </button>
+            </div>
+          </div>
+          <div id="ocs-wallet-connected" style="display:none;">
+            <div class="ocs-wallet-row">
+              <span style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);">CONNECTED</span>
+              <span class="ocs-wallet-addr" id="ocs-connected-addr">0x000…000</span>
+            </div>
+            <div class="ocs-wallet-row" style="margin-top:6px;">
+              <span style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);">SENDING</span>
+              <span style="font-family:'Orbitron',monospace;font-size:13px;color:var(--blue);" id="ocs-wallet-amt">$0</span>
+            </div>
+            <button class="ocs-action-btn" id="ocs-pay-btn" data-onclick="payWithWallet()" style="margin-top:12px;">⚡ CONFIRM & SEND ETH</button>
+            <div style="text-align:center;margin-top:8px;">
+              <span style="font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.25);letter-spacing:1px;cursor:pointer;" data-onclick="disconnectWallet()">disconnect wallet</span>
+            </div>
+          </div>
+          <div id="ocs-wallet-status" style="display:none;font-size:10px;font-family:'Space Mono',monospace;line-height:1.6;margin-top:10px;padding:10px;border-radius:3px;"></div>
+        </div>
+
+        <div class="ocs-or-divider"><span>OR SEND MANUALLY</span></div>
+
+        <!-- ══ OPTION B: MANUAL SEND ══ -->
+        <div class="ocs-eth-addr-box">
+          <div class="ocs-eth-addr-label">OFFICIAL RECEIVING ADDRESS</div>
+          <div class="ocs-eth-addr-val" id="ocs-eth-addr">0x7E7a9d68C6F08ad6b7EaEBBD2ba7133bc492b283</div>
+          <div class="ocs-eth-actions">
+            <button class="ocs-copy-addr-btn" id="ocs-copy-addr-btn" data-onclick="copyOcsAddr()">📋 COPY ADDRESS</button>
+
+          </div>
+        </div>
+        <div class="ocs-qr-wrap">
+          <img class="ocs-qr-canvas" id="ocs-qr-img" alt="Send ETH QR code" width="160" height="160" src="data:image/png;base64,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">
+        </div>
+        <div style="background:rgba(0,184,255,.05);border:1px solid rgba(0,184,255,.15);border-radius:3px;padding:12px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:4px;">SEND EXACTLY</div>
+            <div style="font-family:'Orbitron',monospace;font-size:18px;color:var(--blue);letter-spacing:2px;" id="ocs-send-usd">$0</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:4px;">YOU RECEIVE</div>
+            <div style="font-family:'Orbitron',monospace;font-size:15px;color:var(--success);letter-spacing:1px;" id="ocs-recv-ocs">0 OCS</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,160,0,.06);border:1px solid rgba(255,160,0,.2);border-radius:3px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:rgba(255,200,80,.7);line-height:1.65;">
+          ⚠️ Send <strong>only ERC20 Ethereum (ETH)</strong> to this address. OCS tokens distributed after presale closes.
+        </div>
+        <button class="ocs-action-btn" data-onclick="closeOcsBuyModal()">✅ I'VE SENT ETH — CLOSE</button>
+        <div style="text-align:center;margin-top:10px;">
+          <span style="font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);letter-spacing:2px;cursor:pointer;" data-onclick="goBackStep()">← BACK</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PIONEER APPLY MODAL
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-tb">
+      <span class="modal-tb-icon">✉️</span>
+      <span class="modal-tb-title">PIONEER APPLICATION — OCEANUS CHAIN</span>
+      <button class="modal-close" data-onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-inner">
+      <div id="modal-content">
+        <div class="modal-title">SECURE YOUR SPOT</div>
+        <div class="modal-sub">Join the Oceanus Chain pioneer waitlist before access closes forever.</div>
+        <div class="field-wrap">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" id="modal-email" type="email" placeholder="pioneer@example.com">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">ETH Wallet Address (optional)</label>
+          <input class="field-input" id="modal-wallet" type="text" placeholder="0x...">
+        </div>
+        <button class="btn-submit-modal" data-onclick="submitModal()">SECURE MY SPOT →</button>
+      </div>
+      <div class="success-view" id="success-view">
+        <div class="congrats-burst"><div class="congrats-ring"></div><span class="congrats-icon">🌊</span></div>
+        <div class="success-title">PIONEER CONFIRMED</div>
+        <div class="success-badge">ACCESS SECURED</div>
+        <p class="success-sub">You're in. You'll be among the first contacted when exclusive Oceanus Chain access opens.</p>
+        <button class="btn-close-success" data-onclick="closeModal()">CLOSE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+/* ═══════════════════════════════════════════════════════
+   OCEANUS OS — COMPLETE RUNTIME ENGINE
+   Boot sequence properly animates 0→100%, fades out,
+   shows gate, then desktop on "ENTER THE DEEP" click.
+═══════════════════════════════════════════════════════ */
+
+/* ── 1. BOOT SEQUENCE (DOM-ready safe) ───────────────── */
+function _runBoot() {
+  var bar    = document.getElementById('ld-bar');
+  var pct    = document.getElementById('ld-pct');
+  var txt    = document.getElementById('ld-text');
+  var screen = document.getElementById('screen-loading');
+  var gate   = document.getElementById('screen-gate');
+
+  // If critical elements are missing, force-show the gate as a fallback
+  if (!screen || !gate) {
+    if (gate) gate.classList.add('show');
+    return;
+  }
+  if (!bar) bar = { style: {} };
+  if (!pct) pct = { textContent: '' };
+
+  var steps = [
+    [8,   'Loading kernel modules...'],
+    [18,  'Establishing ETH node connection...'],
+    [30,  'Verifying blockchain integrity...'],
+    [44,  'Syncing wallet interface...'],
+    [56,  'Decrypting pioneer credentials...'],
+    [68,  'Mounting Oceanus filesystem...'],
+    [78,  'Calibrating OCS price oracle...'],
+    [88,  'Loading desktop environment...'],
+    [96,  'Finalizing system boot...'],
+    [100, 'Oceanus OS ready.']
+  ];
+
+  var idx = 0;
+
+  function tick() {
+    if (idx >= steps.length) {
+      // All steps done → wait briefly, then fade loading screen, show gate
+      setTimeout(function () {
+        screen.classList.add('fade');
+        setTimeout(function () {
+          screen.style.display = 'none';
+          gate.classList.add('show');
+        }, 900);
+      }, 500);
+      return;
+    }
+    var step = steps[idx++];
+    bar.style.width   = step[0] + '%';
+    pct.textContent   = step[0] + '%';
+    if (txt) txt.textContent = step[1];
+    var delay = step[0] < 50 ? 280 : step[0] < 90 ? 360 : 480;
+    setTimeout(tick, delay);
+  }
+
+  setTimeout(tick, 700); // initial pause to show "0%"
+}
+
+// Launch boot when DOM is ready (covers all load-timing cases)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _runBoot);
+} else {
+  _runBoot();
+}
+
+/* ── 2. GATE → SITE ──────────────────────────────────── */
+function enterSite() {
+  var gate = document.getElementById('screen-gate');
+  var site = document.getElementById('site');
+  if (!gate || !site) return;
+  gate.classList.add('hide');
+  setTimeout(function () {
+    gate.style.display = 'none';
+    site.classList.add('visible');
+    _initDesktop();
+  }, 650);
+}
+
+/* ── 3. DESKTOP INIT (called once) ──────────────────── */
+var _desktopReady = false;
+function _initDesktop() {
+  if (_desktopReady) return;
+  _desktopReady = true;
+  _startClock();
+  _startCanvas();
+  _startCountdown();
+  _initDrag();
+  _initCursor();
+  _initReveal();
+  _initActivityFeed();
+  _initLeaderboard();
+  _initLiveCounters();
+  _animPresaleBar();
+  _initOcsBuyEstimates();
+  setTimeout(function () { openWindow('win-hero'); }, 200);
+}
+
+/* ── 4. CLOCK ─────────────────────────────────────────── */
+function _startClock() {
+  function tick() {
+    var n = new Date();
+    var h = ('0'+n.getHours()).slice(-2);
+    var m = ('0'+n.getMinutes()).slice(-2);
+    var s = ('0'+n.getSeconds()).slice(-2);
+    var mo = ('0'+(n.getMonth()+1)).slice(-2);
+    var d  = ('0'+n.getDate()).slice(-2);
+    var el = document.getElementById('sys-clock');
+    var de = document.getElementById('sys-date');
+    if (el) el.textContent = h+':'+m+':'+s;
+    if (de) de.textContent = mo+'/'+d+'/'+n.getFullYear();
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+/* ── 5. COUNTDOWN ─────────────────────────────────────── */
+function _startCountdown() {
+  var target = Date.now() + 15 * 86400000;
+  function tick() {
+    var diff = target - Date.now();
+    if (diff < 0) diff = 0;
+    var days  = Math.floor(diff / 86400000);
+    var hours = Math.floor((diff % 86400000) / 3600000);
+    var mins  = Math.floor((diff % 3600000) / 60000);
+    var secs  = Math.floor((diff % 60000) / 1000);
+    function set(id, v) { var el=document.getElementById(id); if(el) el.textContent=('0'+v).slice(-2); }
+    set('cd-d', days); set('cd-h', hours); set('cd-m', mins); set('cd-s', secs);
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+/* ── 6. CANVAS ─────────────────────────────────────────── */
+function _startCanvas() {
+  var canvas = document.getElementById('ocean-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, frame = 0;
+  var particles = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (var i = 0; i < 50; i++) {
+    particles.push({ x: Math.random()*2000, y: Math.random()*1200,
+      vx: (Math.random()-.5)*.3, vy: (Math.random()-.5)*.3,
+      r: Math.random()*1.6+.3, a: Math.random()*.45+.1 });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    frame++;
+    for (var w = 0; w < 3; w++) {
+      ctx.beginPath();
+      var amp = 16+w*10, speed = .0007+w*.0003, yb = H*.5+w*55;
+      for (var x = 0; x <= W; x += 4) {
+        var y = yb + Math.sin(x*.011+frame*speed+w*2)*amp + Math.sin(x*.021+frame*speed*.7)*amp*.5;
+        if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle = 'rgba(0,'+(138+w*20)+',255,'+(0.038-w*.008)+')';
+      ctx.lineWidth = 1.5; ctx.stroke();
+    }
+    particles.forEach(function (p) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(0,184,255,'+p.a+')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ── 7. CURSOR ─────────────────────────────────────────── */
+function _initCursor() {
+  var cur  = document.getElementById('cursor');
+  var ring = document.getElementById('cursor-ring');
+  if (!cur) return;
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', function(e){ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+  (function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+  document.addEventListener('click', function(e){
+    var r=document.createElement('div'); r.className='cursor-ripple';
+    r.style.left=e.clientX+'px'; r.style.top=e.clientY+'px';
+    document.body.appendChild(r); setTimeout(function(){ r.remove(); },650);
+  });
+}
+
+/* ── 8. REVEAL OBSERVER ────────────────────────────────── */
+function _initReveal() {
+  if (!window.IntersectionObserver) {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+}
+
+/* ── 9. WINDOW MANAGEMENT ─────────────────────────────── */
+var _zTop = 60;
+var _winState = {};
+
+var _WIN_LABELS = {
+  'win-hero':       ['🌊','Oceanus'],
+  'win-stats':      ['📊','Stats'],
+  'win-leaderboard':['🏆','Pioneers'],
+  'win-how':        ['⚙️','How It Works'],
+  'win-whitepaper': ['📄','Whitepaper'],
+  'win-partners':   ['🤝','Partners'],
+  'win-buy-ocs':    ['💎','Buy $OCS']
+};
+
+function openWindow(id) {
+  var win = document.getElementById(id);
+  if (!win) return;
+  win.style.display = 'flex';
+  win.style.flexDirection = 'column';
+  if (!_winState[id]) {
+    // First open: cascade position on desktop
+    if (window.innerWidth > 768) {
+      var n = Object.keys(_winState).length;
+      win.style.left = (50 + n*26) + 'px';
+      win.style.top  = (30 + n*20) + 'px';
+    }
+    _winState[id] = { min: false, max: false };
+  }
+  win.classList.add('win-opening');
+  setTimeout(function(){ win.classList.remove('win-opening'); }, 300);
+  _focusWin(id);
+  _addTbBtn(id);
+  // Trigger reveals inside this window
+  win.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('visible'); });
+}
+
+function _focusWin(id) {
+  document.querySelectorAll('.os-win').forEach(function(w){ w.classList.remove('focused'); });
+  var win = document.getElementById(id);
+  if (win) { win.style.zIndex = ++_zTop; win.classList.add('focused'); }
+  document.querySelectorAll('.tb-wbtn').forEach(function(b){ b.classList.remove('active-win'); });
+  var btn = document.getElementById('tb-'+id);
+  if (btn) btn.classList.add('active-win');
+}
+
+function closeWin(id) {
+  var win = document.getElementById(id);
+  if (win) win.style.display = 'none';
+  _removeTbBtn(id);
+}
+
+function minimizeWin(id) {
+  var win = document.getElementById(id);
+  if (!win) return;
+  if (!_winState[id]) _winState[id] = {};
+  if (_winState[id].min) {
+    win.style.display = 'flex'; win.style.flexDirection = 'column';
+    _winState[id].min = false; _focusWin(id);
+  } else {
+    win.style.display = 'none'; _winState[id].min = true;
+    var btn = document.getElementById('tb-'+id);
+    if (btn) btn.classList.remove('active-win');
+  }
+}
+
+function maximizeWin(id) {
+  var win = document.getElementById(id);
+  if (!win) return;
+  if (!_winState[id]) _winState[id] = {};
+  var st = _winState[id];
+  if (st.max) {
+    win.style.left = st.pl||'50px'; win.style.top = st.pt||'30px';
+    win.style.width = st.pw||''; win.style.height = st.ph||'';
+    st.max = false;
+  } else {
+    st.pl=win.style.left; st.pt=win.style.top; st.pw=win.style.width; st.ph=win.style.height;
+    win.style.left='0'; win.style.top='0';
+    win.style.width='100%'; win.style.height='calc(100vh - 46px)';
+    st.max = true;
+  }
+  _focusWin(id);
+}
+
+/* ── 10. TASKBAR BUTTONS ──────────────────────────────── */
+function _addTbBtn(id) {
+  if (document.getElementById('tb-'+id)) return;
+  var bar = document.getElementById('tb-wins');
+  if (!bar) return;
+  var lbl = _WIN_LABELS[id] || ['🗗', id];
+  var btn = document.createElement('div');
+  btn.className = 'tb-wbtn'; btn.id = 'tb-'+id;
+  btn.innerHTML = '<span class="tb-wbtn-ico">'+lbl[0]+'</span><span>'+lbl[1]+'</span>';
+  btn.onclick = function(){ minimizeWin(id); };
+  bar.appendChild(btn);
+}
+function _removeTbBtn(id) {
+  var btn = document.getElementById('tb-'+id);
+  if (btn) btn.remove();
+  delete _winState[id];
+}
+
+/* ── 11. DRAG WINDOWS ─────────────────────────────────── */
+var _drag = null, _dox = 0, _doy = 0;
+
+function _initDrag() {
+  document.querySelectorAll('.win-tb').forEach(function(tb){
+    tb.addEventListener('mousedown', function(e){
+      if (e.target.classList.contains('wbtn')) return;
+      var win = tb.closest('.os-win'); if (!win) return;
+      _drag = win; _dox = e.clientX - win.offsetLeft; _doy = e.clientY - win.offsetTop;
+      _focusWin(win.id);
+    });
+    tb.addEventListener('touchstart', function(e){
+      if (e.target.classList.contains('wbtn')) return;
+      e.preventDefault();
+      var t = e.touches[0]; var win = tb.closest('.os-win'); if (!win) return;
+      _drag = win; _dox = t.clientX - win.offsetLeft; _doy = t.clientY - win.offsetTop;
+      _focusWin(win.id);
+    }, { passive: false });
+  });
+  document.addEventListener('mousemove', function(e){
+    if (!_drag) return;
+    _drag.style.left = Math.max(0, e.clientX - _dox) + 'px';
+    _drag.style.top  = Math.max(0, Math.min(e.clientY - _doy, window.innerHeight-46-20)) + 'px';
+  });
+  document.addEventListener('mouseup', function(){ _drag = null; });
+  document.addEventListener('touchmove', function(e){
+    if (!_drag) return; e.preventDefault();
+    var t = e.touches[0];
+    _drag.style.left = Math.max(0, t.clientX - _dox) + 'px';
+    _drag.style.top  = Math.max(0, t.clientY - _doy) + 'px';
+  }, { passive: false });
+  document.addEventListener('touchend', function(){ _drag = null; });
+}
+
+/* ── 12. START MENU ───────────────────────────────────── */
+function toggleStartMenu() {
+  var m = document.getElementById('start-menu');
+  if (m) m.classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  var m = document.getElementById('start-menu');
+  var b = document.getElementById('start-btn');
+  if (m && m.classList.contains('open') && !m.contains(e.target) && b && !b.contains(e.target))
+    m.classList.remove('open');
+});
+
+/* ── 13. APPLY MODAL ──────────────────────────────────── */
+function openModal() {
+  var el = document.getElementById('modal-overlay');
+  if (el) el.classList.add('open');
+}
+function closeModal() {
+  var el = document.getElementById('modal-overlay');
+  if (el) el.classList.remove('open');
+}
+function submitModal() {
+  var emailEl  = document.getElementById('modal-email');
+  var walletEl = document.getElementById('modal-wallet');
+  var email    = emailEl ? emailEl.value : '';
+  if (!email || email.indexOf('@') < 0) { alert('Please enter a valid email address.'); return; }
+  var content = document.getElementById('modal-content');
+  if (content) {
+    content.innerHTML = '<div style="font-family:\'Orbitron\',monospace;font-size:18px;letter-spacing:4px;color:var(--success);margin-bottom:12px;">✅ CONFIRMED</div>'
+      +'<p style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;">Application received! You\'ll be contacted when exclusive access opens.</p>';
+  }
+  setTimeout(closeModal, 3000);
+}
+
+/* ── 14. LIVE COUNTERS ────────────────────────────────── */
+function _initLiveCounters() {
+  var counters = [
+    { id:'cnt1', v:7210 }, { id:'cnt2', v:2790 },
+    { id:'cnt3', v:12480 }, { id:'cnt4', v:3640 },
+    { id:'soc-wallets', v:4217 }, { id:'soc-today', v:138 }
+  ];
+  setInterval(function(){
+    counters.forEach(function(c){
+      var el = document.getElementById(c.id); if (!el) return;
+      var cur = parseInt(el.textContent.replace(/,/g,'')) || c.v;
+      var delta = Math.random() < .5 ? 1 : 0;
+      if (c.id === 'cnt2') delta = -delta;
+      el.textContent = (cur + delta).toLocaleString();
+    });
+  }, 4500);
+}
+
+/* ── 15. PRESALE BAR ANIMATION ────────────────────────── */
+function _animPresaleBar() {
+  var fill = document.getElementById('ocs-progress-fill');
+  var lbl  = document.getElementById('ocs-presale-pct-label');
+  var stat = document.getElementById('ocs-sb-stage');
+  if (!fill) return;
+  var p = 0, target = 86;
+  var iv = setInterval(function(){
+    p = Math.min(p + 2, target);
+    fill.style.width = p + '%';
+    if (lbl) lbl.textContent = p + '% FILLED';
+    if (p >= target) clearInterval(iv);
+  }, 25);
+}
+
+/* ── 16. ACTIVITY FEED ────────────────────────────────── */
+var _WALLETS = ['0x3f…a12','0x7b…c44','0xe1…f88','0x2a…d19','0x9c…b77','0x5d…e33','0x8f…012','0x1e…ca5'];
+var _AMOUNTS = ['$100','$300','$600','$1,000','$250','$500','$150','$750'];
+
+function _initActivityFeed() {
+  var list = document.getElementById('ocs-activity-list');
+  if (!list) return;
+  for (var i=0; i<4; i++) _addActRow(list, true);
+  setInterval(function(){ _addActRow(list, false); }, 5500);
+}
+function _addActRow(list, silent) {
+  var w = _WALLETS[Math.floor(Math.random()*_WALLETS.length)];
+  var a = _AMOUNTS[Math.floor(Math.random()*_AMOUNTS.length)];
+  var t = Math.floor(Math.random()*12)+1;
+  var row = document.createElement('div');
+  row.className = 'ocs-act-row';
+  if (silent) row.style.animation = 'none';
+  row.innerHTML = '<span class="ocs-act-addr">'+w+'</span>'
+    +'<span class="ocs-act-msg">purchased $OCS</span>'
+    +'<span class="ocs-act-amt">'+a+'</span>'
+    +'<span class="ocs-act-time">'+t+'m ago</span>';
+  list.insertBefore(row, list.firstChild);
+  while (list.children.length > 8) list.removeChild(list.lastChild);
+}
+
+/* ── 17. LEADERBOARD ──────────────────────────────────── */
+function _initLeaderboard() {
+  var list = document.getElementById('lb-list');
+  if (!list) return;
+  var names  = ['0x3f…a12','0x9c…b77','0x7b…c44','0xe1…f88','0x5d…e33','0x2a…d19','0x8f…012','0x1e…ca5','0x4d…f56','0x6a…91b'];
+  var scores = [9840,8720,7650,6920,6110,5480,4930,4210,3870,3250];
+  var medals = ['🥇','🥈','🥉'];
+  list.innerHTML = names.map(function(n,i){
+    var rank = i < 3 ? medals[i] : '#'+(i+1);
+    var rankColor = i===0?'#FFD700':i===1?'#C0C0C0':i===2?'#CD7F32':'rgba(255,255,255,.3)';
+    return '<div class="lb-row">'
+      +'<span class="lb-rank'+(i<3?' t3':'')+'" style="color:'+rankColor+'">'+rank+'</span>'
+      +'<div class="lb-av">'+(i+1)+'</div>'
+      +'<span class="lb-name">'+n+'</span>'
+      +'<span class="lb-pts">'+scores[i].toLocaleString()+' pts</span>'
+      +'</div>';
+  }).join('');
+}
+
+/* ── 18. BUY $OCS MODAL ───────────────────────────────── */
+var OCS_PRICE = 0.0085;
+var ETH_USD   = 3280;
+var _selAmt   = 0;
+
+function _initOcsBuyEstimates() {
+  [100,300,600,1000].forEach(function(amt){
+    var el = document.getElementById('ocs-est-'+amt);
+    if (el) el.textContent = Math.floor(amt/OCS_PRICE).toLocaleString()+' OCS';
+  });
+}
+
+function openOcsBuyModal() {
+  var m = document.getElementById('ocs-buy-modal');
+  if (m) m.classList.add('open');
+}
+function closeOcsBuyModal() {
+  var m = document.getElementById('ocs-buy-modal');
+  if (m) m.classList.remove('open');
+  goBackStep();
+}
+
+function selectAmt(amt, el) {
+  _selAmt = amt;
+  document.querySelectorAll('.ocs-amt-btn').forEach(function(b){ b.classList.remove('selected'); });
+  el.classList.add('selected');
+  var ci = document.getElementById('ocs-custom-amt'); if(ci) ci.value='';
+  _updateCalc(amt);
+}
+function onCustomAmt(val) {
+  _selAmt = parseFloat(val)||0;
+  document.querySelectorAll('.ocs-amt-btn').forEach(function(b){ b.classList.remove('selected'); });
+  _updateCalc(_selAmt);
+}
+function _updateCalc(usd) {
+  var ocs = usd > 0 ? Math.floor(usd/OCS_PRICE) : 0;
+  var co = document.getElementById('ocs-calc-ocs'); if(co) co.textContent = ocs>0?ocs.toLocaleString()+' OCS':'0 OCS';
+  var cu = document.getElementById('ocs-calc-usd'); if(cu) cu.textContent = usd>0?usd.toFixed(2):'0.00';
+  var btn = document.getElementById('ocs-step1-next'); if(btn) btn.disabled = (usd < 10);
+}
+function goDirectStep() {
+  if (_selAmt < 10) return;
+  var ocs = Math.floor(_selAmt/OCS_PRICE);
+  var su=document.getElementById('ocs-send-usd'); if(su) su.textContent='$'+_selAmt.toLocaleString();
+  var ro=document.getElementById('ocs-recv-ocs'); if(ro) ro.textContent=ocs.toLocaleString()+' OCS';
+  // Switch steps
+  var s1=document.getElementById('ocs-step-1'); if(s1) s1.style.display='none';
+  var s2=document.getElementById('ocs-step-2'); if(s2) s2.style.display='block';
+  var d1=document.getElementById('step-dot-1'); if(d1){d1.classList.remove('active');d1.style.background='var(--success)';}
+  var d2=document.getElementById('step-dot-2'); if(d2) d2.classList.add('active');
+  var l1=document.getElementById('step-line-1'); if(l1) l1.classList.add('done');
+  var mt=document.getElementById('ocs-modal-title'); if(mt) mt.textContent='BUY $OCS — SEND ETH';
+  // Update wallet-pay amount display
+  var wa=document.getElementById('ocs-wallet-amt'); if(wa) wa.textContent='$'+_selAmt.toLocaleString();
+  _drawQR();
+}
+function goBackStep() {
+  var s1=document.getElementById('ocs-step-1'); if(s1) s1.style.display='block';
+  var s2=document.getElementById('ocs-step-2'); if(s2) s2.style.display='none';
+  var d1=document.getElementById('step-dot-1'); if(d1){d1.classList.add('active');d1.style.background='';}
+  var d2=document.getElementById('step-dot-2'); if(d2) d2.classList.remove('active');
+  var l1=document.getElementById('step-line-1'); if(l1) l1.classList.remove('done');
+  var mt=document.getElementById('ocs-modal-title'); if(mt) mt.textContent='BUY $OCS — SELECT AMOUNT';
+}
+/* ═══════════════════════════════════════════════════════
+   WALLET PAYMENTS — MetaMask & Phantom (real on-chain ETH)
+   Receiving address + live ETH price fetched at send time.
+═══════════════════════════════════════════════════════ */
+var OCS_RECEIVER = '0x7E7a9d68C6F08ad6b7EaEBBD2ba7133bc492b283';
+var ETH_MAINNET_CHAIN = '0x1'; // Ethereum mainnet
+var _provider = null;        // active EIP-1193 provider
+var _account  = null;        // connected address
+var _walletKind = null;      // 'metamask' | 'phantom'
+
+function _getProvider(kind) {
+  // MetaMask
+  if (kind === 'metamask') {
+    if (window.ethereum) {
+      // If multiple providers injected, prefer the MetaMask one
+      if (window.ethereum.providers && window.ethereum.providers.length) {
+        var mm = window.ethereum.providers.find(function(p){ return p.isMetaMask; });
+        if (mm) return mm;
+      }
+      if (window.ethereum.isMetaMask) return window.ethereum;
+      return window.ethereum; // fallback to whatever is there
+    }
+    return null;
+  }
+  // Phantom (its EVM provider lives at window.phantom.ethereum)
+  if (kind === 'phantom') {
+    if (window.phantom && window.phantom.ethereum) return window.phantom.ethereum;
+    if (window.ethereum && window.ethereum.isPhantom) return window.ethereum;
+    return null;
+  }
+  return null;
+}
+
+function _walletStatus(msg, type) {
+  var el = document.getElementById('ocs-wallet-status');
+  if (!el) return;
+  el.style.display = 'block';
+  var colors = {
+    info:    ['rgba(0,184,255,.08)','rgba(0,184,255,.25)','rgba(150,210,255,.9)'],
+    success: ['rgba(0,210,140,.1)','rgba(0,210,140,.3)','rgba(120,240,190,.95)'],
+    error:   ['rgba(255,80,80,.08)','rgba(255,80,80,.3)','rgba(255,160,160,.95)']
+  };
+  var c = colors[type] || colors.info;
+  el.style.background = c[0]; el.style.border = '1px solid '+c[1]; el.style.color = c[2];
+  el.innerHTML = msg;
+}
+
+function _shortAddr(a) { return a ? a.slice(0,6)+'…'+a.slice(-4) : ''; }
+
+function connectWallet(kind) {
+  var provider = _getProvider(kind);
+  if (!provider) {
+    var name = kind === 'metamask' ? 'MetaMask' : 'Phantom';
+    var link = kind === 'metamask' ? 'https://metamask.io/download/' : 'https://phantom.app/download';
+    _walletStatus('⚠️ '+name+' not detected. <a href="'+link+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">Install '+name+'</a> or open this site inside the '+name+' app browser.', 'error');
+    return;
+  }
+  _walletStatus('Opening '+(kind==='metamask'?'MetaMask':'Phantom')+'… approve the connection request.', 'info');
+  provider.request({ method: 'eth_requestAccounts' })
+    .then(function (accounts) {
+      if (!accounts || !accounts.length) { _walletStatus('No account returned. Try again.', 'error'); return; }
+      _provider = provider; _account = accounts[0]; _walletKind = kind;
+      var dc = document.getElementById('ocs-wallet-disconnected');
+      var cc = document.getElementById('ocs-wallet-connected');
+      var ca = document.getElementById('ocs-connected-addr');
+      if (dc) dc.style.display = 'none';
+      if (cc) cc.style.display = 'block';
+      if (ca) ca.textContent = _shortAddr(_account);
+      _walletStatus('✅ Connected: '+_shortAddr(_account), 'success');
+      // React to account/network changes
+      if (provider.on) {
+        provider.on('accountsChanged', function (accs) {
+          if (!accs || !accs.length) { disconnectWallet(); }
+          else { _account = accs[0]; var e=document.getElementById('ocs-connected-addr'); if(e) e.textContent=_shortAddr(_account); }
+        });
+      }
+    })
+    .catch(function (err) {
+      if (err && err.code === 4001) _walletStatus('Connection rejected in wallet.', 'error');
+      else _walletStatus('Could not connect: '+((err&&err.message)||'unknown error'), 'error');
+    });
+}
+
+function disconnectWallet() {
+  _provider = null; _account = null; _walletKind = null;
+  var dc = document.getElementById('ocs-wallet-disconnected');
+  var cc = document.getElementById('ocs-wallet-connected');
+  if (dc) dc.style.display = 'block';
+  if (cc) cc.style.display = 'none';
+  var st = document.getElementById('ocs-wallet-status'); if (st) st.style.display = 'none';
+}
+
+// Fetch live ETH/USD price; falls back to a constant if API unavailable
+function _fetchEthUsd() {
+  return fetch('https://api.coinbase.com/v2/prices/ETH-USD/spot')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var p = d && d.data && parseFloat(d.data.amount);
+      return p && p > 0 ? p : ETH_USD;
+    })
+    .catch(function () { return ETH_USD; });
+}
+
+function payWithWallet() {
+  if (!_provider || !_account) { _walletStatus('Connect a wallet first.', 'error'); return; }
+  if (_selAmt < 10) { _walletStatus('Select an amount first.', 'error'); return; }
+  var payBtn = document.getElementById('ocs-pay-btn');
+  if (payBtn) payBtn.disabled = true;
+  _walletStatus('Checking network…', 'info');
+
+  // 1) Ensure we're on Ethereum mainnet
+  _provider.request({ method: 'eth_chainId' })
+    .then(function (chainId) {
+      if (chainId !== ETH_MAINNET_CHAIN) {
+        _walletStatus('Switching wallet to Ethereum mainnet…', 'info');
+        return _provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: ETH_MAINNET_CHAIN }] });
+      }
+    })
+    .then(function () {
+      _walletStatus('Fetching live ETH price…', 'info');
+      return _fetchEthUsd();
+    })
+    .then(function (ethUsd) {
+      // 2) Compute ETH amount from USD and convert to wei (hex)
+      var ethAmount = _selAmt / ethUsd;
+      // wei = ethAmount * 1e18  — build precisely to avoid float drift
+      var weiStr = _ethToWeiHex(ethAmount);
+      _walletStatus('Confirm the transaction in your wallet… sending ≈ '+ethAmount.toFixed(6)+' ETH ($'+_selAmt+').', 'info');
+      // 3) Send the transaction
+      return _provider.request({
+        method: 'eth_sendTransaction',
+        params: [{ from: _account, to: OCS_RECEIVER, value: weiStr }]
+      });
+    })
+    .then(function (txHash) {
+      if (!txHash) return;
+      var short = txHash.slice(0,10)+'…'+txHash.slice(-8);
+      _walletStatus('✅ Sent! Tx: <a href="https://etherscan.io/tx/'+txHash+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">'+short+'</a><br>Your $OCS will be distributed after the presale.', 'success');
+      if (payBtn) { payBtn.textContent = '✅ PAYMENT SENT'; }
+    })
+    .catch(function (err) {
+      if (payBtn) payBtn.disabled = false;
+      if (err && err.code === 4001) _walletStatus('Transaction rejected in wallet.', 'error');
+      else if (err && err.code === 4902) _walletStatus('Please add/switch to Ethereum mainnet in your wallet, then try again.', 'error');
+      else _walletStatus('Transaction failed: '+((err&&err.message)||'unknown error'), 'error');
+    });
+}
+
+// Convert an ETH float to a hex wei string without float precision loss
+function _ethToWeiHex(eth) {
+  // Use string math: split into integer + fractional, pad fractional to 18 digits
+  var s = eth.toFixed(18);                 // e.g. "0.030490000000000000"
+  var parts = s.split('.');
+  var whole = parts[0];
+  var frac = (parts[1] || '').slice(0, 18);
+  while (frac.length < 18) frac += '0';
+  var weiDec = (whole === '0' ? '' : whole) + frac;
+  weiDec = weiDec.replace(/^0+/, '') || '0';
+  // Decimal string → hex via BigInt when available
+  if (typeof BigInt !== 'undefined') {
+    return '0x' + BigInt(weiDec).toString(16);
+  }
+  // Fallback: manual decimal→hex
+  return '0x' + _decStrToHex(weiDec);
+}
+function _decStrToHex(dec) {
+  var hex = '', n = dec;
+  if (n === '0') return '0';
+  while (n !== '0') {
+    var carry = 0, next = '';
+    for (var i = 0; i < n.length; i++) {
+      var d = carry * 10 + (n.charCodeAt(i) - 48);
+      var q = Math.floor(d / 16); carry = d % 16;
+      if (next.length || q) next += q;
+    }
+    hex = (carry).toString(16) + hex;
+    n = next.length ? next : '0';
+  }
+  return hex;
+}
+
+function copyOcsAddr() {
+  var addr = (document.getElementById('ocs-eth-addr')||{}).textContent||'';
+  navigator.clipboard && navigator.clipboard.writeText(addr).then(function(){
+    var btn=document.getElementById('ocs-copy-addr-btn');
+    if(btn){btn.textContent='✅ COPIED!';btn.classList.add('copied');setTimeout(function(){btn.textContent='📋 COPY ADDRESS';btn.classList.remove('copied');},2000);}
+  });
+}
+function _drawQR() {
+  var canvas = document.getElementById('ocs-qr-canvas'); if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var size=160, cell=8, cols=size/cell;
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,size,size);
+  for(var r=0;r<cols;r++) for(var c=0;c<cols;c++){
+    var inFinder=(r<7&&c<7)||(r<7&&c>=cols-7)||(r>=cols-7&&c<7);
+    var v=Math.sin(r*cols+c+42)*10000, on=(v-Math.floor(v))>.5;
+    if(on||inFinder){ ctx.fillStyle=inFinder?'#00B8FF':'#222'; ctx.fillRect(c*cell+1,r*cell+1,cell-2,cell-2); }
+  }
+}
+
+/* ── Close overlays on bg click ─────────────────────── */
+document.addEventListener('click', function(e){
+  var mo = document.getElementById('modal-overlay');
+  if (mo && e.target===mo) closeModal();
+  var om = document.getElementById('ocs-buy-modal');
+  if (om && e.target===om) closeOcsBuyModal();
+});
+
+/* ═══════════════════════════════════════════════════════
+   CSP-SAFE EVENT DISPATCHER
+   Replaces inline onclick/ondblclick (which Vercel's CSP
+   blocks). Reads data-onclick / data-ondblclick attributes
+   and routes them to the correct function. No eval used.
+═══════════════════════════════════════════════════════ */
+(function () {
+  // Whitelist of callable actions → real functions
+  var ACTIONS = {
+    enterSite: function () { enterSite(); },
+    openModal: function () { openModal(); },
+    closeModal: function () { closeModal(); },
+    submitModal: function () { submitModal(); },
+    toggleStartMenu: function () { toggleStartMenu(); },
+    openOcsBuyModal: function () { openOcsBuyModal(); },
+    closeOcsBuyModal: function () { closeOcsBuyModal(); },
+    goDirectStep: function () { goDirectStep(); },
+    goBackStep: function () { goBackStep(); },
+    copyOcsAddr: function () { copyOcsAddr(); },
+    connectWallet: function (arg) { connectWallet(arg); },
+    disconnectWallet: function () { disconnectWallet(); },
+    payWithWallet: function () { payWithWallet(); },
+    openWindow: function (arg) { openWindow(arg); },
+    closeWin: function (arg) { closeWin(arg); },
+    minimizeWin: function (arg) { minimizeWin(arg); },
+    maximizeWin: function (arg) { maximizeWin(arg); },
+    selectAmt: function (arg, el) { selectAmt(parseFloat(arg), el); }
+  };
+
+  // Parse a call string like "openWindow('win-hero')" or
+  // "openWindow('win-how');toggleStartMenu()" into [{name, arg}]
+  function parseCalls(str) {
+    var calls = [];
+    // Split on ; for chained calls
+    str.split(';').forEach(function (part) {
+      part = part.trim();
+      if (!part) return;
+      var m = part.match(/^(\w+)\s*\((.*)\)$/);
+      if (!m) return;
+      var name = m[1];
+      var argsRaw = m[2].trim();
+      var arg = null;
+      if (argsRaw) {
+        // Take first argument, strip quotes; "this" → element handled later
+        var first = argsRaw.split(',')[0].trim();
+        if (first === 'this') {
+          arg = 'this';
+        } else {
+          arg = first.replace(/^['"]|['"]$/g, '');
+        }
+      }
+      calls.push({ name: name, arg: arg });
+    });
+    return calls;
+  }
+
+  function runAction(str, el) {
+    parseCalls(str).forEach(function (call) {
+      var fn = ACTIONS[call.name];
+      if (!fn) return;
+      try {
+        if (call.name === 'selectAmt') {
+          fn(call.arg, el);
+        } else if (call.arg === 'this') {
+          fn(el);
+        } else {
+          fn(call.arg);
+        }
+      } catch (err) {
+        // swallow — don't break other handlers
+      }
+    });
+  }
+
+  // Single delegated click listener
+  document.addEventListener('click', function (e) {
+    var node = e.target;
+    // Walk up to find an element with data-onclick
+    while (node && node !== document) {
+      if (node.getAttribute && node.getAttribute('data-onclick')) {
+        runAction(node.getAttribute('data-onclick'), node);
+        break;
+      }
+      node = node.parentNode;
+    }
+  });
+
+  // Delegated dblclick listener (desktop icons)
+  document.addEventListener('dblclick', function (e) {
+    var node = e.target;
+    while (node && node !== document) {
+      if (node.getAttribute && node.getAttribute('data-ondblclick')) {
+        runAction(node.getAttribute('data-ondblclick'), node);
+        break;
+      }
+      node = node.parentNode;
+    }
+  });
+
+  // On touch devices, make single-tap work for desktop icons too
+  document.addEventListener('click', function (e) {
+    var node = e.target;
+    while (node && node !== document) {
+      if (node.getAttribute && node.getAttribute('data-ondblclick') && !node.getAttribute('data-onclick')) {
+        // Only fire on touch (no precise pointer)
+        if (window.matchMedia && window.matchMedia('(hover: none)').matches) {
+          runAction(node.getAttribute('data-ondblclick'), node);
+        }
+        break;
+      }
+      node = node.parentNode;
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
