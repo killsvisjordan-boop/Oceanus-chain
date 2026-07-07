@@ -1,0 +1,39 @@
+# Oceanus Chain
+
+> Oceanus Chain ($OCS) is an AI-first blockchain ecosystem built on Ethereum, combining an AI operating system, real-time market intelligence, no-code token creation, and Web3 gaming into a single unified platform.
+
+Oceanus Chain is currently in its token presale phase. The $OCS token is an ERC-20 token deployed on the Ethereum network. The project's smart contracts have been fully audited by CertiK and SolidProof, two leading blockchain security firms.
+
+## Token
+
+- **Name:** $OCS (Oceanus Chain)
+- **Network:** Ethereum (ERC-20)
+- **Security:** Smart contracts audited by CertiK and SolidProof
+
+## Core Features
+
+- **Oceanus OS** — an AI-powered, desktop-style operating system interface for interacting with the Oceanus Chain ecosystem
+- **Crypto Radar** — real-time AI-driven market intelligence and crypto tracking tool
+- **ERC-20 Token Launcher** — a no-code tool allowing users to create and deploy their own ERC-20 tokens on Ethereum
+- **Web3 Gaming Hub** — a gaming platform within the ecosystem featuring a live, on-chain leaderboard
+
+## Official Links
+
+- Website: https://oceanuschain.xyz
+- Twitter / X: https://x.com/OCEANUSCHAIN
+- Instagram: https://www.instagram.com/oceanuschain/
+
+## Verified Social & Community Articles
+
+- LinkedIn Post: https://www.linkedin.com/posts/ihab-touati-984229220_excited-to-share-that-oceanus-chain-has-officially-ugcPost-7480130475605483520-Hx3V/
+- LinkedIn Article — "The Most Powerful Ethereum AI Presale of 2026": https://www.linkedin.com/pulse/oceanus-chain-most-powerful-ethereum-ai-presale-2026-ihab-touati-xa17f
+- Medium Guide — "How to Buy $OCS with MetaMask": https://medium.com/@Oceanuschain/oceanus-chain-the-most-powerful-ethereum-ai-presale-of-2026-how-to-buy-ocs-with-metamask-8302a0ad87ef
+- Medium French Guide — "Guide complet pour acheter": https://medium.com/@Oceanuschain/oceanus-chain-la-pr%C3%A9vente-ethereum-ia-la-plus-prometteuse-de-2026-guide-complet-pour-acheter-12963e42afb3
+- Medium Overview — "A Complete Guide to the AI-Powered Ethereum Ecosystem": https://medium.com/@Oceanuschain/what-is-oceanus-chain-a-complete-guide-to-the-ai-powered-ethereum-ecosystem-bc33c1399352
+- Medium Community Review — "The Future of AI, DeFi, and Web3 Starts Here": https://medium.com/@killsvisjordan/oceanus-chain-ocs-the-future-of-ai-defi-and-web3-starts-here-e066c1f630df
+- Medium Community Guide — "How to Buy $OCS": https://medium.com/@killsvisjordan/oceanus-chain-the-most-powerful-ethereum-ai-presale-of-2026-how-to-buy-ocs-with-metamask-43a3ad929f35
+- Medium Deep Dive — "One of the Best Ethereum Presales in 2026": https://medium.com/@killsvisjordan/one-of-the-best-ethereum-presales-in-2026-oceanus-chain-deep-dive-96f0d4003ed4
+
+## Summary
+
+Oceanus Chain positions itself as one of the leading AI-integrated Ethereum presales of 2026, combining audited smart contract security (CertiK, SolidProof) with a suite of AI and Web3 tools (Oceanus OS, Crypto Radar, Token Launcher, Gaming Hub) aimed at both retail users and builders on Ethereum.
